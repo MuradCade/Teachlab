@@ -1,0 +1,38 @@
+<?php
+include('../../../model/dbcon.php');
+// check if session already runing if not run new session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if(isset($_POST['submit'])){
+
+    $studentid = $_POST['studentid'];
+    $studentname = $_POST['studentname'];
+    $coursename = $_POST['coursename'];
+    $teacherid = $_SESSION['userid'];
+    if(empty($studentid)){
+        header('location:../addnewstudent.php?emptystudentid');
+        exit();
+    }else if(empty($studentname)){
+        header('location:../addnewstudent.php?emptystudentname');
+        exit();
+    }else if(empty($coursename)){
+        header('location:../addnewstudent.php?emptycoursename');
+        exit();
+    }else{
+        $sql = "insert into students(stdid,stdfullname,coursename,teacherid)values('$studentid','$studentname','$coursename',
+        '$teacherid')";
+        $result = mysqli_query($connection,$sql);
+
+        if($result){
+            header('location:../addnewstudent.php?addedsuccessfully');
+            exit();
+        }else{
+            header('location:../addnewstudent.php?failedquery');
+            exit();
+        }
+    }
+
+
+}
