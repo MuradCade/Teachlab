@@ -1,47 +1,40 @@
-# Welcome To TeachLab
+# Welcome to TeachLab
 
 ---
 
-TeachLab is a platform that help teachers do thier work such as attendance and assignment collection.
+TeachLab is a platform that helps teachers manage essential tasks such as attendance tracking and assignment collection.
 
-Currently TeachLab is on version 1.0
+Currently, TeachLab is on version 1.0.
 
-## What is the problem this software addressing
+## What Problem Does This Software Address?
 
-online class are every consuming for the teachers , becauase it requires alot of work beside teaching , teachers have to keep track on attendance and assignment submissions and that will take alot of time and effort , teachlab helps teachers to organize student informations and keep track of thier attendance and assignment submission, we help teacher to focus on teaching while we do the heavy work.
+Online classes can be overwhelming for teachers, as they involve significant administrative work beyond teaching. Educators must track attendance and manage assignment submissions, which can be time-consuming. TeachLab helps teachers organize student information and efficiently monitor attendance and assignment submissions, allowing them to focus more on teaching while we handle the administrative workload.
 
 # License
 
-TeachLab License is MIT, feel free to download the project and use it locally.
+TeachLab is licensed under the MIT License. Feel free to download the project and use it locally.
 
-## How to setup TeachLab
+## How to Set Up TeachLab
 
-1. Clone this reposotory
+1. Clone this repository:
   
-  ```git
-  git clone https://github.com/MuradCade/Teachlab.git
+  ```bash
+   git clone https://github.com/MuradCade/Teachlab.git
   ```
   
-2. Take the database file and import it in your mysql database
+2. Import the database file into your MySQL database.
   
-3. Model folder contains file called dbcon.php , it contains database connection in oder to change the configuration go to env.php file its inside the directory as dbcon.php file, change database configuration.
+3. The `Model` folder contains a file called `dbcon.php`, which handles database connections. To change the configuration, update the `env.php` file located in the same directory as `dbcon.php`.
   
-4. In order to send email you will need to create google app name and insert your email and secrect code in env.php file environment variable are name the following :-
+4. To send emails, create a Google app and insert your email and secret code into the `env.php` file. The environment variables are named as follows:
   
-  ```env
-  EMAIL_GOGLE_APP_SECRET_KEY = 'your secret key'
-  EMAIL = 'your email'
+  ```bash
+  EMAIL_GOOGLE_APP_SECRET_KEY='your secret key'
+  EMAIL='your email'
   ```
   
-5. install all packages using composer, write the following command.
+5. Install all packages using Composer by running the following command:
   
-  ```composer
+  ```bash
   composer install
   ```
-  
-
-## Features of TeachLab
-
-1. send email when creating account and when recoving account
-  
-2. handling excel files , importing them and exporting them using phpspreadsheet package.
