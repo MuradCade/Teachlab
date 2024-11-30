@@ -21,17 +21,26 @@ if(isset($_POST['submit'])){
         header('location:../addnewstudent.php?emptycoursename');
         exit();
     }else{
-        $sql = "insert into students(stdid,stdfullname,coursename,teacherid)values('$studentid','$studentname','$coursename',
-        '$teacherid')";
-        $result = mysqli_query($connection,$sql);
+        $sql2 = "select * from students where stdid = '$studentid'";
+        $result2 = mysqli_query($connection,$sql2);
 
-        if($result){
-            header('location:../addnewstudent.php?addedsuccessfully');
-            exit();
+        if(mysqli_num_rows($result2) > 0){
+            header('location:../addnewstudent.php?idtaken');
+                exit();
         }else{
-            header('location:../addnewstudent.php?failedquery');
-            exit();
+            $sql = "insert into students(stdid,stdfullname,coursename,teacherid)values('$studentid','$studentname','$coursename',
+            '$teacherid')";
+            $result = mysqli_query($connection,$sql);
+    
+            if($result){
+                header('location:../addnewstudent.php?addedsuccessfully');
+                exit();
+            }else{
+                header('location:../addnewstudent.php?failedquery');
+                exit();
+            }
         }
+       
     }
 
 

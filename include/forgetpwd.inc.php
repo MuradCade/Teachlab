@@ -28,7 +28,7 @@ if(isset($_POST['submit'])){
                 $emailarray = ["subject"=>"Forget Your Password",
                         "body"=>"<p>Dear $fullname, Please Click The Link Below To Verify Your Password(Link can be used only once)</p>
                         <p>please code this code : <strong>$generated_verification_code</strong> , and click the link below.</p>
-                        <a href='http://localhost:4000/views/recoverpassword.php?userid=$userid'>Recover Password</a>"];
+                        <a href='https://teachlabs.unaux.com/views/recoverpassword.php?userid=$userid'>Recover Password</a>"];
                $sql2 = "select  * from forgetpwd";
                $result2 = mysqli_query($connection,$sql2);
                // if user already request new recover and request again we update database

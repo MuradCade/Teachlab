@@ -1,4 +1,5 @@
 <?php
+include('../../model/dbcon.php');
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -10,6 +11,56 @@ if (!isset($_SESSION['userid'])) {
     exit();
 }
 
+$teacherid = $_SESSION['userid'];
+//totalcourses
+function totalcourse($connection ,$teacherid){
+    $sql = "select * from course where teacherid = '$teacherid'";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+       $row = mysqli_num_rows($result);
+       
+
+            return $row;
+       
+        
+    } 
+}
+//total number of students
+function totalstudents($connection ,$teacherid){
+    $sql = "select * from students where teacherid = '$teacherid'";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+       $row = mysqli_num_rows($result);
+       
+
+            return $row;
+       
+        
+    } 
+}
+//totalassignment
+function totalassignment($connection ,$teacherid){
+    $sql = "select * from assignmentform where teacherid = '$teacherid'";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+       $row = mysqli_num_rows($result);
+       
+
+            return $row;
+       
+        
+    } 
+}
+
+
+function displaysubscriptionstatus($connection,$teacherid){
+    $sql = "select subsatus from subscription where userid = '$teacherid'";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+        $row = mysqli_fetch_assoc($result);
+        echo   $row['subsatus'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +131,7 @@ if (!isset($_SESSION['userid'])) {
                         <div class="card  text-white" style='background-color:#f8f9fa !important;'>
                             <div class="card-body text-black">
                                 <h5 class="card-title fw-bold" style='font-size:15px;'>Total Courses</h5>
-                                <p class="card-text">0</p>
+                                <p class="card-text"><?php echo totalcourse($connection,$teacherid);?></p>
                             </div>
                         </div>
                     </div>
@@ -88,15 +139,15 @@ if (!isset($_SESSION['userid'])) {
                         <div class="card  text-white" style='background-color:#f8f9fa !important;'>
                         <div class="card-body text-black">
                                 <h5 class="card-title fw-bold" style='font-size:15px;'>Total number of Students</h5>
-                                <p class="card-text">0</p>
+                                <p class="card-text"><?php echo totalstudents($connection,$teacherid);?></p>
                             </div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
                         <div class="card  text-dark" style='background-color:#f8f9fa !important;'>
                         <div class="card-body text-black">
-                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Assignment</h5>
-                                <p class="card-text">0</p>
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Assignment Form</h5>
+                                <p class="card-text"><?php echo totalassignment($connection,$teacherid);?></p>
                             </div>
                         </div>
                     </div>
@@ -104,7 +155,7 @@ if (!isset($_SESSION['userid'])) {
                         <div class="card  text-white" style='background-color:#f8f9fa !important;'>
                         <div class="card-body text-black">
                                 <h5 class="card-title fw-bold" style='font-size:15px;'>Subscription Status</h5>
-                                <p class="card-text" style='font-size:14px;'>Coming Soon</p>
+                                <p class="card-text" style='font-size:14px;'><?php displaysubscriptionstatus($connection,$teacherid);?></p>
                             </div>
                         </div>
                     </div>

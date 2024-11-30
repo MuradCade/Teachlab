@@ -208,7 +208,7 @@ if(isset($_GET['delid'])){
                             </div>
                             <div>
 
-                                <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
+                                <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id or name" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
                             </div>
                             </div>
 
@@ -370,29 +370,7 @@ if(isset($_GET['delid'])){
 
 
        
-       //search table by id
-       function searchTable() {
-    var input, filter, found, table, tr, td, i, j;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td");
-        for (j = 0; j < td.length; j++) {
-            if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                found = true;
-            }
-        }
-        if (found) {
-            tr[i].style.display = "";
-            found = false;
-        } else {
-            tr[i].style.display = "none";
-        }
-    }
-}
-    
+        
     </script>
 </body>
 

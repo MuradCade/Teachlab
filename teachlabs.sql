@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 28, 2024 at 03:09 PM
+-- Generation Time: Nov 30, 2024 at 11:07 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -36,7 +36,8 @@ CREATE TABLE `assignmententries` (
   `formid` int(10) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp(),
   `filesize` varchar(50) DEFAULT NULL,
-  `assignmentid` int(4) NOT NULL
+  `assignmentid` int(4) NOT NULL,
+  `pdf_file` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
@@ -131,6 +132,21 @@ CREATE TABLE `students` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `subscription`
+--
+
+CREATE TABLE `subscription` (
+  `id` int(1) NOT NULL,
+  `userid` int(10) DEFAULT NULL,
+  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `subsatus` varchar(50) DEFAULT NULL,
+  `subplan` varchar(15) DEFAULT NULL,
+  `subamount` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -140,7 +156,8 @@ CREATE TABLE `users` (
   `email` varchar(80) NOT NULL,
   `pwd` text NOT NULL,
   `role` varchar(50) NOT NULL,
-  `verified_status` varchar(1) NOT NULL DEFAULT '0'
+  `verified_status` varchar(1) NOT NULL DEFAULT '0',
+  `subscription_status` varchar(50) DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
@@ -191,6 +208,12 @@ ALTER TABLE `students`
   ADD PRIMARY KEY (`stdid`);
 
 --
+-- Indexes for table `subscription`
+--
+ALTER TABLE `subscription`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -229,6 +252,12 @@ ALTER TABLE `forgetpwd`
 --
 ALTER TABLE `markattendence`
   MODIFY `id` int(4) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `subscription`
+--
+ALTER TABLE `subscription`
+  MODIFY `id` int(1) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

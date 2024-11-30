@@ -1,4 +1,5 @@
 <?php
+include_once('../../model/dbcon.php');
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

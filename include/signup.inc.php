@@ -59,7 +59,7 @@ if(isset($_POST['singup'])){
                                 <blockquote>
                                 <p>Dear $fullname, The code will be active as long as you need it to verify your account, so don't worry.</p>
                                 <p>If you are un able to verify your account now , you can always verify your account later by following link below.</p>
-                                <p><a href='localhost:4000/views/verify_email_code.php'>Verify Your Account.</a></p>
+                                <p><a href='https://teachlabs.unaux.com/views/verify_email_code.php?emailsent'>Verify Your Account.</a></p>
                                 </blockquote>
                                 </td>
                                 </tr>
@@ -83,18 +83,23 @@ if(isset($_POST['singup'])){
                             '$email','$hashpwd', 'teacher','false')";
                             $result2 = mysqli_query($connection,$sql2);
                             if($result2){        
-                               //we need to store userid when we updating email verification 
+                                $sql3 = "insert into subscription(userid,subsatus,subplan,subamount)values('$userrandomid','active','free_trial','7days')";
+                                $result3 = mysqli_query($connection,$sql3);
+                                if($result3){
                                     $_SESSION['verification_userid'] = $userrandomid;
-                            // send the email
-                            $sendmail = sendemail($email,$fullname,$mailinfo['subject'], $mailinfo['body']);
-                                if($sendmail){
-
-                                    header('location:../views/verify_email_code.php?emailsent');
-                                    exit();
-                                }else{
-                                    header('Location:../views/signup.php?failedtosendemail');
-                                    exit();
+                                    // send the email
+                                    $sendmail = sendemail($email,$fullname,$mailinfo['subject'], $mailinfo['body']);
+                                        if($sendmail){
+        
+                                            header('location:../views/verify_email_code.php?emailsent');
+                                            exit();
+                                        }else{
+                                            header('Location:../views/signup.php?failedtosendemail');
+                                            exit();
+                                        }
                                 }
+                                
+                                  
                             }
                         }
                         

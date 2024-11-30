@@ -1,9 +1,10 @@
 <?php
 include('../../model/env.php');
 if(isset($_GET['docname'])){
-    $filename = base64_decode($_GET['docname']);
-    $extension = pathinfo($filename, PATHINFO_EXTENSION);
-   
+    $filename = urlencode($_GET['docname']);
+ 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,16 +19,11 @@ if(isset($_GET['docname'])){
    
 </head>
 <body>
-    <!-- displaying  -->
-<?php if($extension == 'docx' || $extension == 'doc'){?>
-    <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://localhost:4000/views/teacher/uploads/<?php echo $filename;?>" width='100%' height='650px' frameborder='0'></iframe>
-<?php }else if($extension == 'ppt'){ ?>
-    <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https://localhost:4000/views/teacher/uploads/<?php echo $filename;?>" width='100%' height='650px' frameborder='0'></iframe>
 
-    <?php } ?>
+<iframe src="http://localhost:4000/views/teacher/uploads/<?= $filename?>" width="100%" height="900"></iframe>
+<!-- <embed src="" width="800px" height="2100px" /> -->
 </body>
 </html>
-
 
 <?php } else{?>
 

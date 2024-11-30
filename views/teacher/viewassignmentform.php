@@ -195,9 +195,7 @@ if(isset($_GET['delassigmentform'])){
                                 <?php if (isset($_GET['formupdatedsuccessfully'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Assignment form updated successfully</p>
                                 <?php } ?>
-                                <?php if (isset($_GET['formupdatedsuccessfully'])) { ?>
-                                    <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Assignment form updated successfully</p>
-                                <?php } ?>
+                               
                                 <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
                                 <?php } ?>
@@ -232,7 +230,7 @@ if(isset($_GET['delassigmentform'])){
                                             <td><?php echo $row['uploadedfilename'];?></td>
                                             <td><?php echo $row['marks'];?></td>
                                             <td><?php echo $row['formstatus'];?></td>
-                                            <td><a href="viewassignmentform.php?updateformid=<?php echo $row['formid']?>" class="btn btn-primary btn-sm mb-1 fw-bold">Update</a>&numsp;<a href="viewassignmentform.php?entries=<?php echo $row['formid'];?>" class='btn btn-secondary btn-sm fw-bold'>Entries</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php $encodeid= base64_encode($row['formid']); echo $encodeid;?>" target='a_blank' class='btn btn-info btn-sm text-white fw-bold'>View</a>&numsp;<a href='#' class='btn btn-warning btn-sm fw-bold text-white'>Share</a>&numsp;<a href="viewassignmentform.php?delassigmentform=<?php echo $row['formid'];?>" class='btn btn-danger btn-sm fw-bold'>Delete</a> </td>
+                                            <td><a href="viewassignmentform.php?updateformid=<?php echo $row['formid']?>" class="btn btn-primary btn-sm mb-1 fw-bold">Update</a>&numsp;<a href="viewassignmentform.php?entries=<?php echo $row['formid'];?>" class='btn btn-secondary btn-sm fw-bold'>Entries</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>"  target='a_blank' class='btn btn-info btn-sm text-white fw-bold'>View</a>&numsp;<a href="http://localhost:4000/views/clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>" onclick="copyToClipboard(event,this)" class='btn btn-warning btn-sm fw-bold text-white'>Share</a>&numsp;<a href="viewassignmentform.php?delassigmentform=<?php echo $row['formid'];?>" class='btn btn-danger btn-sm fw-bold'>Delete</a> </td>
                                         </tr>
                                        <?php $rowid++;}
                                     }
@@ -298,7 +296,6 @@ if(isset($_GET['delassigmentform'])){
                                             <label class='form-label'>Upload File Type</label>
                                             <select name='uploadfiletype' class='form-select'>
                                                 <option value="word_document">Word Document</option>
-                                                <option value="power_point">Power Point</option>
                                             </select>
                                         </div>
                                         <div class="form-group mt-3">
@@ -372,9 +369,9 @@ if(isset($_GET['delassigmentform'])){
                                             <td><?php echo $rows['uploadedfile'];?></td>
                                             <td><?php $filesize = round($rows['filesize']); echo $filesize.' MB'; ?></td>
                                             <td><?php echo date('M-j-Y ', strtotime($rows['date']));?></td>
-                                            <td><button class='btn btn-primary btn-sm fw-bold' name='updatentries'>Update</button>&numsp;<a href="viewassignmentform.php?deleteid=<?php echo $rows['stdid']?>" class='btn btn-danger text-white fw-bold'>
+                                            <td><a href='uploads/<?= $rows['uploadedfile']?>' download='uploads/<?= $rows['uploadedfile']?>'class='btn btn-info btn-sm fw-bold text-white mt-2 mb-2'>Download Document</a>&numsp;<button class='btn btn-primary btn-sm fw-bold' name='updatentries'>Update</button>&numsp;<a href="viewassignmentform.php?deleteid=<?php echo $rows['stdid']?>" class='btn btn-danger text-white fw-bold'>
                                                 Delete
-                                            </a>&numsp;<a href="showassignmentdocument.php?docname=<?php echo base64_encode($rows['uploadedfile'])?>" target="_blank" class='btn btn-secondary btn-sm fw-bold mt-1'>View Document</a></td>
+                                            </a>&numsp;<a href="showassignmentdocument.php?docname=<?php echo $rows['pdf_file']?>" target="_blank" class='btn btn-secondary btn-sm fw-bold mt-1'>View Document</a></td>
                                         </tr>
                                     </form>
                                     <?php  $rownumber++;}}?>
@@ -426,6 +423,20 @@ if(isset($_GET['delassigmentform'])){
     }
 }
     
+        // Function to copy the link to clipboard
+        function copyToClipboard(event , element) {
+            event.preventDefault();
+            // Create a temporary input element to copy the link
+            var tempInput = document.createElement("input");
+            document.body.appendChild(tempInput);
+            tempInput.value = element.href;  // Set input value to the href of the anchor
+            tempInput.select();  // Select the text in the input
+            document.execCommand("copy");  // Copy the selected text to clipboard
+            document.body.removeChild(tempInput);  // Remove the temporary input element
+            alert("Link copied to clipboard!");  
+            // Optional: Show an alert message
+        }
+
     </script>
 </body>
 

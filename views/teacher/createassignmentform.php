@@ -139,7 +139,6 @@ if (!isset($_SESSION['userid'])) {
                                             <label class='form-label'>Upload File Type</label>
                                             <select name='uploadfiletype' class='form-select'>
                                                 <option value="word_document">Word Document</option>
-                                                <option value="power_point">Power Point</option>
                                             </select>
                                         </div>
                                         <div class="form-group mt-3">

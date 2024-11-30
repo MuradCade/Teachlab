@@ -104,6 +104,9 @@ $studentid = rand ( 10000 , 99999 );
                                 <?php if (isset($_GET['addedsuccessfully'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Student Information Saved Successfully</p>
                                 <?php } ?>
+                                <?php if (isset($_GET['idtaken'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Sorry , student with that id already exist</p>
+                                <?php } ?>
                                 <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
                                 <?php } ?>

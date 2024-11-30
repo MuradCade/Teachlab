@@ -57,6 +57,9 @@ if(isset($_SESSION['userid'])){
         <?php if(isset($_GET['usernotverified'])){?>
           <p class='bg-danger text-white fw-bold p-1 text-center ' style='font-size:15px;'>user is not verified , please verify to get access to your account</p>
         <?php }?>
+        <?php if(isset($_GET['emailverified'])){?>
+          <p class='bg-success text-white fw-bold p-1 text-center ' style='font-size:15px;'>your email is verified , please login  to your account</p>
+        <?php }?>
         <?php if(isset($_GET['pwdrecovered'])){?>
           <p class='bg-success text-white fw-bold p-1 text-center ' style='font-size:15px;'>Account Recovered Successfully , Please Login.</p>
         <?php }?>

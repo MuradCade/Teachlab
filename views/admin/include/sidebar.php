@@ -1,18 +1,7 @@
 <?php
-
 include_once('include/activestate.php');
-include_once('checksubscriptionstatus.php');
-// check if session already runing if not run new session
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
 // find out the path to the current file:
  $url = $_SERVER['SCRIPT_NAME'];
- $teacherid = $_SESSION['userid'];
-// die();
-
-
-
 
  ?>
  <!-- Sidebar -->
@@ -25,63 +14,33 @@ if (session_status() === PHP_SESSION_NONE) {
                 </button>
                     <ul class="nav flex-column">
                         <li class="nav-item mt-1 mt-3">
-                            <a class="nav-link <?php checkactivesidebar($url,'teacher'); checkactivesidebar($url,'index.php')?> fw-bold" href="index.php" style='font-size:15px;'>
+                            <a class="nav-link <?php checkactivesidebar($url,'admin'); checkactivesidebar($url,'index.php')?> fw-bold" href="index.php" style='font-size:15px;'>
                                 <i class="bi bi-house-door me-2"></i> Home
                             </a>
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'addnewcourse.php'); checkactivesidebar($url,'viewcourse.php');  echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?> fw-bold" href="#" id="course" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
-                                <i class="bi bi-book me-1"></i> Course
+                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'viewusers.php'); ?> fw-bold" href="#" id="course" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                                <i class="bi bi-book me-1"></i> Users
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="course">
-                                <li style="font-size:14px;"><a class="dropdown-item  <?php checkactivesidebar($url,'addnewcourse.php');?> fw-bold" href="addnewcourse.php">Add New Course</a></li>
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewcourse.php');?>  fw-bold" href="viewcourse.php">View Course Info</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewusers.php.php');?>  fw-bold" href="viewusers.php">View Users</a></li>
                                 <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
                             </ul>
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'addnewstudent.php'); checkactivesidebar($url,'viewstudent.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
-                                <i class="bi bi-person me-1"></i> Students
+                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'manage_subscription.php'); ?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                                <i class="bi bi-person me-1"></i> Subscription
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAnalytics">
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'addnewstudent.php');?> fw-bold" href="addnewstudent.php">Add New Student</a></li>
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewstudent.php');?> fw-bold" href="viewstudent.php">View Student Info</a></li>
-                                <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle <?php checkactivesidebar($url,'markattandence.php'); checkactivesidebar($url,'viewattadencemarks.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false"style='font-size:15px;'>
-                                <i class="bi bi-check-circle-fill me-1"></i> Attendance
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownAnalytics">
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'markattandence.php');?> fw-bold" href="markattandence.php">Mark Attendance</a></li>
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewattadencemarks.php');?> fw-bold" href="viewattadencemarks.php">View Attendance Info</a></li>
-                                <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle <?php checkactivesidebar($url,'createassignmentform.php'); checkactivesidebar($url,'viewassignmentform.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-archive me-1"></i> Assignment Form
-                            </a>
-                            <ul class="dropdown-menu mb-5" aria-labelledby="dropdownAnalytics">
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'createassignmentform.php');?> fw-bold" href="createassignmentform.php">Create AssignmentForm</a></li>
-                                <li style="font-size:14px;"><a class="dropdown-item  <?php checkactivesidebar($url,'viewassignmentform.php');?> fw-bold" href="viewassignmentform.php">View Assignment Forms</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewstudent.php');?> fw-bold" href="manage_subscription.php">Manage Subscription</a></li>
                                 <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
                             </ul>
                         </li>
                         
-                        <li class="nav-item dropdown mt-3">
-                            <a class="nav-link  text-secondary fw-bold" href="https://teachlab.canny.io/teachlab" target='_blank' style='font-size:15px;'>
-                            <i class="bi bi-info-circle-fill me-1"></i> Feedback
-                            </a>
-                         
-                        </li>
-                        <li class="nav-item mt-3">
-                            <a class="nav-link  <?php checkactivesidebar($url,'combineresult.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?>  fw-bold" href="combineresult.php" style='font-size:15px;'>
-                            <i class="bi bi-bar-chart-fill me-1"></i>  Combine Result
-                            </a>
-                        </li>
-                   
+                        
+                        
+                       
+                        
                         <!-- <li class="nav-item mt-3">
                             <a class="nav-link text-secondary" href="#" style='font-size:15px;'>
                             <i class="bi bi-clipboard-data"></i>  Generate Report
@@ -101,20 +60,14 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 <div class="position-sticky  mt-2">
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'setting.php');?> fw-bold" href="#" id="dropdownAccount" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                        <a class="nav-link dropdown-toggle  text-secondary fw-bold" href="#" id="dropdownAccount" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
                             <i class="bi bi-person-circle me-1"></i> Account
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
-                            <li style='font-size:14px;'><a class="dropdown-item  <?php checkactivesidebar($url,'setting.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?>" href="setting.php">Setting</a></li>
-                            <li style='font-size:14px;'><a class="dropdown-item" href="../../include/logout.php">Logout</a></li>
+                        <ul class="dropdown-menu " aria-labelledby="dropdownAccount">
+                            <li style='font-size:14px;'><a class="dropdown-item text-secondary" href="../../include/logout.php">Logout</a></li>
                         </ul>
                     </div>
                 </div>
-                <?php if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire'){?>
-                <p class='bg-danger p-2 text-white mt-2 fw-medium'>Your Subscription is Expired , Please send $10 to <strong>Zaad(0633558027)</strong> in order to activate your subscription</p>
-                <?php }else if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'active'){?>
-                <p class='bg-secondary text-white mt-2 p-4 fw-bold'><?php echo checksubscriptionstatus($connection,$teacherid,'subamount');?> Is Left On Your Free Trial</p>
-                <?php } ?>
                 </ul>
                 <div>
             </nav>
