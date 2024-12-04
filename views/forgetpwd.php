@@ -67,25 +67,7 @@
     <p class="text-center mt-1 fw-medium mt-2" style="font-size:14px;font-weight:600 !important;">Already Have Account? <a href="login.php">Login</a></p>
 
 
-<script>        
-let hide = document.getElementById('hide');
-let show = document.getElementById('show');
-let pwd = document.getElementById('pwd');
 
-
-
-hide.addEventListener('click',function(){
-        pwd.type = 'text';
-        show.style.display='block';
-        hide.style.display='none';
-
-        
-});
-show.addEventListener('click',function(){
-    pwd.type = 'password';
-    hide.style.display='block';
-    show.style.display='none';
-});
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

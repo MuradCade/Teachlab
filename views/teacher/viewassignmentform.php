@@ -1,6 +1,8 @@
 <?php
 include('./../../model/dbcon.php');
 include('slices/studentcreationvalidation.php');
+include('slices/deleteassignmentfiles.php');
+include('slices/deleteallfiles.php');
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -74,11 +76,32 @@ if(isset($_GET['stdid'])){
 // delete assignment entries
 if(isset($_GET['deleteid'])){
     $delid = $_GET['deleteid'];
-    $sqlquery2 = "delete from assignmententries  where stdid = '$delid'";
-    $resultquery2 = mysqli_query($connection,$sqlquery2);
-    if($resultquery2){
-        header('location:viewassignmentform.php?entriesdeleted');
+    //fetch all document related to this student before deleting it from the database
+    $sql2 = "select * from assignmententries where stdid = '$delid'";
+    $result2 = mysqli_query($connection,$sql2);
+    
+    if($result2){
+        while($row = mysqli_fetch_assoc($result2)){
+            $word_document =  'uploads/'.$row['uploadedfile'];
+            $pdf_document =  'uploads/'.$row['pdf_file'];
+
+            if(file_exists($word_document) && file_exists($pdf_document)){
+
+                //delete the files that submitted by this specific student
+            deleteassignmentdocuement($word_document,$pdf_document);
+            }
+        }
+        //delete the student from the database
+        $sqlquery2 = "delete from assignmententries  where stdid = '$delid'";
+        $resultquery2 = mysqli_query($connection,$sqlquery2);
+        if($sqlquery2){
+            
+            header('location:viewassignmentform.php?entriesdeleted');
+            exit();
+        }else{
+         header('location:viewassignmentform.php?failedquery');
         exit();
+        }
     }else{
         header('location:viewassignmentform.php?failedquery');
         exit();
@@ -89,15 +112,42 @@ if(isset($_GET['deleteid'])){
 //delete assignment form
 
 if(isset($_GET['delassigmentform'])){
+
     $formid = $_GET['delassigmentform'];
-    $formsql = "delete from assignmentform where formid = '$formid'";
-    $formresult = mysqli_query($connection,$formsql);
-    if($formresult){
-        header('location:viewassignmentform.php?assignmentformsuccess');
-        exit();
+    // 1- find all document in this assignment form , fetch all document related to this student before deleting it from the database
+        $sql = "select * from assignmententries where formid = '$formid'";
+        $result = mysqli_query($connection,$sql);
+   
+    if($result){
+        while($row = mysqli_fetch_assoc($result)){
+         
+            
+                //1.1- delete all the files relaed to this assignment form
+                deleteallfiles('uploads/'.$row['uploadedfile'],'uploads/'.$row['pdf_file']);
+            
+        }
+
+    //2- delete all student that submitted thier asssingment inside that form assignment
+    $sql2 = "delete  from assignmententries where formid = '$formid'";
+    $result2 = mysqli_query($connection,$sql2);
+    if($result2){
+        //3- delete the assignment form itself
+        $formsql = "delete from assignmentform where formid = '$formid'";
+        $formresult = mysqli_query($connection,$formsql);
+    
+        if($formresult){
+            header('location:viewassignmentform.php?assignmentformsuccess');
+            exit();
+        }else{
+              header('location:viewassignmentform.php?assignmentformdeletefailed');
+            exit();
+        }
+    }
+   
+        
     }else{
-        header('location:viewassignmentform.php?assignmentformdeletefailed');
-        exit();
+        // header('location:viewassignmentform.php?assignmentformdeletefailed');
+        // exit();
     }
 }
 ?>
