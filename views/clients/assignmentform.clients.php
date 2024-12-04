@@ -8,6 +8,10 @@ if(isset($_GET['formid'])){
 
     $sql = "select * from assignmentform  where formid = '$formid'";
     $result = mysqli_query($connection,$sql);
+    if(mysqli_num_rows($result) == 0){
+        header('location:../login.php');
+        exit();
+    }
     
     while($row= mysqli_fetch_assoc($result)){
 
@@ -77,7 +81,7 @@ if(isset($_GET['formid'])){
         </div>
     </div>
         <div class="text-center">
-        <p class='mt-2'>This Form Is Powered By <a href="#">TeachLab</a></p>
+        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
@@ -112,7 +116,7 @@ if(isset($_GET['formid'])){
         </div>
     </div>
         <div class="text-center">
-        <p class='mt-2'>This Form Is Powered By <a href="#">TeachLab</a></p>
+        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
@@ -180,7 +184,7 @@ body{
 		
 		<p>the page you are looking for not avaible!</p>
 		
-		<a href="../checkroles.php" class="link_404">Go to Home</a>
+		<a href="https://teachlabs.unaux.com/" class="link_404">Go to Home</a>
 	</div>
 		</div>
 		</div>
@@ -211,7 +215,7 @@ body{
         </div>
     </div>
         <div class="text-center">
-        <p class='mt-2'>This Form Is Powered By <a href="#">TeachLab</a></p>
+        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>

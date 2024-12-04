@@ -120,10 +120,13 @@ if(isset($_GET['userid'])){
               <label class="form-label" style="font-size:15px;">Verification Code</label>
               <input type="text" id="email" name="code" class="form-control" placeholder="Enter Verification Code..." autocomplete="false"/>
           </div>
-          <div class="form-group p-2">
-              <label class="form-label" style="font-size:15px;">New Password</label>
-              <input type="text" id="email" name="pwd" class="form-control" placeholder="Enter New Password..." autocomplete="false"/>
-          </div>
+          <div class="form-group p-2" style="position:relative;">
+              <label class="form-label" style="font-size:15px;">Password</label>
+              <input type="password" id="pwd" name="pwd" class="form-control" placeholder="Enter New Password..." autocomplete="false"/>
+              <i class="bt bi-eye-slash-fill" style="position:absolute; top:48px;right:20px; cursor:pointer;" id="hide"></i>
+              <i class="bt bi-eye-fill"style="position:absolute; top:48px;right:20px; display:none; cursor:pointer;" id="show"></i>
+            </div>
+          
                 <div class="px-2 mb-2">
                 <input type="submit" class="mt-2 btn btn-primary" value="Submit" name='submit'/>
                 </div>

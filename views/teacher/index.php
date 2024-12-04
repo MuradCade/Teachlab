@@ -3,6 +3,7 @@ include('../../model/dbcon.php');
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
+  
 }
 
 //check if session exist , if it exist prevent user from seeing login page
@@ -52,13 +53,26 @@ function totalassignment($connection ,$teacherid){
     } 
 }
 
-
+// display subscription status
 function displaysubscriptionstatus($connection,$teacherid){
     $sql = "select subsatus from subscription where userid = '$teacherid'";
     $result = mysqli_query($connection,$sql);
     if($result){
-        $row = mysqli_fetch_assoc($result);
-        echo   $row['subsatus'];
+        // $row = ;
+        while($row = mysqli_fetch_assoc($result)){
+
+        // echo $row['subsatus'];
+        $checksubs = $row['subsatus'] =="active"?"<span class='text-success fw-bold'>Active</span>":($row['subsatus'] =="expire"?"<span class='text-danger fw-bold'>Expire</span>":"<span class='text-success fw-bold'>Life Time</span>");
+        return $checksubs;
+        }
+        // if($row['subsatus'] =='active'){
+
+        // echo "<p class='text-success text-white fw-bold>". $row['subsatus']."</p>";
+        // }else if($row['subsatus'] == 'expire'){
+        //     echo "<p class='text-danger text-white fw-bold>". $row['subsatus']."</p>";
+        // }else{
+        //     echo "<p class='text-success text-white fw-bold'>".$row['subsatus']."</p>";
+        // }
     }
 }
 ?>
@@ -155,10 +169,30 @@ function displaysubscriptionstatus($connection,$teacherid){
                         <div class="card  text-white" style='background-color:#f8f9fa !important;'>
                         <div class="card-body text-black">
                                 <h5 class="card-title fw-bold" style='font-size:15px;'>Subscription Status</h5>
-                                <p class="card-text" style='font-size:14px;'><?php displaysubscriptionstatus($connection,$teacherid);?></p>
+                                <p class="card-text" style='font-size:14px;'><?php echo displaysubscriptionstatus($connection,$teacherid);?></p>
                             </div>
                         </div>
                     </div>
+
+                      <?php if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire'){?>
+                        <div class='col-12 col-md-6 col-xl-6 mb-4'>
+                         <div class='card p-2' style='background-color:#f8f9fa !important;'>
+                            <p class='fw-medium' style='line-height:30px;'>Dear <strong><?php echo $_SESSION['fullname']?></strong>, your subscription has <span class='text-danger fw-bold'>expired</span>. To renew it, please make a payment of $10 to this number (063-355-8027). We will automatically renew your subscription, allowing you to use TeachLab without any interruptions. <strong>Sincerely, the TeachLab Team.</strong></p>
+                            <?php }else if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'active'){?>
+                           <div class='col-12 col-md-6 col-xl-6 mb-4'>
+                           <div class='card p-2' style='background-color:#f8f9fa !important;'>
+                            <p class=' mt-2'>Dear <strong><?php echo $_SESSION['fullname'];?></strong> ,   You have <?php echo checksubscriptionstatus($connection,$teacherid,'subamount');?>  remaining in your free trial. After this period, you will need to purchase a monthly subscription for $10. </p>
+                            </div>
+                           </div>
+                        </div>
+                        </div>
+                    <?php }else{ ?>
+                        <div class='col-12 col-md-6 col-xl-6 mb-4'>
+                           <div class='card p-2' style='background-color:#f8f9fa !important;'>
+                            <p class=' mt-2'>Dear <strong><?php echo $_SESSION['fullname'];?></strong>  Thank you for purchasing the lifetime plan! You now have unlimited access to all features of TeachLab. Enjoy your experience!</p>
+                            </div>
+                           </div>
+                    <?php } ?>  
                 </div>
 
                 <!-- More Content Here -->

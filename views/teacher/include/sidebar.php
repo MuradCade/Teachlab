@@ -110,11 +110,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         </ul>
                     </div>
                 </div>
-                <?php if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire'){?>
-                <p class='bg-danger p-2 text-white mt-2 fw-medium'>Your Subscription is Expired , Please send $10 to <strong>Zaad(0633558027)</strong> in order to activate your subscription</p>
-                <?php }else if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'active'){?>
-                <p class='bg-secondary text-white mt-2 p-4 fw-bold'><?php echo checksubscriptionstatus($connection,$teacherid,'subamount');?> Is Left On Your Free Trial</p>
-                <?php } ?>
+              
                 </ul>
                 <div>
             </nav>
