@@ -2,14 +2,14 @@
 
 // software configuration
 define('SOFTWARE_NAME', 'TeachLab');
-define('VERSION', '1.0');
+define('VERSION', '1.1');
 
 // Database Configuration
 define('HOSTNAME', 'localhost');
 define('USER_NAME', 'root');
 define('PASSWORD', '');
-define('DATABASE_NAME', 'teachlabs');
-define('EMAIL_GOGLE_APP_SECRET_KEY', 'szvyutjfflwptkzw');
-define('EMAIL', 'king12murad@gmail.com');
+define('DATABASE_NAME', '');
+define('EMAIL_GOGLE_APP_SECRET_KEY', '');
+define('EMAIL', '');
 
 
