@@ -20,7 +20,6 @@ try {
     $mail->Username   = EMAIL;                     //SMTP username
     $mail->Password   = EMAIL_GOGLE_APP_SECRET_KEY;                               //SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
-    $mail->SMTPKeepAlive = true;
                //Enable implicit 465 TLS encryption ENCRYPTION_SMTPS
             //    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; 
     $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
