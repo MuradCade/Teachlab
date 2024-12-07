@@ -1,7 +1,8 @@
 <?php
 
 include_once('include/activestate.php');
-include_once('checksubscriptionstatus.php');
+include('include/checksubscriptionstatus.php');
+include_once('include/restrictions.php');
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -30,7 +31,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             </a>
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'addnewcourse.php'); checkactivesidebar($url,'viewcourse.php');  echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?> fw-bold" href="#" id="course" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'addnewcourse.php'); checkactivesidebar($url,'viewcourse.php');  echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':'';?> fw-bold" href="#" id="course" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
                                 <i class="bi bi-book me-1"></i> Course
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="course">
@@ -40,7 +41,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             </ul>
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'addnewstudent.php'); checkactivesidebar($url,'viewstudent.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'addnewstudent.php'); checkactivesidebar($url,'viewstudent.php'); echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':'';?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
                                 <i class="bi bi-person me-1"></i> Students
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAnalytics">
@@ -50,7 +51,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             </ul>
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle <?php checkactivesidebar($url,'markattandence.php'); checkactivesidebar($url,'viewattadencemarks.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false"style='font-size:15px;'>
+                            <a class="nav-link dropdown-toggle <?php checkactivesidebar($url,'markattandence.php'); checkactivesidebar($url,'viewattadencemarks.php'); echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':'';?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false"style='font-size:15px;'>
                                 <i class="bi bi-check-circle-fill me-1"></i> Attendance
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAnalytics">
@@ -60,7 +61,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             </ul>
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle <?php checkactivesidebar($url,'createassignmentform.php'); checkactivesidebar($url,'viewassignmentform.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle <?php checkactivesidebar($url,'createassignmentform.php'); checkactivesidebar($url,'viewassignmentform.php'); echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-archive me-1"></i> Assignment Form
                             </a>
                             <ul class="dropdown-menu mb-5" aria-labelledby="dropdownAnalytics">
@@ -70,7 +71,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             </ul>
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle   <?php checkactivesidebar($url,'createquiz.php'); checkactivesidebar($url,'viewquizform.php');  echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle   <?php checkactivesidebar($url,'createquiz.php'); checkactivesidebar($url,'viewquizform.php');  echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-archive me-1"></i> Quiz
                             </a>
                             <ul class="dropdown-menu mb-5" aria-labelledby="dropdownAnalytics">
@@ -87,7 +88,7 @@ if (session_status() === PHP_SESSION_NONE) {
                          
                         </li>
                         <li class="nav-item mt-3">
-                            <a class="nav-link  <?php checkactivesidebar($url,'combineresult.php'); echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?>  fw-bold" href="combineresult.php" style='font-size:15px;'>
+                            <a class="nav-link  <?php checkactivesidebar($url,'combineresult.php'); echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':'';?>  fw-bold" href="combineresult.php" style='font-size:15px;'>
                             <i class="bi bi-bar-chart-fill me-1"></i>  Combine Result
                             </a>
                         </li>

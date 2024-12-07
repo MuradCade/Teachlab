@@ -74,7 +74,7 @@ if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
 <body>
 <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-md-12 col-sm-5 mx-auto mt-3">
+          <div class="col-lg-8 col-md-12 col-sm-12 mx-auto mt-3">
             <div class="text-end mb-3">
                 <button onclick="generatePDF()" class="btn btn-primary">
                     <i class="bi bi-download"></i> Download PDF
@@ -108,11 +108,12 @@ if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
                   <form method="post" action='savestudentquiz.php'>
                   <?php 
                   $questioncount = 1;
+                  $questionsymbold = ['0'=>'a','1'=>'b','2'=>'c','3'=>'d','4'=>'e'];
                   for($i = 0; $i <count($existingquestions); $i++){
                                 ?>
                                 <div class="mb-4">
                                     <p class='form-label mb-3' style='line-height:1.5em !important;'>
-                                        <strong><?php echo $questioncount;?></strong>   
+                                        <strong><?php echo $questioncount.') ';?></strong>   
                                         <?php echo $existingquestions[$i]?>
                                         <?php if (!$existingAnswers[$i]['isCorrect']) { ?>
                                            
@@ -120,7 +121,7 @@ if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
                                     </p>
                                     
                                     <div class="ms-4">
-                                        <?php foreach(['option_one', 'option_two', 'option_three'] as $option) { ?>
+                                        <?php foreach(['option_one', 'option_two', 'option_three'] as $optionIndex => $option) { ?>
                                             <div class="form-check" style="padding: 8px; border-radius: 4px; 
                                                 <?php 
                                                 $isStudentAnswer = $existingoptions[$i][$option] === $existingAnswers[$i]['answer'];
@@ -135,13 +136,14 @@ if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
                                                 ?>">
                                                 <input class="form-check-input" type="checkbox" 
                                                        value="<?php echo $existingoptions[$i][$option];?>" 
-                                                       <?php echo $isStudentAnswer ? "checked='true'" : '';?>
-                                                       disabled>
+                                                       <?php echo $isStudentAnswer ? "checked=true" : '';?>
+                                                       >
                                                 <label class="form-check-label text-black " style="font-weight:600 !important;">
+                                                    <?php echo $questionsymbold[$optionIndex] . '.'; ?>
                                                     <?php echo $existingoptions[$i][$option];?>
                                                     <?php if ($isStudentAnswer) { ?>
                                                         <span class="<?php echo $isCorrectAnswer ? 'text-success' : 'text-danger';?>">
-                                                            (Your Answer)
+                                                        (Correct Answer)
                                                         </span>
                                                     <?php } ?>
                                                     <?php if ($isCorrectAnswer) { ?>
@@ -166,11 +168,55 @@ if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
                                 <?php $questioncount++; }?>
 
               </form>
+              
+    <?php 
+    // ... existing code ...
+
+if (isset($_GET['stdid']) && !empty($_GET['stdid'])) {
+    $stdid = $_GET['stdid'];
+    // $quizformid = $_GET['entries'];
+
+    $sql = "SELECT 
+                sq.stdid,
+                sq.stdfullname, 
+                sq.quiz_taken_date, 
+                SUM(CASE WHEN o.is_correct_option = sq.selected_option THEN 1 ELSE 0 END) as correct_answers, 
+                SUM(CASE WHEN o.is_correct_option != sq.selected_option THEN 1 ELSE 0 END) as wrong_answers, 
+                COUNT(*) as total_questions, 
+                sq.quizmarks as quizmarks 
+            FROM questions q 
+            INNER JOIN options o ON q.questionid = o.questionid 
+            INNER JOIN studentquiz sq ON q.questionid = sq.question_id 
+            WHERE sq.stdid = '$stdid'
+            GROUP BY sq.stdid";
+
+    $result = mysqli_query($connection, $sql);
+
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {?>
+            <div class="card-footer">
+
+                <p>Correct Answers: <?php echo $row['correct_answers']?> </p>
+                <p>Wrong Answers: <?php echo $row['wrong_answers']?> </p>
+                <p>Total Questions: <?php echo $row['total_questions']?> </p>
+                <p>Quiz Marks: <?php echo $row['quizmarks']?> </p>
+            </div>
+        <?php }
+    } 
+}
+
+// ... existing code ...
+    ?>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+
+
+
+<!-- end -->
       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>    
     

@@ -129,9 +129,9 @@ if (isset($_GET['quizformid'])) {
             <div class="form-group mb-3">
                 <label  class='form-label'>Correct Answer:</label>
                 <select name="correct_answer[]" required class='form-control'>
-                    a<option value="a" <?php echo $existingOptions[$i]['is_correct_option'] == 'a' && $existingOptions[$i]['questionid'] == $existingQuestions[$i]['questionid'] ? 'selected' : ''; ?>>Option A</option>
-                    <option value="b" <?php echo $existingOptions[$i]['is_correct_option'] == 'b' && $existingOptions[$i]['questionid'] == $existingQuestions[$i]['questionid'] ? 'selected' : ''; ?>>Option B</option>
-                    <option value="c" <?php echo $existingOptions[$i]['is_correct_option'] == 'c' && $existingOptions[$i]['questionid'] == $existingQuestions[$i]['questionid'] ? 'selected' : ''; ?>>Option C</option>
+                    <option value="a" <?php echo ($existingOptions[$i]['is_correct_option'] ?? '') == 'a' ? 'selected' : ''; ?>>Option A</option>
+                    <option value="b" <?php echo ($existingOptions[$i]['is_correct_option'] ?? '') == 'b' ? 'selected' : ''; ?>>Option B</option>
+                    <option value="c" <?php echo ($existingOptions[$i]['is_correct_option'] ?? '') == 'c' ? 'selected' : ''; ?>>Option C</option>
                 </select>
             </div>
         </div>

@@ -20,7 +20,28 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 if(isset($_GET['coursename'])){
     $coursename = $_GET['coursename'];
     //  read all studendata related to specified coursename with teacherid
-    $sql = "SELECT markattendence.stdid, markattendence.stdfullname, markattendence.coursename, SUM(markattendence.attendedmarks) AS attandancemarks, COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks FROM markattendence LEFT JOIN ( SELECT stdid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid ) AS assignment_totals ON markattendence.stdid = assignment_totals.stdid where teacherid = '$teacherid' and coursename = '$coursename' GROUP BY markattendence.stdid, markattendence.stdfullname; ";
+    $sql = "SELECT markattendence.stdid, 
+                                                        markattendence.stdfullname, 
+                                                        markattendence.coursename, 
+                                                        SUM(markattendence.attendedmarks) AS attandancemarks, 
+                                                        COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks,
+                                                        COALESCE(quiz_totals.quizmarks, 0) AS quizmarks
+                                                     FROM 
+                                                        markattendence 
+                                                     LEFT JOIN 
+                                                        (SELECT stdid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid) AS assignment_totals 
+                                                     ON 
+                                                        markattendence.stdid = assignment_totals.stdid 
+                                                     LEFT JOIN 
+                                                        (SELECT stdid, quizmarks  FROM studentquiz GROUP BY stdid) AS quiz_totals 
+                                                     ON 
+                                                        markattendence.stdid = quiz_totals.stdid 
+                                                     WHERE 
+                                                        teacherid = '$teacherid' 
+                                                        AND coursename = '$coursename' 
+                                                     GROUP BY 
+                                                        markattendence.stdid, 
+                                                        markattendence.stdfullname;";
     $result = mysqli_query($connection,$sql);
    if(mysqli_num_rows($result) == 0){
     header('location:../combineresult.php?emptdb');
@@ -46,6 +67,7 @@ if(isset($_GET['coursename'])){
              $activesheet->setCellValue('D1','Coursename');
              $activesheet->setCellValue('E1','Total_Attandence_Marks');
              $activesheet->setCellValue('F1','Total_Assignment_Marks');
+             $activesheet->setCellValue('G1','Total_Quiz_Marks');
          // code descriping the cells content
          $activesheet->setCellValue('A'.$rowid,$rowid);
          $activesheet->setCellValue('B'.$rowid,$row['stdid']);
@@ -53,6 +75,7 @@ if(isset($_GET['coursename'])){
          $activesheet->setCellValue('D'.$rowid,$row['coursename']);
          $activesheet->setCellValue('E'.$rowid,$row['attandancemarks']);
          $activesheet->setCellValue('F'.$rowid,$row['assignmentmarks']);
+         $activesheet->setCellValue('G'.$rowid,$row['quizmarks']);
  
      //   echo $row['stdid'];
          $rowid++;

@@ -1,5 +1,7 @@
 <?php
 include('../../model/dbcon.php');
+// include('include/checksubscriptionstatus.php');
+
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -65,14 +67,7 @@ function displaysubscriptionstatus($connection,$teacherid){
         $checksubs = $row['subsatus'] =="active"?"<span class='text-success fw-bold'>Active</span>":($row['subsatus'] =="expire"?"<span class='text-danger fw-bold'>Expire</span>":"<span class='text-success fw-bold'>Life Time</span>");
         return $checksubs;
         }
-        // if($row['subsatus'] =='active'){
-
-        // echo "<p class='text-success text-white fw-bold>". $row['subsatus']."</p>";
-        // }else if($row['subsatus'] == 'expire'){
-        //     echo "<p class='text-danger text-white fw-bold>". $row['subsatus']."</p>";
-        // }else{
-        //     echo "<p class='text-success text-white fw-bold'>".$row['subsatus']."</p>";
-        // }
+      
     }
 }
 ?>
@@ -174,26 +169,106 @@ function displaysubscriptionstatus($connection,$teacherid){
                         </div>
                     </div>
 
-                      <?php if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire'){?>
+                      <?php if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'active' && checksubscriptionstatus($connection,$teacherid,'subplan') == 'free'){?>
                         <div class='col-12 col-md-6 col-xl-6 mb-4'>
                          <div class='card p-2' style='background-color:#f8f9fa !important;'>
-                            <p class='fw-medium' style='line-height:30px;'>Dear <strong><?php echo $_SESSION['fullname']?></strong>, your subscription has <span class='text-danger fw-bold'>expired</span>. To renew it, please make a payment of $10 to this number (063-355-8027). We will automatically renew your subscription, allowing you to use TeachLab without any interruptions. <strong>Sincerely, the TeachLab Team.</strong></p>
-                            <?php }else if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'active'){?>
+                            <p class='fw-medium' style='line-height:30px;'>Dear <strong><?php echo $_SESSION['fullname']?></strong>, your are on free plan. and your are allowed to create only 1 course, 1 assignment form and 1 quiz form.
+                            <ul class="list-unstyled mb-4">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>1- Maximum 1 Course Creation</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>2- Maximum 1 Assignment Form</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>3- Maximum 1 Quiz Form</li>
+                           <div class='container'>
+
+                        
+<button class='btn btn-primary w-100' data-bs-toggle="modal" data-bs-target="#upgradeModal">Upgrade to Pro Plan</button>
+
+<!-- Add this modal right after the button -->
+<div class="modal fade" id="upgradeModal" tabindex="-1" aria-labelledby="upgradeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="upgradeModalLabel">Upgrade to Pro Plan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <i class="bi bi-arrow-up-circle-fill text-primary" style="font-size: 3rem;"></i>
+        </div>
+        <p class="text-center">To upgrade to our Pro Plan, please follow these steps:</p>
+        <div class="card bg-light p-3 mb-3">
+          <ol class="mb-0">
+            <li>Send $10 via Zaad service</li>
+            <li>Payment Number: <strong>063-3558027</strong></li>
+            <li>After payment, please contact support with your transaction details</li>
+          </ol>
+        </div>
+        <p class="text-muted small text-center">Your account will be upgraded within 24 hours after payment verification.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="copyNumber()">Copy Number</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+                           </div>
+                        </ul>
+                                </p>
+                            <?php }else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'pro' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'expire'){?>
                            <div class='col-12 col-md-6 col-xl-6 mb-4'>
                            <div class='card p-2' style='background-color:#f8f9fa !important;'>
-                            <p class=' mt-2'>Dear <strong><?php echo $_SESSION['fullname'];?></strong> ,   You have <?php echo checksubscriptionstatus($connection,$teacherid,'subamount');?>  remaining in your free trial. After this period, you will need to purchase a monthly subscription for $10. </p>
-                            </div>
+                            <p class=' mt-2'>Dear <strong><?php echo $_SESSION['fullname'];?></strong> ,   Your subscription is expired. Please renew your subscription to continue using TeachLab. </p>
+                            <button class='btn btn-primary w-100' data-bs-toggle="modal" data-bs-target="#upgradeModal">Upgrade to Pro Plan</button>
+                        </div>
                            </div>
                         </div>
                         </div>
-                    <?php }else{ ?>
+                    <?php }else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'pro' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'active'){?>
                         <div class='col-12 col-md-6 col-xl-6 mb-4'>
                            <div class='card p-2' style='background-color:#f8f9fa !important;'>
-                            <p class=' mt-2'>Dear <strong><?php echo $_SESSION['fullname'];?></strong>  Thank you for purchasing the lifetime plan! You now have unlimited access to all features of TeachLab. Enjoy your experience!</p>
+                            <p class=' mt-2'>Dear <strong><?php echo $_SESSION['fullname'];?></strong>  Thank you for purchasing the lifetime plan! You now  access to all features of TeachLab. Enjoy your experience!</p>
+                            <p class='text-muted small'>Note: Your subscription will expire after <?php echo checksubscriptionstatus($connection,$teacherid,'subamount').' Days '?>.</p>
                             </div>
                            </div>
-                    <?php } ?>  
+                        </div>
+                    <?php }?>
                 </div>
+              <!-- Add this modal right after the button -->
+<div class="modal fade" id="upgradeModal" tabindex="-1" aria-labelledby="upgradeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="upgradeModalLabel">Upgrade to Pro Plan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-4">
+          <i class="bi bi-arrow-up-circle-fill text-primary" style="font-size: 3rem;"></i>
+        </div>
+        <p class="text-center">To upgrade to our Pro Plan, please follow these steps:</p>
+        <div class="card bg-light p-3 mb-3">
+          <ol class="mb-0">
+            <li>Send $10 via Zaad service</li>
+            <li>Payment Number: <strong>063-3558027</strong></li>
+            <li>After payment, please contact support with your transaction details</li>
+          </ol>
+        </div>
+        <p class="text-muted small text-center">Your account will be upgraded within 24 hours after payment verification.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="copyNumber()">Copy Number</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
                 <!-- More Content Here -->
             </main>
@@ -214,6 +289,17 @@ function displaysubscriptionstatus($connection,$teacherid){
                 toggle: true,
             });  
         });
+
+        // Add function to copy payment number
+    function copyNumber() {
+        navigator.clipboard.writeText('063-3558027')
+            .then(() => {
+                alert('Payment number copied to clipboard!');
+            })
+            .catch(err => {
+                console.error('Failed to copy number:', err);
+            });
+    }
     </script>
 </body>
 </html>

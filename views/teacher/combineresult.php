@@ -149,11 +149,34 @@ $teacherid = $_SESSION['userid'] ?? null;
                                             <td>Coursename</td>
                                             <td>Total_Attandence_Marks</td>
                                             <td>Total_Assignment_Marks</td>
+                                            <td>Total_Quiz_Marks</td>
                                         </tr>
 
 
                                         <?php 
-                                            $sql2 = "SELECT markattendence.stdid, markattendence.stdfullname, markattendence.coursename, SUM(markattendence.attendedmarks) AS attandancemarks, COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks FROM markattendence LEFT JOIN ( SELECT stdid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid ) AS assignment_totals ON markattendence.stdid = assignment_totals.stdid where teacherid = '$teacherid' and coursename = '$coursename' GROUP BY markattendence.stdid, markattendence.stdfullname; ";
+                                            $sql2 = "SELECT 
+                                                        markattendence.stdid, 
+                                                        markattendence.stdfullname, 
+                                                        markattendence.coursename, 
+                                                        SUM(markattendence.attendedmarks) AS attandancemarks, 
+                                                        COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks,
+                                                        COALESCE(quiz_totals.quizmarks, 0) AS quizmarks
+                                                     FROM 
+                                                        markattendence 
+                                                     LEFT JOIN 
+                                                        (SELECT stdid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid) AS assignment_totals 
+                                                     ON 
+                                                        markattendence.stdid = assignment_totals.stdid 
+                                                     LEFT JOIN 
+                                                        (SELECT stdid, quizmarks  FROM studentquiz GROUP BY stdid) AS quiz_totals 
+                                                     ON 
+                                                        markattendence.stdid = quiz_totals.stdid 
+                                                     WHERE 
+                                                        teacherid = '$teacherid' 
+                                                        AND coursename = '$coursename' 
+                                                     GROUP BY 
+                                                        markattendence.stdid, 
+                                                        markattendence.stdfullname;";
 
                                             $result2 = mysqli_query($connection,$sql2);
                                             $rowsid =1;
@@ -169,6 +192,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                                                         <td><?php echo $rows['coursename']?></td>
                                                         <td><?php echo $rows['attandancemarks']?></td>
                                                         <td><?php echo $rows['assignmentmarks']?></td>
+                                                        <td><?php echo $rows['quizmarks']?></td>
                                                     </tr>
                                                 
                                                 

@@ -1,6 +1,7 @@
 <?php
 include('./../../model/dbcon.php');
 include('slices/studentcreationvalidation.php');
+include('include/restrictions.php');
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -100,6 +101,11 @@ if (!isset($_SESSION['userid'])) {
                                 <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
                                 <?php } ?>
+                                <?php if (checkassignmentamount($connection,$_SESSION['userid'],'free')) { ?>
+                                    <p class='alert alert-danger p-2'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.
+                                        in order to upgrade go to home and click on upgrade button.
+                                    </p>
+                                <?php } ?>
                                
                                 
                                 <form method='post' action='slices/createassignment.slice.php'>
@@ -146,7 +152,7 @@ if (!isset($_SESSION['userid'])) {
                                             <input type="text" class="form-control" name='marks' placeholder="Enter Assignment Makrs">
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary btn-sm mt-2 fw-bold  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?>" name='submit'>Submit</button>
+                                    <button class="btn btn-primary btn-sm mt-2 fw-bold  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?> <?php echo checkassignmentamount($connection,$_SESSION['userid'],'free') ? 'disabled' : ''?>" name='submit'>Submit</button>
                                 </form>
                             </div>
                         </div>

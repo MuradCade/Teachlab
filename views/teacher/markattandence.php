@@ -30,7 +30,7 @@ if(isset($_POST['save'])){
         $absent = 0;
 
         // check absent and present
-        $absentorpresent = $check == 'present'? $attended = 1 : $absent = 1;
+        $absentorpresent = $check == 'present' || $check=='excused'? $attended = 1 : $absent = 1;
 
             // if student is absent we don't give him the attandence marks
         $markscheck = $absentorpresent == $attended ? $attandencemarks : '0';
@@ -222,6 +222,7 @@ if(isset($_POST['save'])){
                             <td><select class='form-select' name='check[]'>
                                 <option value='present'>Present</option>
                                 <option value='absent'>Absent</option>
+                                <option value='excused'>Excused</option>
                             </select></td>
                         </tr>
                        <?php }}?>

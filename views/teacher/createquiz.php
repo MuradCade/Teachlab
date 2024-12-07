@@ -1,6 +1,7 @@
 <?php
 include('../../model/dbcon.php');
 include('slices/studentcreationvalidation.php');
+include('include/restrictions.php');
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -115,6 +116,11 @@ $quizid = rand(1000, 9999);
                                 <?php if (isset($_GET['error'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Failed to create  quiz form</p>
                                 <?php } ?>
+                                <?php if (checkquizamount($connection,$_SESSION['userid'],'free')) { ?>
+                                    <p class='alert alert-danger p-2'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.
+                                        in order to upgrade go to home and click on upgrade button.
+                                    </p>
+                                <?php } ?>
                                 <h4 class="card-title fw-bold mb-0 px-3 mt-1" style='font-size:17px !important;'>
                                     Create Quiz Form
                                 </h4>
@@ -172,7 +178,7 @@ $quizid = rand(1000, 9999);
                                         <option value="30">30</option>
                                      </select>
                                     </div>
-                                    <button type="submit" class="btn btn-primary  fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?>" name='submit'>Submit</button>
+                                    <button type="submit" class="btn btn-primary  fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?><?php echo checkquizamount($connection,$_SESSION['userid'],'free') ? 'disabled' : ''?>" name='submit'>Submit</button>
                                 </form>
                                     </div>
                                 

@@ -49,6 +49,7 @@
           <div class="form-group p-2">
               <label class="form-label" style="font-size:15px;">Email</label>
               <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email..." autocomplete="false"/>
+              <input type="hidden" id="subsplan" name="subscriptionplan" class="form-control"/>
           </div>
           <div class="form-group p-2">
               <label class="form-label" style="font-size:15px;">Fullname</label>
@@ -95,6 +96,11 @@ show.addEventListener('click',function(){
     hide.style.display='block';
     show.style.display='none';
 });
+
+
+let subsplan = document.getElementById('subsplan');
+const existingPlan = localStorage.getItem('selectedPlan');
+subsplan.value = existingPlan;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

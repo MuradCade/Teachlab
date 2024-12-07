@@ -1,6 +1,7 @@
 <?php
 include('./../../model/dbcon.php');
 include('slices/studentcreationvalidation.php');
+
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
