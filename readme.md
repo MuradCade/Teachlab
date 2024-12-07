@@ -9,7 +9,7 @@ in this version of teachab we make it easy for the teacher to create quiz and sh
 # Features Added
 - Added ability to create quiz
 - Added ability to mark quiz entries
-- Added abshare quiz
+- Added ability to share quiz link
 
 
 
