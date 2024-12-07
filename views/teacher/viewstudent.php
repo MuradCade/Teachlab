@@ -213,7 +213,7 @@ if(isset($_GET['delid'])){
                             </div>
 
                     <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
-                    <table class='table table-hover table-bordered table-responsiv' id='myTable'>
+                    <table class='table table-hover table-bordered table-responsive' id='myTable'>
                     <tr>
                         <td>#</td>
                         <td>Student ID</td>

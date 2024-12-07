@@ -37,7 +37,10 @@ if(!isset($_SESSION['verification_userid'])){
          </div>
          
        <?php if(isset($_GET['emailsent'])){?>
-        <p class='bg-success text-white fw-bold p-1 text-start ' style='font-size:15px;'>email send successfully , check your email  to verify the code</p>
+        <p class='bg-success text-white fw-bold p-1 text-start ' style='font-size:15px;'>
+        Email sent successfully , please be patient it takes couple of minute for the email to reach you , <br>
+        keep an eye on your email provider.
+        </p>
         <?php }?>
         <?php if(isset($_GET['emptyverificationfield'])){?>
         <p class='bg-danger text-white fw-bold p-1 text-start ' style='font-size:15px;'>Empty verification field</p>

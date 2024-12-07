@@ -69,6 +69,16 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
                             </ul>
                         </li>
+                        <li class="nav-item dropdown mt-3">
+                            <a class="nav-link dropdown-toggle   <?php checkactivesidebar($url,'createquiz.php'); checkactivesidebar($url,'viewquizform.php');  echo checksubscriptionstatus($connection,$teacherid,'subsatus') == 'expire' ? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-archive me-1"></i> Quiz
+                            </a>
+                            <ul class="dropdown-menu mb-5" aria-labelledby="dropdownAnalytics">
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'createquiz.php');?> fw-bold" href="createquiz.php">Create Quiz Form</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item  <?php checkactivesidebar($url,'viewquizform.php');?> fw-bold" href="viewquizform.php">View Quiz Forms</a></li>
+                                <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
+                            </ul>
+                        </li>
                         
                         <li class="nav-item dropdown mt-3">
                             <a class="nav-link  text-secondary fw-bold" href="https://teachlab.canny.io/teachlab" target='_blank' style='font-size:15px;'>
