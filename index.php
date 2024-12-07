@@ -50,7 +50,7 @@
             font-size: 3.5rem;
             font-weight: 800;
             background: linear-gradient(to right, var(--primary), var(--accent));
-            -webkit-background-clip: text;
+            /* -webkit-background-clip: text; */
             -webkit-text-fill-color: transparent;
         }
 
