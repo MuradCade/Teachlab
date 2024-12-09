@@ -239,9 +239,10 @@ if(isset($_GET['delid'])){
                      
                                    <!-- student update form -->
                                    <?php if(isset($_GET['display'])){
+                                            $teacherid = $_SESSION['userid'];
                                                 //get the student id to update its data
                                                 $studentid = $_GET['display'];
-                                                $sql2 = "select id, stdid,stdfullname,coursename,attendedmarks,date,present_column,absent_column,SUM(present_column) as totalpresent,SUM(absent_column) as totalabsent, sum(attendedmarks) as totalmarks from markattendence where stdid = '$studentid' group by id";
+                                                $sql2 = "select id, stdid,stdfullname,coursename,attendedmarks,date,present_column,absent_column,SUM(present_column) as totalpresent,SUM(absent_column) as totalabsent, sum(attendedmarks) as totalmarks from markattendence where stdid = '$studentid' and teacherid = '$teacherid' group by id";
                                                 $result2 = mysqli_query($connection,$sql2);
 
                                                 ?>

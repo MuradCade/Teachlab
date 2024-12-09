@@ -365,7 +365,26 @@ if(isset($_GET['delstudentid'])){
                                         </tr>
                                         <?php 
                                         $quizformid = $_GET['entries'];
-                                        $sql ="SELECT sq.stdid,sq.stdfullname, sq.quiz_taken_date, SUM(CASE WHEN o.is_correct_option = sq.selected_option THEN 1 ELSE 0 END) as correct_answers, SUM(CASE WHEN o.is_correct_option != sq.selected_option THEN 1 ELSE 0 END) as wrong_answers, COUNT(*) as total_questions, sq.quizmarks as quizmarks FROM questions q INNER JOIN options o ON q.questionid = o.questionid INNER JOIN studentquiz sq ON q.questionid = sq.question_id WHERE q.quizformid = '$quizformid' AND sq.question_id = q.questionid GROUP BY sq.stdid; "; 
+                                        $sql = "
+                                            SELECT 
+                                                sq.stdid,
+                                                sq.stdfullname,
+                                                sq.quiz_taken_date,
+                                                SUM(CASE WHEN o.is_correct_option = '1' AND o.optionid = sq.selected_option THEN 1 ELSE 0 END) AS correct_answers,
+                                                SUM(CASE WHEN o.is_correct_option = '0' AND o.optionid = sq.selected_option THEN 1 ELSE 0 END) AS wrong_answers,
+                                                COUNT(DISTINCT q.questionid) AS total_questions,
+                                                sq.quizmarks AS quizmarks
+                                            FROM 
+                                                studentquiz sq
+                                            INNER JOIN 
+                                                questions q ON sq.question_id = q.questionid
+                                            INNER JOIN 
+                                                options o ON q.questionid = o.questionid
+                                            WHERE 
+                                                sq.quizformid = '$quizformid'
+                                            GROUP BY 
+                                                sq.stdid, sq.quizformid;
+                                        ";
                                         $result = mysqli_query($connection,$sql);
                                         if(mysqli_num_rows($result) == 0){
                                             echo "<p>There is currently no data to be shown</p>";

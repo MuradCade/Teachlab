@@ -21,7 +21,7 @@ if(isset($_POST['submit'])){
         header('location:../addnewstudent.php?emptycoursename');
         exit();
     }else{
-        $sql2 = "select * from students where stdid = '$studentid'";
+        $sql2 = "select * from students where stdid = '$studentid' and teacherid = '$teacherid'";
         $result2 = mysqli_query($connection,$sql2);
 
         if(mysqli_num_rows($result2) > 0){

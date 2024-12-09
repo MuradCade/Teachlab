@@ -49,9 +49,10 @@
         .hero h1 {
             font-size: 3.5rem;
             font-weight: 800;
-            background: linear-gradient(to right, var(--primary), var(--accent));
+            color:var(--primary);
+            /* background: linear-gradient(to right, var(--), var(--accent)); */
             /* -webkit-background-clip: text; */
-            -webkit-text-fill-color: transparent;
+            /* -webkit-text-fill-color: transparent; */
         }
 
         /* Update feature cards */

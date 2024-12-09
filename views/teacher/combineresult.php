@@ -127,6 +127,8 @@ $teacherid = $_SESSION['userid'] ?? null;
                 </div>
                 <?php if(isset($_POST['submit'])){
                     $coursename = $_POST['coursename'];
+                    // echo $coursename;
+                
                     ?>
                               <div class="row mt-2">
                                 <div class="col-12 col-md-8 col-xl-8 mb-4">
@@ -154,6 +156,13 @@ $teacherid = $_SESSION['userid'] ?? null;
 
 
                                         <?php 
+                                  
+                                        //step1 get the formid of the quizform
+                                        $sqlmain = "select * from quizform where teacherid = '$teacherid' and coursename ='$coursename'";
+                                        $resultmain = mysqli_query($connection,$sqlmain);
+                                        $rows = mysqli_fetch_assoc($resultmain);
+                                        $formid =  $rows['quizformid'];
+                                        // die();
                                             $sql2 = "SELECT 
                                                         markattendence.stdid, 
                                                         markattendence.stdfullname, 
@@ -164,19 +173,22 @@ $teacherid = $_SESSION['userid'] ?? null;
                                                      FROM 
                                                         markattendence 
                                                      LEFT JOIN 
-                                                        (SELECT stdid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid) AS assignment_totals 
+                                                        (SELECT stdid,formid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid) AS assignment_totals 
                                                      ON 
                                                         markattendence.stdid = assignment_totals.stdid 
                                                      LEFT JOIN 
-                                                        (SELECT stdid, quizmarks  FROM studentquiz GROUP BY stdid) AS quiz_totals 
+                                                        (SELECT stdid, quizmarks,quizformid  FROM studentquiz where  quizformid = '$formid' GROUP BY stdid) AS quiz_totals 
                                                      ON 
                                                         markattendence.stdid = quiz_totals.stdid 
                                                      WHERE 
-                                                        teacherid = '$teacherid' 
-                                                        AND coursename = '$coursename' 
+                                                        teacherid = '$teacherid' and
+                                                       coursename = '$coursename'  
+                                                       
+                                                       
                                                      GROUP BY 
-                                                        markattendence.stdid, 
+                                                        assignment_totals.formid, 
                                                         markattendence.stdfullname;";
+                                                        
 
                                             $result2 = mysqli_query($connection,$sql2);
                                             $rowsid =1;
