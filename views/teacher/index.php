@@ -70,6 +70,20 @@ function displaysubscriptionstatus($connection,$teacherid){
       
     }
 }
+// display total quizform
+function displaytotalquizform($connection,$teacherid){
+    $sql = "select * from quizform where teacherid = '$teacherid'";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+       $row = mysqli_num_rows($result);
+       
+
+            return $row;
+       
+        
+    } 
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +153,7 @@ function displaysubscriptionstatus($connection,$teacherid){
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
                         <div class="card  text-white" style='background-color:#f8f9fa !important;'>
                             <div class="card-body text-black">
-                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Courses</h5>
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Number Of Courses</h5>
                                 <p class="card-text"><?php echo totalcourse($connection,$teacherid);?></p>
                             </div>
                         </div>
@@ -155,8 +169,16 @@ function displaysubscriptionstatus($connection,$teacherid){
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
                         <div class="card  text-dark" style='background-color:#f8f9fa !important;'>
                         <div class="card-body text-black">
-                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Assignment Form</h5>
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Number Of Assignment Form</h5>
                                 <p class="card-text"><?php echo totalassignment($connection,$teacherid);?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <div class="card  text-white" style='background-color:#f8f9fa !important;'>
+                        <div class="card-body text-black">
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Number Of  QuizForm</h5>
+                                <p class="card-text" style='font-size:14px;'><?php echo displaytotalquizform($connection,$teacherid);?></p>
                             </div>
                         </div>
                     </div>

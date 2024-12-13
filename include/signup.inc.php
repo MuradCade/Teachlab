@@ -90,7 +90,7 @@ if(isset($_POST['singup'])){
                                 }else if($subscriptionplan == 'pro'){
                                     $subscriptions['pro'] = 'pro';
                                 }
-                                $subscriptdays= ['free'=>'unlimited days','pro'=>'30 days'];
+                                $subscriptdays= ['free'=>'unlimited days','pro'=>'7 days'];
                             if($result2){        
                                 $sql3 = "insert into subscription(userid,subsatus,subplan,subamount)values('$userrandomid','active','$subscriptionplan','$subscriptdays[$subscriptionplan]')";
                                 $result3 = mysqli_query($connection,$sql3);
