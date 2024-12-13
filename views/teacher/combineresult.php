@@ -161,7 +161,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                                         $sqlmain = "select * from quizform where teacherid = '$teacherid' and coursename ='$coursename'";
                                         $resultmain = mysqli_query($connection,$sqlmain);
                                         $rows = mysqli_fetch_assoc($resultmain);
-                                        $formid =  $rows['quizformid'];
+                                        $formid =  $rows['quizformid']??'';
                                         // die();
                                             $sql2 = "SELECT 
                                                         markattendence.stdid, 

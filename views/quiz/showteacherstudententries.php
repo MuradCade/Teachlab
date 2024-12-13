@@ -176,19 +176,7 @@ if (isset($_GET['stdid']) && !empty($_GET['stdid'])) {
     $stdid = $_GET['stdid'];
     // $quizformid = $_GET['entries'];
 
-    $sql = "SELECT 
-                sq.stdid,
-                sq.stdfullname, 
-                sq.quiz_taken_date, 
-                SUM(CASE WHEN o.is_correct_option = sq.selected_option THEN 1 ELSE 0 END) as correct_answers, 
-                SUM(CASE WHEN o.is_correct_option != sq.selected_option THEN 1 ELSE 0 END) as wrong_answers, 
-                COUNT(*) as total_questions, 
-                sq.quizmarks as quizmarks 
-            FROM questions q 
-            INNER JOIN options o ON q.questionid = o.questionid 
-            INNER JOIN studentquiz sq ON q.questionid = sq.question_id 
-            WHERE sq.stdid = '$stdid'
-            GROUP BY sq.stdid";
+    $sql = "SELECT sq.quizmarks, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, quizform.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid join quizform on quizform.teacherid = 20015 WHERE sq.stdid ='$stdid'; ";
 
     $result = mysqli_query($connection, $sql);
 
@@ -196,9 +184,9 @@ if (isset($_GET['stdid']) && !empty($_GET['stdid'])) {
         while ($row = mysqli_fetch_assoc($result)) {?>
             <div class="card-footer">
 
-                <p>Correct Answers: <?php echo $row['correct_answers']?> </p>
-                <p>Wrong Answers: <?php echo $row['wrong_answers']?> </p>
-                <p>Total Questions: <?php echo $row['total_questions']?> </p>
+                <p>Correct Answers: <?php echo $row['correct_count']?> </p>
+                <p>Wrong Answers: <?php echo $row['wrong_count']?> </p>
+                <p>Total Questions: <?php echo $row['number_of_questions']?> </p>
                 <p>Quiz Marks: <?php echo $row['quizmarks']?> </p>
             </div>
         <?php }

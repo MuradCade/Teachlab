@@ -61,11 +61,28 @@ if(empty($quiztitle)){
 //delete quizform
 if(isset($_GET['delid'])){
     $delid = $_GET['delid'];
-    $sql = "delete from quizform where quizformid = '$delid'";
-    $result = mysqli_query($connection,$sql);
-    if($result){
-        header('location:viewquizform.php?delsuccess');
-        exit();
+    // delete all options related to currently deleting quizform
+    $sql1 = "delete from options where quizformid = '$delid'";
+    $result1 = mysqli_query($connection,$sql1);
+    if($result1){ 
+        //delete student related to this quizform
+        $sql2 = "delete from studentquiz where quizformid = '$delid'";
+        $result2 = mysqli_query($connection,$sql2);
+        if($result2){
+            // delte all questions related to quizform
+            $sql3 = "delete from questions where quizformid = '$delid'";
+            $result3 = mysqli_query($connection,$sql3);
+            if($result3){
+                // now delete the quizform
+                $sql4 = "delete from quizform where quizformid = '$delid'";
+                $result4 = mysqli_query($connection,$sql4);
+                if($result4){
+                     header('location:viewquizform.php?delsuccess');
+                    exit();
+                }
+            }
+        }
+       
     }else{
         header('location:viewquizform.php?delfailed');
         exit();
@@ -365,26 +382,7 @@ if(isset($_GET['delstudentid'])){
                                         </tr>
                                         <?php 
                                         $quizformid = $_GET['entries'];
-                                        $sql = "
-                                            SELECT 
-                                                sq.stdid,
-                                                sq.stdfullname,
-                                                sq.quiz_taken_date,
-                                                SUM(CASE WHEN o.is_correct_option = '1' AND o.optionid = sq.selected_option THEN 1 ELSE 0 END) AS correct_answers,
-                                                SUM(CASE WHEN o.is_correct_option = '0' AND o.optionid = sq.selected_option THEN 1 ELSE 0 END) AS wrong_answers,
-                                                COUNT(DISTINCT q.questionid) AS total_questions,
-                                                sq.quizmarks AS quizmarks
-                                            FROM 
-                                                studentquiz sq
-                                            INNER JOIN 
-                                                questions q ON sq.question_id = q.questionid
-                                            INNER JOIN 
-                                                options o ON q.questionid = o.questionid
-                                            WHERE 
-                                                sq.quizformid = '$quizformid'
-                                            GROUP BY 
-                                                sq.stdid, sq.quizformid;
-                                        ";
+                                        $sql = "SELECT sq.stdfullname,sq.stdid,sq.quizmarks,sq.quiz_taken_date, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, qf.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid JOIN quizform qf ON sq.quizformid = qf.quizformid WHERE qf.teacherid = 20015 GROUP BY sq.stdfullname, sq.stdid, sq.quizmarks, qf.number_of_questions; ";
                                         $result = mysqli_query($connection,$sql);
                                         if(mysqli_num_rows($result) == 0){
                                             echo "<p>There is currently no data to be shown</p>";
@@ -396,9 +394,9 @@ if(isset($_GET['delstudentid'])){
                                                     <td><?php echo $rowid?></td>
                                                     <td><a href="../quiz/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
                                                     <td><?php echo $row['stdfullname']?></td>
-                                                    <td><?php echo $row['wrong_answers']?></td>
-                                                    <td><?php echo $row['correct_answers']?></td>
-                                                    <td><?php echo $row['total_questions']?></td>
+                                                    <td><?php echo $row['wrong_count']?></td>
+                                                    <td><?php echo $row['correct_count']?></td>
+                                                    <td><?php echo $row['quizmarks']?></td>
                                                     <td><?php echo date('M-j-Y ', strtotime($row['quiz_taken_date']))?></td>
                                                     <td><input name='quizmarks' value="<?php echo $row['quizmarks']?>" style='width:80px !important;'/></td>
                                                     <td>
