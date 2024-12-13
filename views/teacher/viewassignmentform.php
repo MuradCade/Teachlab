@@ -245,10 +245,7 @@ if(isset($_GET['delassigmentform'])){
                                 <?php if (isset($_GET['formupdatedsuccessfully'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Assignment form updated successfully</p>
                                 <?php } ?>
-                               
-                                <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
-                                <?php } ?>
+                            
                                
                                 <table class='table table-bordered table-hover table-responsive'>
                                     <tr>

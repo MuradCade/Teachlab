@@ -90,7 +90,7 @@ $quizid = rand(1000, 9999);
                         <div class="card p-2" style="border:none !important; background-color:#f8f9fa !important;">
                             
                             <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before Creating new QuizForm</p>
                                 <?php } ?>
                                 <?php if (isset($_GET['emptyquizid'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty Quiz id field</p>

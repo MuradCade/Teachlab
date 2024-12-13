@@ -99,7 +99,7 @@ if (!isset($_SESSION['userid'])) {
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Assignment form created successfully</p>
                                 <?php } ?>
                                 <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before  creating new assignment form</p>
                                 <?php } ?>
                                 <?php if (checkassignmentamount($connection,$_SESSION['userid'],'free')) { ?>
                                     <p class='alert alert-danger p-2'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.

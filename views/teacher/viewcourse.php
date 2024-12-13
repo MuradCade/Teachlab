@@ -39,6 +39,7 @@ if(isset($_GET['delid'])){
                  $sql4 = "delete from course where courseid = '$courseid'";
                  $result4 = mysqli_query($connection,$sql4);
                 if($result4){
+                    
                     header('location:viewcourse.php?delsuccess');
                      exit();
                 }else{

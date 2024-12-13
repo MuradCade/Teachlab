@@ -92,7 +92,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                             </h4>
                             <div class="card-body">
                             <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>New course should be added in order to display comibined result of assignment , attandence and quiz</p>
                                 <?php } ?>
                             <?php if (isset($_GET['emptdb'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>There is no data to be converted , please choose proper coursename.</p>

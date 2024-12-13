@@ -141,7 +141,7 @@ if(isset($_GET['delid'])){
                             </h4>
                             <div class="card-body">
                                 <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before marking students attadence!</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>New coursename should be added in order to see specific course attandance</p>
                                 <?php } ?>
                                 <?php if (isset($_GET['attendanceupdatedsuccessfully'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Attendance is updated successfully</p>
