@@ -97,6 +97,18 @@
             transform: translateY(-2px);
             color: white;
         }
+        .step-number {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: #4a90e2;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
     </style>
 </head>
 <body>
@@ -122,10 +134,10 @@
     </nav>
 
     <!-- Update hero section -->
-    <section class="hero">
+    <section class="hero mt-4">
         <div class="container text-center">
-            <h1 class="mb-4">Streamline Your University Teaching Experience</h1>
-            <p class="lead mb-4">Manage your online courses, track attendance, and evaluate student performance - all in one place</p>
+            <h1 class="mb-4">Streamline Your Teaching Workflow</h1>
+            <p class="lead mb-4">Effortlessly manage student attendance, assignments, and quizzes. Save time and focus on what matters most - teaching.</p>
             <a href="#pricing" class="btn btn-custom btn-lg">Start Your Free Trial</a>
         </div>
     </section>
@@ -138,8 +150,10 @@
                 <div class="col-md-4">
                     <div class="feature-card h-100">
                         <i class="fas fa-user-check fa-2x mb-4 text-primary"></i>
-                        <h3>Attendance Tracking</h3>
-                        <p>Easily record and monitor student attendance, generate absence reports, and identify attendance patterns with our simple interface.</p>
+                        <h3>Streamline Attendance</h3>
+                        <p>
+Automate attendance tracking to save time and improve accuracy.
+Simplify Assignments</p>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -161,41 +175,47 @@
     </section>
 
     <!-- How It Works Section -->
-    <section class="how-it-works py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-5">How TeachLab Assists You</h2>
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <img src="assets/dashboard-preview.jpg" alt="TeachLab Dashboard" class="img-fluid rounded shadow">
+    <section class="py-5 bg-light" id="how-it-works">
+        <div class="container px-4 px-lg-5 my-5">
+            <h2 class="display-5 fw-bolder text-center mb-5">How TeachLab Works</h2>
+            <div class="row gx-5 align-items-center">
+                <div class="col-lg-6 order-lg-2">
+                    <!-- <div class="p-5">
+                        <img class="img-fluid rounded-3 shadow" src="https://youtu.be/c3LiP3Mdb8g" alt="TeachLab Dashboard">
+                    </div> -->
+                <div class="embed-responsive embed-responsive-16by9 p-1">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/c3LiP3Mdb8g?si=zab0tazkJq-jlRz3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
-                <div class="col-md-6">
-                    <div class="steps-list">
-                        <div class="d-flex mb-4">
-                            <div class="me-3">
-                                <div class="badge bg-primary rounded-circle p-3">1</div>
+                </div>
+                <div class="col-lg-6 order-lg-1">
+                    <div class="p-5">
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="step-number me-3">1</div>
+                                <h3 class="fw-bold mb-0">Create Your Courses</h3>
                             </div>
-                            <div>
-                                <h4>Automated Attendance</h4>
-                                <p>Save time with QR code-based attendance tracking and automated absence notifications.</p>
-                            </div>
+                            <p>Set up your courses and add students. Import existing data or start fresh.</p>
                         </div>
-                        <div class="d-flex mb-4">
-                            <div class="me-3">
-                                <div class="badge bg-primary rounded-circle p-3">2</div>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="step-number me-3">2</div>
+                                <h3 class="fw-bold mb-0">Manage Daily Tasks</h3>
                             </div>
-                            <div>
-                                <h4>Smart Grading</h4>
-                                <p>Grade assignments faster with AI-assisted evaluation and automated feedback generation.</p>
-                            </div>
+                            <p>Take attendance, create assignments, and design quizzes all in one place.</p>
                         </div>
-                        <div class="d-flex">
-                            <div class="me-3">
-                                <div class="badge bg-primary rounded-circle p-3">3</div>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="step-number me-3">3</div>
+                                <h3 class="fw-bold mb-0">Student Interaction</h3>
                             </div>
-                            <div>
-                                <h4>Performance Analytics</h4>
-                                <p>Get instant insights into student performance with detailed analytics and progress tracking.</p>
+                            <p>Students submit assignments and take quizzes through the platform.</p>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="step-number me-3">4</div>
+                                <h3 class="fw-bold mb-0">Track Progress</h3>
                             </div>
+                            <p>View combined data on attendance, assignments, and quiz results for each student.</p>
                         </div>
                     </div>
                 </div>
@@ -241,7 +261,22 @@
             </div>
         </div>
     </section>
-
+<!-- footer -->
+<footer class="bg-light py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="text-muted mb-0">&copy; copyright <?php $date = date('Y'); echo $date?> TeachLab | All right reserved</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-muted text-decoration-none me-3">Terms of Use</a>
+                    <a href="#" class="text-muted text-decoration-none me-3">Privacy Policy</a>
+                    <!-- <a href="#" class="text-muted text-decoration-none" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a> -->
+                </div>
+            </div>
+        </div>
+    </footer>
+ <!-- end footer -->
     <!-- Add this script before the closing body tag -->
 <script>
     function storePlan(planType) {
