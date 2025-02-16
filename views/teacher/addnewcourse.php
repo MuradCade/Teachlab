@@ -91,6 +91,16 @@ if (!isset($_SESSION['userid'])) {
                                 <?php if (isset($_GET['success'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Course Information Saved Successfully</p>
                                 <?php } ?>
+                                <?php if (isset($_GET['failed'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                        Failed to save coursename , please try again later
+                                    </p>
+                                <?php } ?>
+                                <?php if (isset($_GET['exists'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    Sorry, a course with that name already exists.
+                                    </p>
+                                <?php } ?>
 
                                 <?php if(checkcourseamount($connection,$_SESSION['userid'],'free')){?>
                                     <p class='alert alert-danger p-2'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.

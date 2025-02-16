@@ -3,7 +3,7 @@
 include '../../model/dbcon.php';
 if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
     $stdid = $_GET['stdid'];
-    $sql = "select * from studentquiz where stdid = '{$stdid}'";
+    $sql = "select * from studentquiz where stdid = '$stdid'";
     $result = mysqli_query($connection,$sql);
     if(mysqli_num_rows($result) == 0){
         echo "<p>There is currently no data to be shown</p>";
@@ -20,14 +20,17 @@ if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
             $studentinfo[] = $row;
             
             // Get question text
-            $sql2 = "SELECT * FROM questions WHERE questionid = '{$questionids}'";
+            $sql2 = "SELECT * FROM questions WHERE questionid = '{$questionids}' and quizformid = '$quizformid'";
             $result2 = mysqli_query($connection, $sql2);
             $row2 = mysqli_fetch_assoc($result2);
             $questiontext = $row2['questiontext'];
             $existingquestions[] = $questiontext;
+            // echo "<pre>";
+            // var_dump($row);
+            // echo "</pre>";
             
             // Get options and correct answer
-            $sql3 = "SELECT * FROM options WHERE questionid = '{$questionids}'";
+            $sql3 = "SELECT * FROM options WHERE questionid = '{$questionids}'  and quizformid = '$quizformid'";
             $result3 = mysqli_query($connection, $sql3);
             $options = mysqli_fetch_assoc($result3);
             $existingoptions[] = $options;
@@ -70,6 +73,15 @@ if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
             /* etc */
         }
     </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-00CYL9RWEC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 <body>
 <div class="container">
@@ -176,7 +188,7 @@ if (isset($_GET['stdid']) && !empty($_GET['stdid'])) {
     $stdid = $_GET['stdid'];
     // $quizformid = $_GET['entries'];
 
-    $sql = "SELECT sq.quizmarks, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, quizform.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid join quizform on quizform.teacherid = 20015 WHERE sq.stdid ='$stdid'; ";
+    $sql = "SELECT sq.quizmarks, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, quizform.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid join quizform on quizform.quizformid = '$quizformid' WHERE sq.stdid ='$stdid'; ";
 
     $result = mysqli_query($connection, $sql);
 

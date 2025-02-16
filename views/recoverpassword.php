@@ -3,6 +3,7 @@ include('../model/dbcon.php');
 if(isset($_GET['userid'])){
     $userid = base64_decode($_GET['userid']);
 
+
     $sql = "select * from forgetpwd where userid = '$userid'";
     $result = mysqli_query($connection,$sql);
     while($rows  = mysqli_fetch_assoc($result))
@@ -85,8 +86,6 @@ if(isset($_GET['userid'])){
     <link href="https://cdn.jsdelivr.net/gh/lekoala/pop-notify/pop-notify.css" rel="stylesheet">
   </head>
   <body style="background-color:#f2f2f2;">
-
-
       <div class="container">
       <div class="row">
       <div class="col-lg-8 col-md-8 col-sm-12 mx-auto">

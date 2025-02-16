@@ -87,7 +87,7 @@ if(isset($_GET['coursename'])){
              // echo 'match';
  
              // generate filename
-             $filename = 'AllData'.'xls';
+             $filename = 'AllData.xls';
              
              ob_end_clean();
            

@@ -260,7 +260,7 @@ if(isset($_GET['delassigmentform'])){
                                     </tr>
                                     
                                     <?php 
-                                    $sql = "select * from assignmentform where teacherid = '$teacherid'";
+                                    $sql = "select * from assignmentform where teacherid = '$teacherid' order by  date ";
                                     $result = mysqli_query($connection,$sql);
                                     if(mysqli_num_rows($result) == 0){
                                         echo "<span style='font-size:15px;'>There’s currently no data to show, <br>

@@ -41,21 +41,62 @@ if(isset($_POST['save'])){
                     $studentname=  $row['2'];
                     $coursename =  $row['3'];
                   
-                    $sql = "select stdid from students where stdid = '$studentid'";
-                    $result = mysqli_query($connection,$sql);
-                    if(mysqli_num_rows($result) > 0){
-                        // data already exist so update it
-                        $update = "UPDATE students SET  stdid = '$studentid',stdfullname = '$studentname',coursename = '$coursename' WHERE stdid = $studentid";
-                        $updateresult = mysqli_query($connection,$update);
-                        //redirect variables help us to let us know if everything is going googd
-                        $redirect = true;
+                //    check if the excel file contains empty columns
+                if(empty($studentid)){
+                    header('location:../viewstudent.php?emptystudentid');
+                    exit();
+                }else if(empty($studentname)){
+                    header('location:../viewstudent.php?emptystudentname');
+                    exit();
+
+                }else if(empty($coursename)){
+                    header('location:../viewstudent.php?emptycoursename');
+                    exit();
+                }else{
+                //    check if the student that been upload thier course name exist
+                    $sqlmain = "select * from course where coursename = '$coursename'";
+                    $resultmain = mysqli_query($connection,$sqlmain);
+                    if(mysqli_num_rows($resultmain) == 0){
+                        header('location:../viewstudent.php?coursenamenotexist');
+                        exit();
                     }else{
-                    //data is new insert it into db 
-                    $sql2 = "insert into students(stdid,stdfullname,coursename,teacherid)values('$studentid','$studentname','$coursename','$teacherid')";
-                    $result2 = mysqli_query($connection,$sql2);
-                   //redirect variables help us to let us know if everything is going googd
-                   $redirect = true;
+                        $sql = "select stdid from students where stdid = '$studentid' and coursename = '$coursename'";
+                        $result = mysqli_query($connection,$sql);
+                        if(mysqli_num_rows($result) > 0){
+                            // data already exist so update it
+                            $update = "UPDATE students SET  stdid = '$studentid',stdfullname = '$studentname',coursename = '$coursename' WHERE stdid = $studentid";
+                            $updateresult = mysqli_query($connection,$update);
+                            //redirect variables help us to let us know if everything is going googd
+                            $redirect = true;
+                        }else{
+    
+                            try {
+                                $sql2 = "insert into students(stdid,stdfullname,coursename,teacherid)values('$studentid','$studentname','$coursename','$teacherid')";
+                                $result2 = mysqli_query($connection,$sql2);
+                                
+                                // echo 'success';
+                                $redirect = 'true';
+                                
+                                 //data is new insert it into db 
+                        // handling duplicate key entery(id alread use if tried to be stored again it will
+                        // scream error in mysql database so am fixing that)
+                            } catch (mysqli_sql_exception $e) {
+                                // echo 'failed';
+                                if ($e->getCode() == 1062) {
+                                    // echo "Error: Duplicate entry found for ID $e.";
+                                    $redirect = 'duplicate_entry';
+                                    // $status = 'exist';
+                                } else {
+                                    echo "Error: " . $e->getMessage();
+                                    $redirect = 'false';
+                                }
+                            }
+                       
+                             
+                          
+                        }
                     }
+                }
                     
                 }else{
                     $count = 1;
@@ -64,8 +105,11 @@ if(isset($_POST['save'])){
           
             
                 // check if sql query runs properly
-                if(isset($redirect)){
+                if(isset($redirect) && $redirect == 'true'){
                     header('location:../viewstudent.php?savedsuccessfully');
+                    exit();
+                }else if($redirect == 'duplicate_entry'){
+                    header('location:../viewstudent.php?dataexist');
                     exit();
                 }else{
                     header('location:../viewstudent.php?filedtoimportfile');

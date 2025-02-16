@@ -136,13 +136,24 @@ if(isset($_GET['delid'])){
                             </h4>
                             <div class="card-body">
                                 <?php if (isset($_GET['emptystudentid'])) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty studentid field</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    The Studentid column is empty in the Excel file. Please ensure all columns have the correct data.
+                                    </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['emptystudentname'])) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty studentname field</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    The Studentname column is empty in the Excel file. Please ensure all columns have the correct data.
+                                    </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['emptycoursename'])) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty coursename field</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    The Coursename column is empty in the Excel file. Please ensure all columns have the correct data.
+                                    </p>
+                                <?php } ?>
+                                <?php if (isset($_GET['coursenamenotexist'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    Sorry , upload excel file contains coursename that doesn't exist , please make make sure the coursename exist, before uploading the file
+                                    </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['updatesuccess'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; ' id='t1'>Student information updated successfully </p>
@@ -158,6 +169,11 @@ if(isset($_GET['delid'])){
                                 <?php } ?>
                                 <?php if (isset($_GET['savedsuccessfully'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>File imported successfully</p>
+                                <?php } ?>
+                                <?php if (isset($_GET['dataexist'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:14px !important; '>
+                                    The uploaded file contains data that already exists in the database, Please review the content before proceeding with the upload.
+                                    </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['filedtoimportfile'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Sorry,  import process failed.</p>

@@ -44,7 +44,7 @@ if(isset($_POST['singup'])){
             $generated_verification_code = substr(str_shuffle($letterandnumbers), 
                        0, $verification_code_length );
                 
-                        $mailinfo = ['subject'=>'Email Verification Code' ,'body'=>"
+                        $mailinfo = ['subject'=>'Email Confirmation Code' ,'body'=>"
                         <table width='100%' cellspacing='0' cellpadding='0'>
                                 <tbody>
                                 <tr>

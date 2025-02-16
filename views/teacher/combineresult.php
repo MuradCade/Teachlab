@@ -62,6 +62,15 @@ $teacherid = $_SESSION['userid'] ?? null;
             }
         }
     </style>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-00CYL9RWEC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 
 <body>
@@ -187,7 +196,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                                                        
                                                      GROUP BY 
                                                         assignment_totals.formid, 
-                                                        markattendence.stdfullname;";
+                                                        markattendence.stdfullname,markattendence.coursename ORDER BY markattendence.stdid;";
                                                         
 
                                             $result2 = mysqli_query($connection,$sql2);
