@@ -1,4 +1,4 @@
-# Welcome to TeachLab Version 1.2
+# Welcome to TeachLab Version 2.2
 
 ---
 
@@ -10,6 +10,8 @@ In this version of TeachLab, we make it easy for teachers to create and share qu
 - Quiz creation and management
 - Automated quiz grading
 - Shareable quiz links for student access
+- Maneging exam
+- student shareable link  : enables teachers to share all marks for specific student with them
 
 
 
