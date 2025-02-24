@@ -385,7 +385,29 @@ if(isset($_GET['delassigmentform'])){
                                 
                             </h4>
                             <div class="card-body">
-                            <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id" onkeyup="searchTable()"/>                       
+                          
+                                            <!-- card that shows total student enteries in quiz-->
+                                            <div class="col-lg-3 col-md-4 col-sm-12 mb-4 mt-3">
+                                                <div class="card border-primary h-100 shadow-sm">
+                                                    <div class="card-body text-center">
+                                                   
+                                                    <h6 class="card-title text-uppercase text-muted mb-2">Total Assignment Submission</h6>
+                                                    <h2 class="card-text fw-bold text-primary mb-0">
+                                                        <?php 
+                                                            $count_query = "select count(DISTINCT stdid) as total from assignmententries where formid = '$formid'";
+                                                            $count_result = mysqli_query($connection, $count_query);
+                                                            $count_data = mysqli_fetch_assoc($count_result);
+                                                            echo $count_data['total'];
+                                                        ?>
+                                                    </h2>
+                                                </div>
+                                                <div class="card-footer bg-primary bg-opacity-10 border-0 text-center">
+                                                    <small class="text-muted">Students Submited Assignment</small>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                            <!-- end here-->
+                            <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id" />                       
                                 <table class='table table-bordered table-responsive table-hover 'id='myTable'>
                                     <tr>
                                         <td>#</td>

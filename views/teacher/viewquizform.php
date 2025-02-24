@@ -419,8 +419,12 @@
                                         <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Failed To Delete Student Data</p>
                                     <?php }?>
                                     <div class="card-body">
-                                        <table class="table table-bordered table-hover">
-                                            <a href="viewquizform.php" class="btn btn-primary mb-1 fw-bold btn-sm">Go Back</a>
+                                        <table class="table table-bordered table-hover" id='myTable'>
+                                          <div class="col-lg-7">
+                                              <input type="text" placeholder="Search By student id or name" class='form-control mb-2' id='myInput' onkeyup="searchTable()">
+                                          <a href="viewquizform.php" class="btn btn-primary mb-1 fw-bold btn-sm">Go Back</a>
+
+                                          </div>
                                             <!-- card that shows total student enteries in quiz-->
                                             <div class="col-lg-3 col-md-4 col-sm-12 mb-4 mt-3">
                                                 <div class="card border-primary h-100 shadow-sm">
@@ -577,6 +581,28 @@
                 });  
             });
 
+                 //search table by id
+       function searchTable() {
+    var input, filter, found, table, tr, td, i, j;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+        for (j = 0; j < td.length; j++) {
+            if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                found = true;
+            }
+        }
+        if (found) {
+            tr[i].style.display = "";
+            found = false;
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
 
             // Function to copy the link to clipboard
             function copyToClipboard(event , element) {
