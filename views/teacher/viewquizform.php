@@ -2,6 +2,7 @@
     include('../../model/dbcon.php');
     include('slices/studentcreationvalidation.php');
     include('slices/displayquizform.slice.php');
+    include_once('slices/display_single_quizform.php');
     // check if session already runing if not run new session
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
@@ -45,7 +46,7 @@
         header('location:viewquizform.php?quizformid='.$quizformid.'&emptynumberofquestionfield');
         exit();
     }else{
-        $sql = "update quizform set quiztitle = '$quiztitle', quizdesc = '$quizdescription', coursename = '$coursename', quizstatus = '$quizstatus', number_of_questions = '$numberofquestion' where quizformid = '$quizformid' and teacherid = '$teacherid'";
+        $sql = "update quizform set quiztitle = '$quiztitle', quizdesc = '$quizdescription', coursename = '$coursename', quizstatus = '$quizstatus', number_of_questions = '$numberofquestion'  where quizformid = '$quizformid' and teacherid = '$teacherid'";
         $result = mysqli_query($connection,$sql);
         if($result){
             header('location:viewquizform.php?quizformupdatedsuccessfully');
@@ -204,7 +205,7 @@
 
                     <!-- Quiz List Table -->
                     <div class="row mt-4">
-                        <div class="col-12 col-md-6 col-xl-12 mb-4">
+                        <div class="col-lg-12 col-md-6 col-xl-12 mb-4">
                             <?php if(isset($_GET['quizformid'])){
                                 $quizformid = $_GET['quizformid'];
                                 $sql = "select * from quizform where quizformid = '$quizformid' and teacherid = '$teacherid' order by quiz_created_date ";
@@ -291,6 +292,7 @@
                                     <option value="30" <?php  echo $quizformdata['number_of_questions'] == '30' ? 'selected' : '';?>>30</option>
                                 </select>
                                 </div>
+                               
                                 <button type="submit" class="btn btn-primary  fw-bold btn-sm" name='update'>Update</button>
                                 <a href='viewquizform.php'  class="btn btn-secondary  fw-bold btn-sm">Cancel</a>
                             </form>
@@ -317,14 +319,14 @@
                                     <?php }?>
                                 
                                         
-                                <div class="card-body">
+                                <div class="card-body table-responsive">
 
-                                        <table class="table table-bordered table-hover">
+                                        <table class="table table-bordered table-hover table-sm">
                                         
                                                 <tr>
                                                     <td>#</td>
                                                     <td>Quiz_Title</td>
-                                                    <td>Quiz_Description</td>
+                                                    <td>Quiz_Type</td>
                                                     <td>Number_of_Questions</td>
                                                     <td>Course_Name</td>
                                                     <td>Quiz_Form_Created_Date</td>
@@ -342,12 +344,15 @@
                                             <tr>
                                                 <td><?php echo $rowid?></td>
                                                 <td><?php echo $quiz['quiztitle']?></td>
-                                                <td class='text-break'><?php echo $quiz['quizdesc']?></td>
+                                                <td class='text-break'><?php echo $quiz['quiztype']?></td>
                                                 <td><?php echo $quiz['number_of_questions']?></td>
                                                 <td><?php echo $quiz['coursename']?></td>
                                                 <td><?php echo date('M-j-Y ', strtotime($quiz['quiz_created_date']));?></td>
                                                 <td><?php echo $quiz['quizstatus']?></td>
                                                 <td>
+                                                    <form method='GET'>
+                                                    <button   name='details' class='btn btn-secondary btn-sm mb-1 d-inline-block fw-bold' data-bs-toggle="modal" data-bs-target="#quizformdetails"  value='<?php echo base64_encode($quiz['quizformid']);?>'>Details</button>
+                                                    </form>
                                                     <a href="viewquizform.php?quizformid=<?php echo $quiz['quizformid']?>" class="btn btn-primary mb-1 fw-bold btn-sm">Update</a>
                                                     <a href="createquestions.php?quizformid=<?php echo $quiz['quizformid']?>" target="_blank" class="btn btn-info text-white fw-bold mb-1 btn-sm">Add Questions</a>
                                                     <a href="../quiz/takequiz.php?quizformid=<?php echo base64_encode($quiz['quizformid']);?>" target="_blank" class="btn btn-dark text-white mb-1 fw-bold btn-sm">View_Quiz_As_Student</a>
@@ -356,6 +361,41 @@
                                                     <a href="viewquizform.php?delid=<?php echo $quiz['quizformid'];?>" class="btn btn-danger fw-bold btn-sm">Delete</a>
                                                 </td>
                                             </tr>
+
+                                            <!-- quiz model that displays complete information starts here-->
+                                        <?php if(isset($_GET['details'])){?>    
+                                        <!-- Modal -->
+                                        <div class="modal " id="quizformdetails"  style="display:block;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Quiz Form Details</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <?php $singlequizinformation =  displaysingleforminformation($connection,$_GET['details']);
+
+                                                    foreach ($singlequizinformation as $singlequizformdata) {?>
+                                                        
+                                                        <p>Quiz Title : <?= $singlequizformdata['quiztitle']?></p>
+                                                        <p>Quiz Description : <?= $singlequizformdata['quizdesc']?></p>
+                                                        <p>Coursename : <?= $singlequizformdata['coursename']?></p>
+                                                        <p>Created_Date : <?= date('M-j-Y ', strtotime($singlequizformdata['quiz_created_date']))?></p>
+                                                        <p>Quiz_Type : <?= $singlequizformdata['quiztype']?></p>
+                                                        <p>Number_of_questions : <?= $singlequizformdata['number_of_questions']?></p>
+                                                        <p>Quiz_status : <span class="<?= $singlequizformdata['quizstatus'] == 'active'?'text-success':'text-danger'?>"><?= $singlequizformdata['quizstatus']?></span></p>
+
+                                                  <?php  }
+                                                
+                                                ?>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewquizform.php'>Close</a>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <?php }?>
+                                            <!-- quiz model ends here-->
                                             <?php $rowid++; }} ?>
                                         </table>
                                 <?php }else if(isset($_GET['entries'])){ ?>
@@ -391,6 +431,74 @@
                                             </tr>
                                             <?php 
                                             $quizformid = $_GET['entries'];
+                                            // read quizform and see what is the type of this quizform
+                                            $sqlmain = "select quiztype from quizform where quizformid = '$quizformid'";
+                                            $resultmain = mysqli_query($connection,$sqlmain);
+                                            $quizformdata = mysqli_fetch_assoc($resultmain);
+                                            // if the quiztype is trueandfalse then read from trueandfalse table
+                                           if($quizformdata['quiztype'] == 'trueandfalse'){
+
+                                               $sql = "SELECT
+                                            sq.stdfullname,
+                                            sq.stdid,
+                                            sq.quizmarks,
+                                            sq.quiz_taken_date,
+                                            qf.number_of_questions,
+                                            COUNT(sq.question_id) AS total_questions,
+                                            COUNT(
+                                                CASE WHEN sq.selected_option = o.is_correct_option THEN 1 ELSE NULL END
+                                                            ) AS correct_count,
+                                                            COUNT(
+                                                                CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 ELSE NULL END
+                                                            ) AS wrong_count
+                                                        FROM
+                                                            studentquiz sq
+                                                        JOIN TRUE_false_options o
+                                                        ON
+                                                            sq.question_id = o.questionid 
+                                                            AND sq.quizformid = o.quizformid
+                                                        JOIN quizform qf 
+                                                        ON
+                                                            sq.quizformid = qf.quizformid
+                                                        WHERE
+                                                            qf.teacherid = '$teacherid'
+                                                            AND sq.quizformid = '$quizformid'
+                                                        GROUP BY
+                                                            sq.stdfullname,
+                                                            sq.stdid,
+                                                            sq.quizmarks,
+                                                            sq.quiz_taken_date,
+                                                            qf.number_of_questions
+                                                            ORDER BY
+                                                              sq.stdfullname ASC,  -- Alphabetical order
+                                                                sq.stdid ASC   -- Alphabetical order
+                                                            ; ";
+
+                                            $result = mysqli_query($connection,$sql);
+                                            if(mysqli_num_rows($result) == 0){
+                                                echo "<p>There is currently no data to be shown</p>";
+                                            }else{
+                                                $rowid = 1;
+                                                while($row = mysqli_fetch_assoc($result)){?>
+                                                <form method='POST' action="viewquizform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $quizformid ?>">
+                                                    <tr>
+                                                        <td><?php echo $rowid?></td>
+                                                        <td><a href="../quiz/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
+                                                        <td><?php echo $row['stdfullname']?></td>
+                                                        <td><?php echo $row['wrong_count']?></td>
+                                                        <td><?php echo $row['correct_count']?></td>
+                                                        <td><?php echo $row['number_of_questions']?></td>
+                                                        <td><?php echo date('M-j-Y ', strtotime($row['quiz_taken_date']))?></td>
+                                                        <td><input name='quizmarks' value="<?php echo $row['quizmarks']?>" style='width:80px !important;'/></td>
+                                                        <td>
+                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm' name='updatequizentries'>Update</button>
+                                                            <a href="viewquizform.php?entries=<?php echo $quizformid ?>&delstudentid=<?php echo $row['stdid'] ?>" class='btn btn-danger fw-bold btn-sm'>Delete</a>
+                                                        </td>
+                                                    </tr>   
+                                                    </form>
+                                                <?php $rowid++; }}
+                                            }
+                                            // if the quiztype is singlechoiceanswer read from options table
                                             $sql = "SELECT sq.stdfullname,sq.stdid,sq.quizmarks,sq.quiz_taken_date,number_of_questions, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, qf.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid JOIN quizform qf ON sq.quizformid = qf.quizformid WHERE qf.teacherid = '$teacherid' and sq.quizformid = '$quizformid' GROUP BY sq.stdfullname, sq.stdid, sq.quizmarks, qf.number_of_questions; ";
                                             $result = mysqli_query($connection,$sql);
                                             if(mysqli_num_rows($result) == 0){
@@ -414,8 +522,7 @@
                                                         </td>
                                                     </tr>   
                                                     </form>
-                                                <?php $rowid++; }
-                                            }
+                                                <?php $rowid++; }}
                                             ?>
                                         </table>
                                     </div>

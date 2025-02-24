@@ -12,6 +12,7 @@ if(isset($_POST['submit'])) {
     $courseName = htmlspecialchars($_POST['coursename']);
     $quizstatus = htmlspecialchars($_POST['quizstatus']);
     $numberofquestion = htmlspecialchars($_POST['numberofquestion']);
+    $quiztype = $_POST['quiztype'];
 
     if(empty($quizid)) {
         header('location: ../createquiz.php?emptyquizid');
@@ -37,8 +38,12 @@ if(isset($_POST['submit'])) {
         header('location: ../createquiz.php?emptynumberofquestion');
         exit();
     }
+    else if(empty($quiztype)) {
+        header('location: ../createquiz.php?emptyquiztype');
+        exit();
+    }
     else {
-        $sql ="insert into quizform(quizformid,quiztitle,quizdesc,coursename,quizstatus,teacherid,number_of_questions) values('$quizid','$quiztitle','$quizdescription','$courseName','$quizstatus','$teacherid','$numberofquestion')";
+        $sql ="insert into quizform(quizformid,quiztitle,quizdesc,coursename,quizstatus,teacherid,number_of_questions,quiztype) values('$quizid','$quiztitle','$quizdescription','$courseName','$quizstatus','$teacherid','$numberofquestion','$quiztype')";
         $result = mysqli_query($connection, $sql);
         if($result) {
             header('location: ../createquiz.php?success');

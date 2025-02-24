@@ -36,14 +36,15 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
             Quiz Form
           </h4>
           <div class="card-body">
-          <p class="bg-danger text-white fw-bold p-2">Dear Student This Quiz is no longer ative</p>
+          <p class="bg-danger text-white fw-bold p-2">This quiz form is no longer accepting submissions.</p>
           </div>
         </div>
         </div>
       </div>
       </div>
-   <?php }if(!isset($_SESSION['studentid'])){?>
-
+       <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/'>TeachLab</a></p>
+   <?php }if(! isset($_SESSION['studentid']) && $row['quizstatus'] == 'active'){?>
+  
       <div class="container" id='quizstudentintro' s>
         <div class="row">
           <div class="col-lg-8 col-md-8 col-sm-12 mx-auto mt-5">
@@ -112,6 +113,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
       $_SESSION['studentid'] = $studentid;
       $_SESSION['studentname'] = $studentname;
         }
+      
       }
      
 
@@ -128,11 +130,11 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
           $result = mysqli_query($connection, $sql);
           while ($question = mysqli_fetch_assoc($result)) {
               $existingQuestions[$question['questionid']] = $question;
-              
               // Fetch corresponding options
               $optionsQuery = "SELECT * FROM options WHERE questionid = '{$question['questionid']}' AND quizformid = '{$_SESSION['quizformid']}'";
               $optionsResult = mysqli_query($connection, $optionsQuery);
               $existingOptions[$question['questionid']] = mysqli_fetch_assoc($optionsResult);
+             
           }
         ?>
         <style>
@@ -153,9 +155,18 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
                   <p class='bg-danger text-white p-2'>Please select at least one answer</p>
                 <?php } ?>
               <form method="post" action='savestudentquiz.php'>
-              <?php foreach($existingQuestions as $question): 
+              <?php 
+             
+              $sql01 = "select quiztype from quizform where quizformid = '$quizformid'";
+              $result01 = mysqli_query($connection,$sql01);
+              $quiztyperow = mysqli_fetch_assoc($result01);
+              if($quiztyperow['quiztype'] === "singlechoicequestion"){
+              foreach($existingQuestions as $question): 
+                // first check if the question tyoe is 
+                
+                // var_dump($quiztyperow);
                                 // Fetch options for current question
-                                $optionsQuery = "SELECT * FROM options WHERE questionid = '{$question['questionid']}' AND quizformid = '{$_SESSION['quizformid']}'";
+                                $optionsQuery = "SELECT * FROM options WHERE questionid = '{$question['questionid']}' AND quizformid = '$quizformid'";
                                 $optionsResult = mysqli_query($connection, $optionsQuery);
                                 $options = mysqli_fetch_assoc($optionsResult);
                             ?>
@@ -193,7 +204,47 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
                                 </div>
                             </div>
                             <?php endforeach; ?>
-
+                            <?php }else if ($quiztyperow['quiztype'] === "trueandfalse"){
+                             
+                              foreach($existingQuestions as $question): 
+                                // first check if the question tyoe is 
+                                
+                                // var_dump($quiztyperow);
+                                                // Fetch options for current question
+                                                $optionsQuery = "SELECT * FROM true_false_options WHERE questionid = '{$question['questionid']}' AND quizformid = '$quizformid'";
+                                                $optionsResult = mysqli_query($connection, $optionsQuery);
+                                                $options = mysqli_fetch_assoc($optionsResult);
+                              ?>
+                 
+                            
+                            <div class="mb-4">
+                                <p class='form-label mb-3' style='line-height:1.5em !important;'>
+                                    <strong><?php echo $question['questionid'].' ) '?></strong> 
+                                    <?php echo htmlspecialchars($question['questiontext']);?>
+                                </p>
+                                
+                                <div class="ms-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" 
+                                               name="answers[<?php echo $question['questionid']; ?>][]" 
+                                               value="option_one" >
+                                        <label class="form-check-label">
+                                            A- <?php echo htmlspecialchars($options['option_one']); ?>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" 
+                                               name="answers[<?php echo $question['questionid']; ?>][]" 
+                                               value="option_two">
+                                        <label class="form-check-label">
+                                            B- <?php echo htmlspecialchars($options['option_two']); ?>
+                                        </label>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                            <?php } ?> 
               
                 <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Quiz</button>
               </form>

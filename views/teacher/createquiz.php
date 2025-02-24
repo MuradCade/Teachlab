@@ -116,6 +116,9 @@ $quizid = rand(1000, 9999);
                                 <?php if (isset($_GET['error'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Failed to create  quiz form</p>
                                 <?php } ?>
+                                <?php if (isset($_GET['emptyquiztype'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty Quiz type field</p>
+                                <?php } ?>
                                 <?php if (checkquizamount($connection,$_SESSION['userid'],'free')) { ?>
                                     <p class='alert alert-danger p-2'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.
                                         in order to upgrade go to home and click on upgrade button.
@@ -166,6 +169,15 @@ $quizid = rand(1000, 9999);
                                             <option value="active">Active</option>
                                             <option value="disable">Disable</option>
                                             <option value="draft">Draft</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quizStatus" class="form-label">Quiz Type</label>
+                                        <select class="form-select" name="quiztype">
+                                            <option value="">Select Quiz Type</option>
+                                            <option value="trueandfalse">True And False</option>
+                                            <option value="singlechoicequestion">Single Choice Questions</option>
+                                            
                                         </select>
                                     </div>
                                     <div class="mb-3">
