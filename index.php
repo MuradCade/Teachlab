@@ -192,28 +192,28 @@ Simplify Assignments</p>
                         <div class="mb-4">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="step-number me-3">1</div>
-                                <h3 class="fw-bold mb-0">Create Your Courses</h3>
+                                <h3 class="fw-bold mb-0" style='font-size:19px;'>Create Your Courses</h3>
                             </div>
                             <p>Set up your courses and add students. Import existing data or start fresh.</p>
                         </div>
                         <div class="mb-4">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="step-number me-3">2</div>
-                                <h3 class="fw-bold mb-0">Manage Daily Tasks</h3>
+                                <h3 class="fw-bold mb-0" style='font-size:19px;'>Manage Daily Tasks</h3>
                             </div>
                             <p>Take attendance, create assignments, and design quizzes all in one place.</p>
                         </div>
                         <div class="mb-4">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="step-number me-3">3</div>
-                                <h3 class="fw-bold mb-0">Student Interaction</h3>
+                                <h3 class="fw-bold mb-0" style='font-size:19px;'>Student Interaction</h3>
                             </div>
                             <p>Students submit assignments and take quizzes through the platform.</p>
                         </div>
                         <div>
                             <div class="d-flex align-items-center mb-3">
-                                <div class="step-number me-3">4</div>
-                                <h3 class="fw-bold mb-0">Track Progress</h3>
+                                <div class="step-number me-3" >4</div>
+                                <h3 class="fw-bold mb-0" style='font-size:19px;'>Track Progress</h3>
                             </div>
                             <p>View combined data on attendance, assignments, and quiz results for each student.</p>
                         </div>
