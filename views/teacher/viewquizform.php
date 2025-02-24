@@ -299,6 +299,8 @@
                                 </div>
                             </div>
                                 <?php } } }else if(!isset($_GET['entries'])){ ?>
+
+                                   
                             <div class="card p-2" style="border:none !important; background-color:#f8f9fa !important;">
                                 
                                     <h4 class="card-title mb-0 px-2 mt-1 fw-bold" style='font-size:17px !important;'>
@@ -348,7 +350,7 @@
                                                 <td><?php echo $quiz['number_of_questions']?></td>
                                                 <td><?php echo $quiz['coursename']?></td>
                                                 <td><?php echo date('M-j-Y ', strtotime($quiz['quiz_created_date']));?></td>
-                                                <td><?php echo $quiz['quizstatus']?></td>
+                                                <td><p style='text-transform:capitalize;' class="<?php echo $quiz['quizstatus'] == 'active'?'text-success fw-bold':'text-danger fw-bold'?>"><?php echo $quiz['quizstatus'] ?></p></td>
                                                 <td>
                                                     <form method='GET'>
                                                     <button   name='details' class='btn btn-secondary btn-sm mb-1 d-inline-block fw-bold' data-bs-toggle="modal" data-bs-target="#quizformdetails"  value='<?php echo base64_encode($quiz['quizformid']);?>'>Details</button>
@@ -399,6 +401,7 @@
                                             <?php $rowid++; }} ?>
                                         </table>
                                 <?php }else if(isset($_GET['entries'])){ ?>
+                                    
                                 <div class="card p-2" style='font-size:17px !important;'>
                                     <h4 class="card-title">
                                         Quiz Entries
@@ -418,6 +421,28 @@
                                     <div class="card-body">
                                         <table class="table table-bordered table-hover">
                                             <a href="viewquizform.php" class="btn btn-primary mb-1 fw-bold btn-sm">Go Back</a>
+                                            <!-- card that shows total student enteries in quiz-->
+                                            <div class="col-lg-3 col-md-4 col-sm-12 mb-4 mt-3">
+                                                <div class="card border-primary h-100 shadow-sm">
+                                                    <div class="card-body text-center">
+                                                   
+                                                    <h6 class="card-title text-uppercase text-muted mb-2">Total Student Entries</h6>
+                                                    <h2 class="card-text fw-bold text-primary mb-0">
+                                                        <?php 
+                                                            $quizformid1 = $_GET['entries'];
+                                                            $count_query = "select count(DISTINCT stdid) as total from studentquiz where quizformid = '$quizformid1'";
+                                                            $count_result = mysqli_query($connection, $count_query);
+                                                            $count_data = mysqli_fetch_assoc($count_result);
+                                                            echo $count_data['total'];
+                                                        ?>
+                                                    </h2>
+                                                </div>
+                                                <div class="card-footer bg-primary bg-opacity-10 border-0 text-center">
+                                                    <small class="text-muted">Students Completed Quiz</small>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                            <!-- end here-->
                                             <tr>
                                                 <td>#</td>
                                                 <td>Student_ID</td>
@@ -430,7 +455,7 @@
                                                 <td>Actions</td>
                                             </tr>
                                             <?php 
-                                            $quizformid = $_GET['entries'];
+                                             $quizformid = $_GET['entries'];
                                             // read quizform and see what is the type of this quizform
                                             $sqlmain = "select quiztype from quizform where quizformid = '$quizformid'";
                                             $resultmain = mysqli_query($connection,$sqlmain);
