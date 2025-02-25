@@ -17,10 +17,10 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 //export studentdata as excel file
-if(isset($_GET['coursename'])){
-    $coursename = $_GET['coursename'];
+if(isset($_GET['assignmentformid'])){
+    $formid = $_GET['assignmentformid'];
     //  read all studendata related to specified coursename with teacherid
-    $sql = "select * from students where coursename = '$coursename' and teacherid = '$teacherid'";
+    $sql = "select * from assignmententries where formid = '$formid'";
     $result = mysqli_query($connection,$sql);
    
    
@@ -37,16 +37,25 @@ if(isset($_GET['coursename'])){
         $rowid = 2;
         // $colid = 0;
         while($row = mysqli_fetch_assoc($result)){
+            $filesize = round($rows['filesize']);
                 //code descriping the cells title
             $activesheet->setCellValue('A1','#');
             $activesheet->setCellValue('B1','Student ID');
             $activesheet->setCellValue('C1','Student Fullname');
             $activesheet->setCellValue('D1','Coursename');
+            $activesheet->setCellValue('E1','Assignment Marks');
+            $activesheet->setCellValue('F1','Uploaded Filename');
+            $activesheet->setCellValue('G1','File_Size');
+            $activesheet->setCellValue('H1','Date');
         // code descriping the cells content
         $activesheet->setCellValue('A'.$rowid,$rowid);
         $activesheet->setCellValue('B'.$rowid,$row['stdid']);
         $activesheet->setCellValue('C'.$rowid,$row['stdfullname']);
         $activesheet->setCellValue('D'.$rowid,$row['coursename']);
+        $activesheet->setCellValue('E'.$rowid,$row['marks']);
+        $activesheet->setCellValue('F'.$rowid,$row['uploadedfile']);
+        $activesheet->setCellValue('G'.$rowid,round($row['filesize']).'MB');
+        $activesheet->setCellValue('H'.$rowid,date('M-j-Y ', strtotime($row['date'])));
 
     //   echo $row['stdid'];
         $rowid++;
@@ -58,7 +67,7 @@ if(isset($_GET['coursename'])){
             // echo 'match';
 
             // generate filename
-            $filename = 'studentdata.xlsx';
+            $filename = 'assignmententeries.xlsx';
             
             ob_end_clean();
           
@@ -70,11 +79,11 @@ if(isset($_GET['coursename'])){
 
 
     }else{
-        header('location:../viewstudent.php?dbqueryfailed');
+        header('location:../viewassignmentform.php?dbqueryfailed');
     exit();
     }
   
 }else{
-    header('location:../viewstudent.php?redirect');
+    header('location:../viewassignmentform.php?redirect');
     exit();
 }

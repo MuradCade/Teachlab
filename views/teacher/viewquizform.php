@@ -420,13 +420,9 @@
                                     <?php }?>
                                     <div class="card-body">
                                         <table class="table table-bordered table-hover" id='myTable'>
-                                          <div class="col-lg-7">
-                                              <input type="text" placeholder="Search By student id or name" class='form-control mb-2' id='myInput' onkeyup="searchTable()">
-                                          <a href="viewquizform.php" class="btn btn-primary mb-1 fw-bold btn-sm">Go Back</a>
-
-                                          </div>
+                                          
                                             <!-- card that shows total student enteries in quiz-->
-                                            <div class="col-lg-3 col-md-4 col-sm-12 mb-4 mt-3">
+                                            <div class="col-lg-3 col-md-4 col-sm-12 mb-4 ">
                                                 <div class="card border-primary h-100 shadow-sm">
                                                     <div class="card-body text-center">
                                                    
@@ -447,6 +443,14 @@
                                             </div>
                                         </div> 
                                             <!-- end here-->
+                                            <div class="col-lg-7 mb-2">
+                                              <input type="text" placeholder="Search By student id or name" class='form-control mb-2' id='myInput' onkeyup="searchTable()">
+                                                <div>
+                                                <a href="viewquizform.php" class="btn btn-primary mb-1 fw-bold btn-sm">Go Back</a>
+                                                <a href="slices/exportquizformdata.slices.php?quizformid=<?php echo $quizformid1;?>" class="btn btn-secondary mb-1 fw-bold btn-sm">Convert To Excel</a>
+                                                   
+                                                </div>
+                                          </div>
                                             <tr>
                                                 <td>#</td>
                                                 <td>Student_ID</td>
@@ -454,8 +458,8 @@
                                                 <td>Wrong_Questions</td>
                                                 <td>Correct_Questions</td>
                                                 <td>Total_Questions</td>
-                                                <td>Quiz_Marks</td>
                                                 <td>Quiz_Date</td>
+                                                <td>Quiz_Marks</td>
                                                 <td>Actions</td>
                                             </tr>
                                             <?php 
@@ -528,7 +532,9 @@
                                                 <?php $rowid++; }}
                                             }
                                             // if the quiztype is singlechoiceanswer read from options table
-                                            $sql = "SELECT sq.stdfullname,sq.stdid,sq.quizmarks,sq.quiz_taken_date,number_of_questions, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, qf.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid JOIN quizform qf ON sq.quizformid = qf.quizformid WHERE qf.teacherid = '$teacherid' and sq.quizformid = '$quizformid' GROUP BY sq.stdfullname, sq.stdid, sq.quizmarks, qf.number_of_questions; ";
+                                            $sql = "SELECT sq.stdfullname,sq.stdid,sq.quizmarks,sq.quiz_taken_date,number_of_questions, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, qf.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid JOIN quizform qf ON sq.quizformid = qf.quizformid WHERE qf.teacherid = '$teacherid' and sq.quizformid = '$quizformid' GROUP BY sq.stdfullname, sq.stdid, sq.quizmarks, qf.number_of_questions ORDER BY
+                                                              sq.stdfullname ASC,  -- Alphabetical order
+                                                                sq.stdid ASC   -- Alphabetical order ";
                                             $result = mysqli_query($connection,$sql);
                                             if(mysqli_num_rows($result) == 0){
                                                 echo "<p>There is currently no data to be shown</p>";

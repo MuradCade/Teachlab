@@ -3,6 +3,7 @@ include('./../../model/dbcon.php');
 include('slices/studentcreationvalidation.php');
 include('slices/deleteassignmentfiles.php');
 include('slices/deleteallfiles.php');
+include_once('slices/display_single_assignmentformdata.php');
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -23,15 +24,13 @@ if(isset($_POST['update'])){
     $formid = $_POST['formid'];
     $formtitle = $_POST['formtitle'];
     $formdesc = $_POST['formdesc'];
-    $coursename = $_POST['coursename'];
-    $uploadfiletype = $_POST['uploadfiletype'];
     $formstatus = $_POST['formstatus'];
     $marks = $_POST['marks'];
     if(empty($formtitle) || empty($formdesc)){
         header('location:viewassignmentform.php?emptyfields&updateformid='.$formid);
         exit();
     }else{
-        $sql = "update assignmentform set title='$formtitle', description = '$formdesc', coursename = '$coursename', marks = '$marks',uploadedfilename = '$uploadfiletype',
+        $sql = "update assignmentform set title='$formtitle', description = '$formdesc', marks = '$marks',
         formstatus = '$formstatus' where formid = '$formid'";
         $result = mysqli_query($connection,$sql);
         if($result){
@@ -251,11 +250,11 @@ if(isset($_GET['delassigmentform'])){
                                     <tr>
                                         <td>#</td>
                                         <td>Form_Title</td>
-                                        <td>Form_Description</td>
                                         <td>Course_Name</td>
                                         <td>Upload_File_Type</td>
                                         <td>Assignment Marks</td>
                                         <td>Form_Status</td>
+                                        <td>Created_Date</td>
                                         <td>Action</td>
                                     </tr>
                                     
@@ -272,13 +271,49 @@ if(isset($_GET['delassigmentform'])){
                                         <tr style='font-size:15px;'>
                                             <td><?php echo $rowid;?></td>
                                             <td><?php echo $row['title'];?></td>
-                                            <td ><?php echo $row['description'];?></td>
                                             <td><?php echo $row['coursename'];?></td>
                                             <td><?php echo $row['uploadedfilename'];?></td>
                                             <td><?php echo $row['marks'];?></td>
-                                            <td><?php echo $row['formstatus'];?></td>
-                                            <td><a href="viewassignmentform.php?updateformid=<?php echo $row['formid']?>" class="btn btn-primary btn-sm mb-1 fw-bold">Update</a>&numsp;<a href="viewassignmentform.php?entries=<?php echo $row['formid'];?>" class='btn btn-secondary btn-sm fw-bold'>Entries</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>"  target='a_blank' class='btn btn-info btn-sm text-white fw-bold'>View</a>&numsp;<a href="https://teachlabs.unaux.com/views/clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>" onclick="copyToClipboard(event,this)" class='btn btn-warning btn-sm fw-bold text-white'>Share</a>&numsp;<a href="viewassignmentform.php?delassigmentform=<?php echo $row['formid'];?>" class='btn btn-danger btn-sm fw-bold'>Delete</a> </td>
+                                            <td><p class="<?php echo $row['formstatus'] == 'active' ? 'text-success fw-bold':'text-danger fw-bold'?>"><?php echo $row['formstatus'];?></p></td>
+                                            <td><?php echo date('M-j-Y ', strtotime($row['date']));?></td>
+                                            <td>
+                                            <a href="viewassignmentform.php?details=<?php echo $row['formid']?>" class="btn btn-secondary d-inline-block btn-sm fw-bold">Details</a>    
+                                            <a href="viewassignmentform.php?updateformid=<?php echo $row['formid']?>" class="btn btn-primary btn-sm mb-1 fw-bold">Update</a>&numsp;<a href="viewassignmentform.php?entries=<?php echo $row['formid'];?>" class='btn btn-secondary btn-sm fw-bold'>Entries</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>"  target='a_blank' class='btn btn-info btn-sm text-white fw-bold'>View</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>" onclick="copyToClipboard(event,this)" class='btn btn-warning btn-sm fw-bold text-white'>Share</a>&numsp;<a href="viewassignmentform.php?delassigmentform=<?php echo $row['formid'];?>" class='btn btn-danger btn-sm fw-bold'>Delete</a> </td>
                                         </tr>
+
+                                        
+                                            <!-- quiz model that displays complete information starts here-->
+                                            <?php if(isset($_GET['details'])){?>    
+                                        <!-- Modal -->
+                                        <div class="modal " id="quizformdetails"  style="display:block;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Assignment Form Details</h1>
+                                            </div>
+                                            <div class="modal-body">
+                                                <?php $singlequizinformation =  displaysingleassignmentformdata($connection,$_GET['details']);
+
+                                                    foreach ($singlequizinformation as $singlequizformdata) {?>
+                                                        
+                                                        <p>Assignment Form Title : <?= $singlequizformdata['title']?></p>
+                                                        <p>Assignment Form  Description : <?= $singlequizformdata['description']?></p>
+                                                        <p>Coursename : <?= $singlequizformdata['coursename']?></p>
+                                                        <p>Created_Date : <?= date('M-j-Y ', strtotime($singlequizformdata['date']))?></p>
+                                                        <p>Assignment Form Status  : <span class="<?= $singlequizformdata['formstatus'] == 'active'?'text-success fw-bold':'text-danger fw-bold'?>"><?= $singlequizformdata['formstatus']?></span></p>
+                                                        <p>Assignment Form Marks : <?= $singlequizformdata['marks']?></p>
+
+                                                  <?php  }
+                                                
+                                                ?>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewassignmentform.php'>Close</a>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <?php }?>
                                        <?php $rowid++;}
                                     }
                                     ?>
@@ -308,43 +343,19 @@ if(isset($_GET['delassigmentform'])){
                                     Update Assignment Form
                                     </h4>
                                     <?php if (isset($_GET['emptyfields'])) { ?>
-                                    <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty Fields</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty Fields</p>
                                       <?php } ?>  
                                     <div class="card-body">
                                     <form method='post'>
                                     <div class="form-group mb-3">
                                         <label class='form-label'>Form Title</label>
-                                        <input type="text" name='formtitle' class='form-control' placeholder="Enter Form Title" value="<?php echo $rows['title']?>"/>
+                                        <input type="text" name='formtitle' class='form-control' placeholder="Enter Form Title" value="<?php echo $rows['title']?>" />
                                         <input name='formid' value="<?php echo $rows['formid']?>" hidden/>
                                     </div>
                                     <div class="form-group mb-3">
                                         <label class='form-label'>Form Description</label>
-                                        <textarea name="formdesc" rows="5" col="5" class='form-control' placeholder="Enter Form Description"><?php echo $rows['description']?></textarea>
+                                        <textarea name="formdesc" rows="5" col="5" class='form-control' placeholder="Enter Form Description" ><?php echo $rows['description']?></textarea>
                                     </div>
-                                    <div class="form-group mb-2">
-                                        <label class='form-label'>Course Name</label>
-                                        <select class="form-select" name='coursename'>
-                                           
-                                        <?php  
-                                        // if teacher tries to create student before creating course show him none in course selection
-                                           if(coursenames($_SESSION['userid'],$connection) == false){
-                                            echo '<option>none</option>';
-                                           }else{
-                                           
-                                            foreach (coursenames($_SESSION['userid'],$connection) as $data) {?>
-                                                <option value='<?php echo $data['coursename']?>'><?php echo $data['coursename']?></option>
-                                            <?php }
-                                           }
-
-                                        
-                                        ?>
-                                        </select>
-                                        <div class="form-group mt-3">
-                                            <label class='form-label'>Upload File Type</label>
-                                            <select name='uploadfiletype' class='form-select'>
-                                                <option value="word_document">Word Document</option>
-                                            </select>
-                                        </div>
                                         <div class="form-group mt-3">
                                             <label class='form-label'>Form Status</label>
                                             <select name='formstatus' class='form-select'>
@@ -352,12 +363,15 @@ if(isset($_GET['delassigmentform'])){
                                                 <option value="disable">Disable</option>
                                             </select>
                                         </div>
-                                        <div class="form-group">
+                                        <div class="form-group mt-2">
                                             <label class="form-label">Assignment Marks</label>
-                                            <input type="text" class="form-control" name='marks' placeholder="Enter Assignment Makrs" value="<?php echo $rows['marks']?>">
+                                            <input type="text" class="form-control" name='marks' placeholder="Enter Assignment Makrs" value="<?php echo $rows['marks']?>" >
                                         </div>
                                     </div>
+                                    <div class='mx-3'>
                                     <button class="btn btn-primary btn-sm mt-2 fw-bold  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?>" name='update'>Update</button>
+
+                                    </div>
                                 </form>
                                     </div>
                                     </div>
@@ -406,8 +420,9 @@ if(isset($_GET['delassigmentform'])){
                                                 </div>
                                             </div>
                                         </div> 
+                                        <a href="slices/exportassignment.slices.php?assignmentformid=<?php echo $formid; ?>" class='btn btn-secondary btn-sm fw-bold'>Convert To Excel</a>
                                             <!-- end here-->
-                            <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id" />                       
+                            <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id" onkeyup="searchTable()"/>                       
                                 <table class='table table-bordered table-responsive table-hover 'id='myTable'>
                                     <tr>
                                         <td>#</td>
