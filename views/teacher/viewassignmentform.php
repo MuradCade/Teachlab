@@ -358,19 +358,20 @@ if(isset($_GET['delassigmentform'])){
                                     </div>
                                         <div class="form-group mt-3">
                                             <label class='form-label'>Form Status</label>
-                                            <select name='formstatus' class='form-select'>
-                                                <option value="active">Active</option>
-                                                <option value="disable">Disable</option>
-                                            </select>
+                                         
+                                            <select class="form-select" name="formstatus">
+                                        <option value="active" <?php  echo $rows['formstatus'] == 'active' ? 'selected' : '';?>>Active</option>
+                                        <option value="disable" <?php  echo $rows['formstatus'] == 'disable' ? 'selected' : '';?>>Disable</option>
+                                    </select>
                                         </div>
                                         <div class="form-group mt-2">
                                             <label class="form-label">Assignment Marks</label>
                                             <input type="text" class="form-control" name='marks' placeholder="Enter Assignment Makrs" value="<?php echo $rows['marks']?>" >
                                         </div>
                                     </div>
-                                    <div class='mx-3'>
+                                    <div class='mx-3  '>
                                     <button class="btn btn-primary btn-sm mt-2 fw-bold  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?>" name='update'>Update</button>
-
+                                        <a href="viewassignmentform.php" class="btn btn-secondary btn-sm fw-bold d-iniline-block mt-2">Cancel</a>
                                     </div>
                                 </form>
                                     </div>

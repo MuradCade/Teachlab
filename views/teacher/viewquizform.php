@@ -25,7 +25,6 @@
 
     $quiztitle = $_POST['quiztitle'];
     $quizdescription = $_POST['quizdescription'];
-    $coursename = $_POST['coursename'];
     $quizstatus = $_POST['quizstatus'];
     $numberofquestion = $_POST['numberofquestion'];
     $quizformid = $_POST['quizformid'];
@@ -36,9 +35,6 @@
     }else if(empty($quizdescription)){
         header('location:viewquizform.php?quizformid='.$quizformid.'&emptydescriptionfield');
         exit();
-    }else if(empty($coursename)){
-        header('location:viewquizform.php?quizformid='.$quizformid.'&emptycoursenamefield');
-        exit();
     }else if(empty($quizstatus)){
         header('location:viewquizform.php?quizformid='.$quizformid.'&emptyquizstatusfield');
         exit();
@@ -46,7 +42,7 @@
         header('location:viewquizform.php?quizformid='.$quizformid.'&emptynumberofquestionfield');
         exit();
     }else{
-        $sql = "update quizform set quiztitle = '$quiztitle', quizdesc = '$quizdescription', coursename = '$coursename', quizstatus = '$quizstatus', number_of_questions = '$numberofquestion'  where quizformid = '$quizformid' and teacherid = '$teacherid'";
+        $sql = "update quizform set quiztitle = '$quiztitle', quizdesc = '$quizdescription', quizstatus = '$quizstatus', number_of_questions = '$numberofquestion'  where quizformid = '$quizformid' and teacherid = '$teacherid'";
         $result = mysqli_query($connection,$sql);
         if($result){
             header('location:viewquizform.php?quizformupdatedsuccessfully');
@@ -231,9 +227,7 @@
                                     <?php if(isset($_GET['emptydescriptionfield'])){ ?>
                                         <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Quiz Description Field</p>
                                     <?php }?>
-                                    <?php if(isset($_GET['emptycoursenamefield'])){ ?>
-                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Course Name Field</p>
-                                    <?php }?>
+                                    
                                     <?php if(isset($_GET['emptyquizstatusfield'])){ ?>
                                         <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Quiz Status Field</p>
                                     <?php }?>   
@@ -258,22 +252,7 @@
                                     <textarea class="form-control"  name="quizdescription" rows="4"  placeholder="Enter Quiz Description"><?php echo $quizformdata['quizdesc']?></textarea>
                                 </div>
                                 
-                                <div class="mb-3">
-                                    <label for="courseName" class="form-label">Course Name</label>
-                                    <select class="form-select"  name="coursename">
-                                        <option value="<?php echo $quizformdata['coursename']?>"><?php echo $quizformdata['coursename']?></option>
-                                        <?php
-                                        $teacherid = $_SESSION['userid']??'';
-                                        // Fetch courses from database
-                                        $sql = "SELECT * FROM course where teacherid =  '$teacherid' and not(coursename = '$quizformdata[coursename]')";
-                                        $result = mysqli_query($connection, $sql);
-                                        
-                                        while($row = mysqli_fetch_assoc($result)) {
-                                            echo "<option value='" . $row['coursename'] . "'>" . $row['coursename'] . "</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
+                              
                                 
                                 <div class="mb-3">
                                     <label for="quizStatus" class="form-label">Quiz Status</label>
