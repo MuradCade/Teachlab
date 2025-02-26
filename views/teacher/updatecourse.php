@@ -127,6 +127,7 @@ if (isset($_GET['courseid']) && !empty($_GET['courseid'])) {
                                         <input type="text" name='coursename' class='form-control' placeholder="Enter Coursename" value="<?php echo securecourseidinurl($_GET['courseid'],$_SESSION['userid'],$connection)?>" />
                                     </div>
                                     <button class="btn btn-primary btn-sm mt-2 fw-bold  <?php echo  securecourseidinurl($_GET['courseid'],$_SESSION['userid'],$connection) == 'sorry coursename not found' ? 'disabled ':' '?>" name='submit'>Submit</button>
+                                    <a href="viewcourse.php" class="btn btn-secondary fw-bold btn-sm  mt-2">Cancel</a>
                                 </form>
                             </div>
                         </div>

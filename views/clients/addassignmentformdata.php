@@ -10,9 +10,12 @@ include('turnwordintopdf.php');
                 $stdname = $_POST['stdname'];
                 $fileuploaded = $_FILES['fileuploaded']['name'];
                 // get rid of if filename contains space and add underscore
-                $getridoffilespac = str_replace(['-', ' '], ['','_'], $fileuploaded);;
+                // $getridoffilespac = str_replace(['-', ' '], ['','_'], $fileuploaded);
+                $getridoffileleadingspace = preg_replace('/[\s\-]+/', '_', $fileuploaded);
+                $getridoffilespace = str_replace(' ', '_', $getridoffileleadingspace);
+                // $getridoffilespac .= str_replace(' ', '_', $fileuploaded);;
                 //this variable holds filename with out the extension
-                $filewithoutextension = pathinfo($getridoffilespac, PATHINFO_FILENAME).'.pdf';
+                $filewithoutextension = pathinfo($getridoffilespace, PATHINFO_FILENAME).'.pdf';
                 $extension = pathinfo($fileuploaded, PATHINFO_EXTENSION);
                 $coursename = $_GET['coursename'];
                 $marks = $_GET['marks'];

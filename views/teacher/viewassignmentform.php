@@ -450,7 +450,7 @@ if(isset($_GET['delassigmentform'])){
                                             <td><?php echo $rows['stdid']?></td>
                                             <td><?php echo $rows['stdfullname']?></td>
                                             <td><?php echo $rows['coursename']?></td>
-                                            <td><input type='text' value="<?php echo $rows['marks']?>" name='assignmentmarks'/></td>
+                                            <td><input type='text' value="<?php echo $rows['marks']?>" name='assignmentmarks' style='width:50px'/></td>
                                             <td><?php echo $rows['uploadedfile'];?></td>
                                             <td><?php $filesize = round($rows['filesize']); echo $filesize.' MB'; ?></td>
                                             <td><?php echo date('M-j-Y ', strtotime($rows['date']));?></td>

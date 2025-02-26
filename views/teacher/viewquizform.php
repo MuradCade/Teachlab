@@ -398,7 +398,7 @@
                                         <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Failed To Delete Student Data</p>
                                     <?php }?>
                                     <div class="card-body">
-                                        <table class="table table-bordered table-hover" id='myTable'>
+                                        <table class="table table-bordered table-hover table-sm" id='myTable'>
                                           
                                             <!-- card that shows total student enteries in quiz-->
                                             <div class="col-lg-3 col-md-4 col-sm-12 mb-4 ">
@@ -501,9 +501,9 @@
                                                         <td><?php echo $row['correct_count']?></td>
                                                         <td><?php echo $row['number_of_questions']?></td>
                                                         <td><?php echo date('M-j-Y ', strtotime($row['quiz_taken_date']))?></td>
-                                                        <td><input name='quizmarks' value="<?php echo $row['quizmarks']?>" style='width:80px !important;'/></td>
+                                                        <td><input name='quizmarks' value="<?php echo $row['quizmarks']?>" style='width:60px !important;'/></td>
                                                         <td>
-                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm' name='updatequizentries'>Update</button>
+                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm mb-2' name='updatequizentries'>Update</button>
                                                             <a href="viewquizform.php?entries=<?php echo $quizformid ?>&delstudentid=<?php echo $row['stdid'] ?>" class='btn btn-danger fw-bold btn-sm'>Delete</a>
                                                         </td>
                                                     </tr>   

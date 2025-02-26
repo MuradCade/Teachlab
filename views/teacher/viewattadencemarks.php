@@ -195,8 +195,19 @@ if(isset($_GET['delid'])){
                           
 
                     <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
-                        
-                        <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
+                        <div class='d-flex align-items-center gap-2 justify-content-start'>
+                        <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id , studentname" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
+                    <?php 
+                        if(isset($_POST['submit'])){
+                            $coursename = $_POST['coursename'];?>
+                                                    <a href="slices/exportattendance.slice.php?coursename=<?=  $coursename?>" class="btn btn-secondary btn-sm fw-bold mt-1">Convert To Excel</a>
+
+                        <?php }else{?>
+                            <a href="slices/exportattendance.slice.php" class="btn btn-secondary btn-sm fw-bold mt-1 disabled" >Convert To Excel</a>
+
+                        <?php }
+                    ?>
+                    </div>
                     <table class='table table-hover table-bordered table-responsiv' id='myTable'>
                     <tr>
                         <td>#</td>
