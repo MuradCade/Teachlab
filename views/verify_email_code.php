@@ -37,7 +37,7 @@ if(!isset($_SESSION['verification_userid'])){
          </div>
          
        <?php if(isset($_GET['emailsent'])){?>
-        <p class='bg-success text-white fw-bold p-1 text-start ' style='font-size:15px;'>
+        <p class='bg-success text-white fw-bold p-1 text-start ' style='font-size:14px;'>
         Email sent successfully , please be patient it takes couple of minute for the email to reach you , <br>
         keep an eye on your email provider.
         </p>
@@ -56,7 +56,7 @@ if(!isset($_SESSION['verification_userid'])){
               <input type="text"  name="v_code" class="form-control" placeholder="Enter Verification Code" autocomplete="false"/>
           </div>
                 <div class="px-2 mb-2">
-                <input type="submit" class="mt-2 btn btn-primary" value="Verify" name='verify'/>
+                <input type="submit" class="mt-2 btn btn-primary btn-sm" value="Verify" name='verify'/>
                 </div>
           </form>
         </div>

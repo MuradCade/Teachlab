@@ -67,7 +67,7 @@
          
           </div>
                 <div class="px-2 mb-2">
-                <input type="submit" class="mt-2 btn btn-primary" value="Create Account" name='singup'/>
+                <input type="submit" class="mt-2 btn btn-primary btn-sm" value="Create Account" name='singup'/>
                 </div>
           </form>
         </div>

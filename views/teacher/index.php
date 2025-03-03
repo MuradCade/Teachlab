@@ -129,7 +129,7 @@ function displaytotalquizform($connection,$teacherid){
         }
     </style>
 </head>
-<body>
+<body >
     <div class="container-fluid">
         <div class="row">
          <!-- sidebar included -->
@@ -145,10 +145,13 @@ function displaytotalquizform($connection,$teacherid){
                     </button>
                 </nav>
 
+                
+                    
+                
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Dashboard</h1>
-                </div>
+                    <h5>Dashboard</h5>
 
+                </div>
                 <div class="row">
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
                         <div class="card  text-white" style='background-color:#f8f9fa !important;'>
@@ -190,78 +193,110 @@ function displaytotalquizform($connection,$teacherid){
                             </div>
                         </div>
                     </div>
-
+                        <!-- 1- if user subscription plan is free display thid-->
                       <?php if(checksubscriptionstatus($connection,$teacherid,'subsatus') == 'active' && checksubscriptionstatus($connection,$teacherid,'subplan') == 'free'){?>
                         <div class='col-12 col-md-6 col-xl-6 mb-4'>
-                         <div class='card p-2' style='background-color:#f8f9fa !important;'>
-                            <p class='fw-medium' style='line-height:30px;'>Dear <strong><?php echo $_SESSION['fullname']?></strong>, your are on free plan. and your are allowed to create only 1 course, 1 assignment form and 1 quiz form.
-                            <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>1- Maximum 1 Course Creation</li>
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>2- Maximum 1 Assignment Form</li>
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>3- Maximum 1 Quiz Form</li>
-                           <div class='container'>
+                        <div class="card p-3" style="background-color: #f8f9fa !important;">
+        <p class="fw-normal" style="line-height: 30px;">
+            Dear <strong><?php echo $_SESSION['fullname']; ?></strong>, you are currently subscribed to the <strong>Free Plan</strong>.  
+            With this plan, you have access to the following features:
+        </p>
+        <ul class="list-unstyled mb-4">
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Create up to <strong>1 course</strong></li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Generate <strong>1 assignment form</strong></li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Create <strong>1 quiz form</strong></li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> Create <strong>1 exam form</strong></li>
+            <li class="mb-2"><i class="fas fa-check text-success me-2"></i> share up to 1 result <strong>per student</strong></li>
+        </ul>
 
-                        
-<button class='btn btn-primary w-100' data-bs-toggle="modal" data-bs-target="#upgradeModal">Upgrade to Pro Plan</button>
-
-<!-- Add this modal right after the button -->
-<div class="modal fade" id="upgradeModal" tabindex="-1" aria-labelledby="upgradeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="upgradeModalLabel">Upgrade to Pro Plan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="text-center mb-4">
-          <i class="bi bi-arrow-up-circle-fill text-primary" style="font-size: 3rem;"></i>
-        </div>
-        <p class="text-center">To upgrade to our Pro Plan, please follow these steps:</p>
-        <div class="card bg-light p-3 mb-3">
-          <ol class="mb-0">
-            <li>Send $10 via Zaad service</li>
-            <li>Payment Number: <strong>063-3558027</strong></li>
-            <li>After payment, please contact support with your transaction details</li>
-          </ol>
-        </div>
-        <p class="text-muted small text-center">Your account will be upgraded within 24 hours after payment verification.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="copyNumber()">Copy Number</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-
-
-
-                           </div>
-                        </ul>
-                                </p>
-                            <?php }else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'pro' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'expire'){?>
-                           <div class='col-12 col-md-6 col-xl-6 mb-4'>
-                           <div class='card p-2' style='background-color:#f8f9fa !important;'>
-                            <p class=' mt-2'>Dear <strong><?php echo $_SESSION['fullname'];?></strong> ,   Your subscription is expired. Please renew your subscription to continue using TeachLab. </p>
-                            <button class='btn btn-primary w-100' data-bs-toggle="modal" data-bs-target="#upgradeModal">Upgrade to Pro Plan</button>
-                        </div>
-                           </div>
-                        </div>
-                        </div>
-                    <?php }else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'pro' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'active'){?>
+        <div class="container">
+            <button class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#upgradeModal">
+                Upgrade to Pro Plan
+            </button>
+                      </div>
+                      </div>
+                      </div>
+                              
+                            <!-- 2 - if subscription is pro and the subamount is not 0 (that means user paid pro plan)-->
+                    <?php }else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'pro' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'active'  && checksubscriptionstatus($connection,$teacherid,'subamount') != '0'){?>
                         <div class='col-12 col-md-6 col-xl-6 mb-4'>
                            <div class='card p-2' style='background-color:#f8f9fa !important;'>
-                            <p class=' mt-2'>Dear <strong><?php echo $_SESSION['fullname'];?></strong>  Thank you for purchasing the lifetime plan! You now  access to all features of TeachLab. Enjoy your experience!</p>
-                            <p class='text-muted small'>Note: Your subscription will expire after <?php echo checksubscriptionstatus($connection,$teacherid,'subamount').' Days '?>.</p>
+                            <p class=' mt-2' style='font-size:14px;'>Dear <strong><?php echo $_SESSION['fullname'];?></strong>  Thank you for purchasing the pro plan! You now  access to all features of TeachLab. Enjoy your experience!</p>
+                            <p class='text-muted small'>Note: Your subscription will expire after <strong><?php echo checksubscriptionstatus($connection,$teacherid,'subamount').' Days '?>.</strong></p>
                             </div>
                            </div>
                         </div>
-                    <?php }?>
-                </div>
+                        <!-- 3 - if subscription is pro and the subamount is 0 then we will force the user to pay money-->
+                    <?php }else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'pro' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'active'  && checksubscriptionstatus($connection,$teacherid,'subamount') == '0'){?>
+                        <div class='col-12 col-md-6 col-xl-6 mb-4'>
+                        <div class="card p-3" style="background-color: #f8f9fa !important;">
+                    <p class="fw-normal" style="line-height: 30px; font-size:14px">
+                    Dear <strong><?php echo $_SESSION['fullname']; ?></strong>, you are currently subscribing to the <strong>Pro Plan</strong>,
+                    To use this software, you will need to complete the payment for the Pro Subscription Plan, which costs $10.
+                    To proceed with the payment, please click the 'Proceed with Payment' button.
+                    </p>
+                
+                    
+
+                    <div class="container">
+                        <button class="btn btn-primary w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#upgradeModal">
+                            Prceed With payment
+                        </button>
+                                </div>
+                                </div>
+
+                     <!-- 4- if subscription is pro and the subamount is 0 and the status of the plan is expire-->
+                    <?php } else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'pro' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'expire'  && checksubscriptionstatus($connection,$teacherid,'subamount') == '0'){?>
+                      <div class='col-12 col-md-6 col-xl-6 mb-4'>
+                        <div class="card p-3" style="background-color: #f8f9fa !important;">
+                    <p class="fw-normal" style="line-height: 30px; font-size:14px">
+                    Dear <strong><?php echo $_SESSION['fullname']; ?></strong>, your subscription has expired. To continue using our software, you will need to renew your subscription.
+                    Please click the 'Renew Subscription' button to proceed
+                    </p>
+                
+                    
+
+                    <div class="container">
+                        <button class="btn btn-primary w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#upgradeModal">
+                        Renew Subscription
+                        </button>
+                                </div>
+                                </div>
+                                <!-- 5- if user subsciption plan is one-time-purches and subamount is 0  that means user didn't complete one time purches-->
+                        <?php } else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'one-time-purches' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'active'  && checksubscriptionstatus($connection,$teacherid,'subamount') == '0'){?>
+                            <div class='col-12 col-md-6 col-xl-6 mb-4'>
+                        <div class="card p-3" style="background-color: #f8f9fa !important;">
+                    <p class="fw-normal" style="line-height: 30px; font-size:14px">
+                    Dear <strong><?php echo $_SESSION['fullname']; ?></strong>, you are currently subscribing to the <strong>One Time Purches Plan</strong>,
+                    To use this software, you will need to complete the payment for theOne Time Purches Plan, which costs $10.
+                    To proceed with the payment, please click the 'Proceed with Payment' button.
+                    </p>
+                
+                    
+
+                    <div class="container">
+                        <button class="btn btn-primary w-100 btn-sm" data-bs-toggle="modal" data-bs-target="#upgradeModal">
+                            Prceed With payment
+                        </button>
+                                </div>
+                                </div>
+                                <!-- 6 - if user subscription plan is one time purches and subamount is not 0 that means user completed and can use thus
+                                software life long(his entire life) -->
+                            <?php }else if(checksubscriptionstatus($connection,$teacherid,'subplan') == 'one-time-purches' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'active'  && checksubscriptionstatus($connection,$teacherid,'subamount') == 'infinite'){?>
+                               <div class='col-12 col-md-6 col-xl-6 mb-4'>
+                           <div class='card p-2' style='background-color:#f8f9fa !important;'>
+                            <p class=' mt-2' style='font-size:14px;'>Dear <strong><?php echo $_SESSION['fullname']; ?></strong>, you have successfully purchased the One-Time Plan.
+                            With this plan, you now have lifetime access to our software. No further payments are required.</p>
+                            </div>
+                           </div>
+                        </div>
+                            </div>
+
+                                <?php } ?>
+
+                        </div>
               <!-- Add this modal right after the button -->
+
 <div class="modal fade" id="upgradeModal" tabindex="-1" aria-labelledby="upgradeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
@@ -270,22 +305,57 @@ function displaytotalquizform($connection,$teacherid){
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="text-center mb-4">
-          <i class="bi bi-arrow-up-circle-fill text-primary" style="font-size: 3rem;"></i>
+        <!-- Step 1: Instructions -->
+        <div id="step1" class="step">
+          <div class="text-center mb-4">
+            <i class="bi bi-arrow-up-circle-fill text-primary" style="font-size: 3rem;"></i>
+          </div>
+          <p class="text-center">To upgrade to our Pro Plan, please follow these steps:</p>
+          <div class="card bg-light p-3 mb-3">
+            <ol class="mb-0">
+              <li>Send $10 via Zaad service</li>
+              <li>Payment Number: <strong>063-3558027</strong></li>
+              <li>After payment, please contact support with your transaction details</li>
+            </ol>
+          </div>
+          <p class="text-muted small text-center">Your account will be upgraded within 24 hours after payment verification.</p>
         </div>
-        <p class="text-center">To upgrade to our Pro Plan, please follow these steps:</p>
-        <div class="card bg-light p-3 mb-3">
-          <ol class="mb-0">
-            <li>Send $10 via Zaad service</li>
-            <li>Payment Number: <strong>063-3558027</strong></li>
-            <li>After payment, please contact support with your transaction details</li>
-          </ol>
+
+        <!-- Step 2: Transaction Details -->
+        <div id="step2" class="step d-none">
+          <p class="text-center">Please provide your payment transaction details below:</p>
+          <form id="paymentForm" method='POST'>
+            <div class="mb-3">
+              <label for="transactionId" class="form-label">Fullname</label>
+              <input type="text" class="form-control" id="fullname" placeholder="Enter Fullname" >
+            </div>
+            <div class="mb-3">
+              <label for="transactionId" class="form-label">Phone Number</label>
+              <input type="text" class="form-control" id="number" placeholder="Enter Phone Number" >
+            </div>
+            <div class="mb-3">
+              <label for="amountPaid" class="form-label">Subscription Plan</label>
+              <select class="form-select" id="amountPaid">
+                    <option value="pro">Pro Plan ($10)</option>
+                    <option value="one-time-purches">One Time Purches ($50)</option>
+            </select>
+            </div>
+            <div class="mb-3">
+              <label for="paymentDate" class="form-label">Payment Date</label>
+              <input type="date" class="form-control" id="paymentDate" >
+            </div>
+          </form>
         </div>
-        <p class="text-muted small text-center">Your account will be upgraded within 24 hours after payment verification.</p>
+
+        <!-- Step 3: Confirmation -->
+        <div id="step3" class="step d-none">
+          <p class="text-center" style='font-size:14px !important;'>To finalize your subscription, please click the 'Complete' button. Our support team will verify your subscription, and you will receive a confirmation message within 24 hours.</p>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="copyNumber()">Copy Number</button>
+        <button type="button" class="btn btn-secondary btn-sm" id="prevBtn" onclick="previousStep()">Previous</button>
+        <button type="button" class="btn btn-primary btn-sm" id="nextBtn" onclick="nextStep()">Next</button>
+        <button type="button" class="btn btn-primary btn-sm" id="submitBtn" onclick="submitForm()" style="display:none;">Complete</button>
       </div>
     </div>
   </div>
@@ -323,5 +393,121 @@ function displaytotalquizform($connection,$teacherid){
             });
     }
     </script>
+
+
+
+<!-- making subscription form accessible -->
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<script>
+  let currentStep = 1;
+
+  function showStep(step) {
+   
+    const steps = document.querySelectorAll('.step');
+    steps.forEach((stepElem, index) => {
+      if (index === step - 1) {
+        stepElem.classList.remove('d-none');
+      } else {
+        stepElem.classList.add('d-none');
+      }
+    });
+  }
+
+  function nextStep() {
+    
+    const fullname = $('#fullname').val();
+    const number = $('#number').val();
+    const amount = $('#amountPaid').val();
+    const paymentdate = $('#paymentDate').val();
+
+        if (currentStep === 1) {
+        
+      showStep(2);
+      currentStep++;
+      document.getElementById('prevBtn').style.display = 'inline-block';
+      document.getElementById('nextBtn').style.display = 'inline-block';
+      document.getElementById('submitBtn').style.display = 'none';
+    } else if (currentStep === 2) {
+       
+            $.ajax({
+                url:'slices/subscription_manager.slice.php',
+                method:'POST',
+                data:{fullname:fullname,number:number,amount:amount,paymentdate:paymentdate},
+                success:function(response){
+                    if(response == 'emptyfullname'){
+                        alert('empty fullname feild');
+                    }else if(response == 'emptynumber'){
+                        alert('empty phone number feild');
+                        
+                    }else if(response == 'emptypaymentdate'){
+                        alert('empty payment date feild');
+
+                    }else if(response == 'subscriptionisexsit'){
+                        alert("dear user there is currently active subscription , you can't renew your subscription if there is active one ")
+                }else if(response == 'success'){
+                    showStep(3);
+                    currentStep++;
+                    document.getElementById('nextBtn').style.display = 'none';
+                    document.getElementById('submitBtn').style.display = 'inline-block';
+                    }else if(response == 'failed'){
+                    alert('sorry , something went wrong , please try again later')
+                }
+                    else{
+                        console.log(response);
+                        
+                    }
+                    
+                }
+            })
+       
+        
+    }
+  }
+
+  function previousStep() {
+    if (currentStep === 2) {
+      showStep(1);
+      currentStep--;
+      document.getElementById('prevBtn').style.display = 'none';
+    } else if (currentStep === 3) {
+      showStep(2);
+      currentStep--;
+      document.getElementById('nextBtn').style.display = 'inline-block';
+      document.getElementById('submitBtn').style.display = 'none';
+    }
+  }
+
+  function submitForm() {
+    // Submit form logic here, e.g., send data to the server
+    
+        
+
+
+
+
+
+    // Here you can use AJAX to send the form data to the server
+    // For example:
+    // fetch('/submit-payment', {
+    //   method: 'POST',
+    //   body: formData
+    // });
+
+    alert('Your payment details have been submitted successfully!');
+    // Reset the form and go back to step 1
+    form.reset();
+    showStep(1);
+    currentStep = 1;
+    document.getElementById('prevBtn').style.display = 'none';
+    document.getElementById('nextBtn').style.display = 'inline-block';
+    document.getElementById('submitBtn').style.display = 'none';
+  }
+
+  // Initialize the modal on load
+  showStep(currentStep);
+</script>
+
+
+   
 </body>
 </html>

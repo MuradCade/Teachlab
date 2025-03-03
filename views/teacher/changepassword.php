@@ -129,7 +129,7 @@ if(isset($_POST['savepwd']) && isset($teacherid)){
                                 <label class='form-label'>New Password</label>
                                 <input type="text" class="form-control" placeholder="Enter New Password" name='pwd'>
                             </div>
-                            <button class='btn btn-primary  mt-2 fw-bold' name='savepwd'>Update</button>
+                            <button class='btn btn-primary btn-sm mt-2 fw-bold' name='savepwd'>Update</button>
                             </form>
                         </div>
                         

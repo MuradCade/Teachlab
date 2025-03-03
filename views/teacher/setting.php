@@ -133,7 +133,7 @@ if(isset($_POST['saveinfo']) && isset($teacherid)){
                                 <p class='mt-2 ' style='font-size:15px;'><strong class='text-danger'>Warning : </strong> Updating your email is not possible,
                                 as it's essential for verifying your identity during login. </p>
                             </div>
-                            <button class='btn btn-primary  mt-2 fw-bold' name='saveinfo'>Update</button>
+                            <button class='btn btn-primary btn-sm mt-2 fw-bold' name='saveinfo'>Update</button>
                                 </form>
                         </div>
                         

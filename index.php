@@ -3,282 +3,656 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeachLab - Your Teaching Assistant</title>
-    <!-- Add Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Add Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
-    
-    <style>
-        /* Keep your custom color variables */
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #0f172a;
-            --accent: #818cf8;
-            --background: #f8fafc;
-            --text: #334155;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* Update navbar to use Bootstrap classes */
-        .navbar {
-            background: rgba(255, 255, 255, 0.95) !important;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .navbar-brand {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--primary) !important;
-        }
-
-        /* Update hero section */
-        .hero {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0.05) 100%);
-            min-height: 100vh;
-            padding-top: 120px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            color:var(--primary);
-            /* background: linear-gradient(to right, var(--), var(--accent)); */
-            /* -webkit-background-clip: text; */
-            /* -webkit-text-fill-color: transparent; */
-        }
-
-        /* Update feature cards */
-        .feature-card {
-            background: #fff;
-            border-radius: 10px;
-            padding: 2rem;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-        }
-
-        /* Update pricing cards */
-        .price-card {
-            background: #fff;
-            border-radius: 15px;
-            padding: 2rem;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .price-card.featured {
-            border: 2px solid var(--primary);
-            transform: scale(1.05);
-        }
-
-        /* Custom button style */
-        .btn-custom {
-            background: var(--primary);
-            color: white;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            border: none;
-            transition: all 0.3s ease;
-        }
-
-        .btn-custom:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            color: white;
-        }
-        .step-number {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background-color: #4a90e2;
-            color: white;
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-    </style>
+    <title>TeachLab - Task Management Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
 </head>
 <body>
-    <!-- Update navbar structure -->
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <header>
         <div class="container">
-            <a class="navbar-brand" href="#"><img src='img/logo.png' width="200"/></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="views/login.php">Login</a>
+            <div class="logo">
+                <!-- <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"> -->
+                    <!-- <circle cx="20" cy="20" r="18" stroke="#10B981" stroke-width="4"/>
+                    <path d="M13 20L18 25L27 16" stroke="#10B981" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg> -->
+                <img src="img/logo.png" alt="" style="width:140px;">
+                <!-- <span>TeachLab</span> -->
+            </div>
+            <nav>
+                <ul class="desktop-menu">
+                    <li class="mega-menu-wrapper">
+                        <a href="#features">Features</a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-content">
+                                <div class="mega-menu-column">
+                                    <h3>Class Management</h3>
+                                    <ul>
+                                        <li>
+                                            <a href="#student-management">
+                                                <div class="menu-item-header">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                    </svg>
+                                                    <span class="menu-item-title">Student Management</span>
+                                                </div>
+                                                <span class="menu-item-description">Track student information and attendance</span>
+                                            </a>
+                                        </li>
+                                        <li><a href="#class-scheduling">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                                            </svg>
+                                            Class Scheduling
+                                            <span>Organize your lecture timetable</span>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3>Assessments</h3>
+                                    <ul>
+                                        <li><a href="#assignment-handling">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                <polyline points="14 2 14 8 20 8"></polyline>
+                                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                                <polyline points="10 9 9 9 8 9"></polyline>
+                                            </svg>
+                                            Assignment System
+                                            <span>Manage and grade assignments</span>
+                                        </a></li>
+                                        <li><a href="#assessment-tools">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                            </svg>
+                                            Quiz & Exam Tools
+                                            <span>Create and grade assessments</span>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3>Analytics</h3>
+                                    <ul>
+                                        <li><a href="#progress-tracking">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="18" y1="20" x2="18" y2="10"></line>
+                                                <line x1="12" y1="20" x2="12" y2="4"></line>
+                                                <line x1="6" y1="20" x2="6" y2="14"></line>
+                                            </svg>
+                                            Progress Analytics
+                                            <span>Track student performance</span>
+                                        </a></li>
+                                        <li><a href="#data-export">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                <polyline points="7 10 12 15 17 10"></polyline>
+                                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                                            </svg>
+                                            Report Generation
+                                            <span>Export detailed reports</span>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu-column">
+                                    <h3>Communication</h3>
+                                    <ul>
+                                        <li><a href="#student-reports">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                                <polyline points="13 2 13 9 20 9"></polyline>
+                                            </svg>
+                                            Performance PDFs
+                                            <span>Share student progress reports</span>
+                                        </a></li>
+                                        <li><a href="#notifications">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                            </svg>
+                                            Notifications
+                                            <span>Stay updated with alerts</span>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </li>
-                   
-                    <li class="nav-item">
-                        <a class="btn btn-custom" href="#pricing">Create Account</a>
-                    </li>
+                    <li><a href="#demo">Demo</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#pricing">Pricing</a></li>
+                    <li><a href="views/login.php">Login</a></li>
                 </ul>
+                <div class="mobile-menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" aria-label="Toggle dark mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                <a href="#pricing" class="btn btn-primary">Sign up</a>
             </div>
         </div>
-    </nav>
-
-    <!-- Update hero section -->
-    <section class="hero mt-4">
-        <div class="container text-center">
-            <h1 class="mb-4">Streamline Your Teaching Workflow</h1>
-            <p class="lead mb-4">Effortlessly manage student attendance, assignments, and quizzes. Save time and focus on what matters most - teaching.</p>
-            <a href="#pricing" class="btn btn-custom btn-lg">Start Your Free Trial</a>
+        <div class="mobile-menu">
+            <ul>
+                <li class="mega-menu-wrapper">
+                    <a href="#features">Features</a>
+                    <div class="mega-menu">
+                        <div class="mega-menu-content">
+                            <div class="mega-menu-column">
+                                <h3>Class Management</h3>
+                                <ul>
+                                    <li>
+                                        <a href="#student-management">
+                                            <div class="menu-item-header">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                    <circle cx="9" cy="7" r="4"></circle>
+                                                </svg>
+                                                <span class="menu-item-title">Student Management</span>
+                                            </div>
+                                            <span class="menu-item-description">Track student information and attendance</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="#class-scheduling">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                        Class Scheduling
+                                        <span>Organize your lecture timetable</span>
+                                    </a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-column">
+                                <h3>Assessments</h3>
+                                <ul>
+                                    <li><a href="#assignment-handling">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                            <polyline points="10 9 9 9 8 9"></polyline>
+                                        </svg>
+                                        Assignment System
+                                        <span>Manage and grade assignments</span>
+                                    </a></li>
+                                    <li><a href="#assessment-tools">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                        </svg>
+                                        Quiz & Exam Tools
+                                        <span>Create and grade assessments</span>
+                                    </a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-column">
+                                <h3>Analytics</h3>
+                                <ul>
+                                    <li><a href="#progress-tracking">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                                        </svg>
+                                        Progress Analytics
+                                        <span>Track student performance</span>
+                                    </a></li>
+                                    <li><a href="#data-export">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                            <polyline points="7 10 12 15 17 10"></polyline>
+                                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                                        </svg>
+                                        Report Generation
+                                        <span>Export detailed reports</span>
+                                    </a></li>
+                                </ul>
+                            </div>
+                            <div class="mega-menu-column">
+                                <h3>Communication</h3>
+                                <ul>
+                                    <li><a href="#student-reports">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                            <polyline points="13 2 13 9 20 9"></polyline>
+                                        </svg>
+                                        Performance PDFs
+                                        <span>Share student progress reports</span>
+                                    </a></li>
+                                    <li><a href="#notifications">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                        </svg>
+                                        Notifications
+                                        <span>Stay updated with alerts</span>
+                                    </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="#demo">Demo</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="views/login.php">Login</a></li>
+            </ul>
         </div>
-    </section>
+    </header>
 
-    <!-- Update features section -->
-    <section class="features py-5" >
-        <div class="container">
-            <h2 class="text-center mb-5">Essential Tools for Teachers</h2>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="feature-card h-100">
-                        <i class="fas fa-user-check fa-2x mb-4 text-primary"></i>
-                        <h3>Streamline Attendance</h3>
-                        <p>
-Automate attendance tracking to save time and improve accuracy.
-Simplify Assignments</p>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>The Ultimate Teaching Assistant for Modern Educators</h1>
+                    <p>Streamline your teaching workflow with TeachLab. Manage student information, assignments, quizzes, and track progress - all in one powerful platform designed specifically for educators.</p>
+                    <div class="hero-buttons">
+                        <a href="#pricing" class="btn btn-primary">Get Started for Free</a>
+                        <a href="#demo" class="btn btn-secondary">
+                            See Demo
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-card h-100">
-                        <i class="fas fa-chart-line fa-2x mb-4 text-primary"></i>
-                        <h3>Grade Management</h3>
-                        <p>Keep track of student grades, assignments, and quiz scores all in one place. Generate progress reports and class averages instantly.</p>
-                    </div>
+                <div class="dashboard-preview">
+                    <img src="dashboard.png" alt="TeachLab Dashboard Interface" class="dashboard-image">
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-card h-100">
-                        <i class="fas fa-tasks fa-2x mb-4 text-primary"></i>
-                        <h3>Assignment Planning</h3>
-                        <p>Plan and organize your assignments and quizzes, set due dates, and maintain a clear record of student submissions and grades.</p>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Features that make task management simple</h2>
+                    <p>Everything you need to organize, track, and complete your work efficiently</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                            </svg>
+                        </div>
+                        <h3>Student Management</h3>
+                        <p>Easily manage student information, track attendance, and maintain comprehensive student profiles in one centralized dashboard.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                        </div>
+                        <h3>Assignment Handling</h3>
+                        <p>Collect, grade, and manage student assignments digitally. Keep everything organized and easily accessible.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Assessment Tools</h3>
+                        <p>Create and conduct quizzes and exams with ease. Automatically grade and track student performance over time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3>Progress Tracking</h3>
+                        <p>Monitor student progress with detailed analytics covering attendance, assignments, quizzes, and exam performance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                        </div>
+                        <h3>Data Export</h3>
+                        <p>Export detailed reports for attendance, assignments, quizzes, and exams in various formats for your records.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h3>Student Reports</h3>
+                        <p>Generate comprehensive PDF reports for individual students showing their complete course performance and progress.</p>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- How It Works Section -->
-    <section class="py-5 bg-light" id="how-it-works">
-        <div class="container px-4 px-lg-5 my-5">
-            <h2 class="display-5 fw-bolder text-center mb-5">How TeachLab Works</h2>
-            <div class="row gx-5 align-items-center">
-                <div class="col-lg-6 order-lg-2">
-                    <!-- <div class="p-5">
-                        <img class="img-fluid rounded-3 shadow" src="https://youtu.be/c3LiP3Mdb8g" alt="TeachLab Dashboard">
-                    </div> -->
-                <div class="embed-responsive embed-responsive-16by9 p-1">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/c3LiP3Mdb8g?si=zab0tazkJq-jlRz3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <section id="demo" class="demo">
+            <div class="container">
+                <div class="section-header">
+                    <h2>See TeachLab in action</h2>
+                    <p>Watch how TeachLab can transform your workflow and boost productivity</p>
                 </div>
-                </div>
-                <div class="col-lg-6 order-lg-1">
-                    <div class="p-5">
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="step-number me-3">1</div>
-                                <h3 class="fw-bold mb-0" style='font-size:19px;'>Create Your Courses</h3>
-                            </div>
-                            <p>Set up your courses and add students. Import existing data or start fresh.</p>
-                        </div>
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="step-number me-3">2</div>
-                                <h3 class="fw-bold mb-0" style='font-size:19px;'>Manage Daily Tasks</h3>
-                            </div>
-                            <p>Take attendance, create assignments, and design quizzes all in one place.</p>
-                        </div>
-                        <div class="mb-4">
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="step-number me-3">3</div>
-                                <h3 class="fw-bold mb-0" style='font-size:19px;'>Student Interaction</h3>
-                            </div>
-                            <p>Students submit assignments and take quizzes through the platform.</p>
-                        </div>
-                        <div>
-                            <div class="d-flex align-items-center mb-3">
-                                <div class="step-number me-3" >4</div>
-                                <h3 class="fw-bold mb-0" style='font-size:19px;'>Track Progress</h3>
-                            </div>
-                            <p>View combined data on attendance, assignments, and quiz results for each student.</p>
-                        </div>
+                <div class="demo-video">
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/oaiOxoLGo5Q?si=yBOzdLmtzkToUR2A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>x
 
-    <!-- Pricing Section -->
-    <section class="pricing py-5" id='pricing'>
-        <div class="container">
-            <h2 class="text-center mb-5">Select Your Plan</h2>
-            <div class="row g-4 justify-content-center">
-                <div class="col-md-4">
-                    <div class="price-card h-100">
-                        <h3>Free Plan</h3>
-                        <div class="price-amount my-4">
-                            <span class="display-4">$0</span>
-                            <span class="text-muted">/month</span>
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <h2>What our customers say</h2>
+                    <p>Join thousands of satisfied users who have transformed their productivity</p>
+                </div>
+                <div class="testimonials-slider">
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"TeachLab has completely transformed how our team manages projects. The intuitive interface and powerful features have boosted our productivity by 40%."</p>
                         </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Maximum 1 Course Creation</li>
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Maximum 1 Assignment Form</li>
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Maximum 1 Quiz Form</li>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>Sarah Johnson</h4>
+                                <p>Product Manager, TechCorp</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"As a freelancer juggling multiple clients, TeachLab has been a game-changer for me. I can easily track all my projects and never miss a deadline."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>Michael Chen</h4>
+                                <p>Independent Designer</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="testimonial-content">
+                            <p>"The analytics feature in TeachLab gives us valuable insights into our team's performance. We've been able to optimize our workflow and deliver projects faster."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar"></div>
+                            <div class="author-info">
+                                <h4>Emily Rodriguez</h4>
+                                <p>Team Lead, InnovateCo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="pricing">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Simple, transparent pricing</h2>
+                    <p>Choose the plan that fits your teaching needs</p>
+                </div>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>Free</h3>
+                            <div class="pricing-price">
+                                <span class="price">$0</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p>Perfect for trying out TeachLab</p>
+                        </div>
+                        <ul class="pricing-features">
+                           
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Basic assignment templates (up to 1)
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Basic quiz templates (up to 1)
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Basic exam templates (up to 1)
+                            </li>
+                            <li class="disabled">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                Limited Technical support
+                            </li>
                         </ul>
-                        <button class="btn btn-outline-primary w-100" onclick="storePlan('free')">Get Started</button>
+                        <a href="#signup" class="btn btn-outline" onclick="storePlan('free')">Get Started</a>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="price-card h-100 featured">
-                        <h3>Pro Plan</h3>
-                        <div class="price-amount my-4">
-                            <span class="display-4">$10</span>
-                            <span class="text-muted">/month</span>
+                    <div class="pricing-card popular">
+                        <div class="popular-badge">Most Popular</div>
+                        <div class="pricing-header">
+                            <h3>Pro</h3>
+                            <div class="pricing-price">
+                                <span class="price">$10</span>
+                                <span class="period">/month</span>
+                            </div>
+                            <p>For dedicated educators</p>
                         </div>
-                        <ul class="list-unstyled mb-4">
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Unlimited Course Creation</li>
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Unlimited Assignment Forms</li>
-                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Unlimited Quiz Forms</li>
+                        <ul class="pricing-features">
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Unlimited assignment templates
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Unlimited quiz templates
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Unlimited exam templates
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                24/7 Technical support 
+                            </li>
                         </ul>
-                        <button class="btn btn-custom w-100" onclick="storePlan('pro')">Get Started</button>
+                        <a href="#signup" class="btn btn-primary" onclick="storePlan('pro')">Get Started</a>
+                    </div>
+                    <div class="pricing-card">
+                        <div class="pricing-header">
+                            <h3>One Time Purches</h3>
+                            <div class="pricing-price">
+                                <span class="price">$50</span>
+                                <span class="period"></span>
+                            </div>
+                            <p>For ambitious educators, buy once and use it forever</p>
+                        </div>
+                        <ul class="pricing-features">
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Unlimited assignment templates
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Unlimited quiz templates
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Unlimited exam templates
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Priority 24/7 Technical support 
+                            </li>
+                        </ul>
+                        <a href="#signup" class="btn btn-outline" onclick="storePlan('one-time-purches')">Get Started</a>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-<!-- footer -->
-<footer class="bg-light py-4">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <p class="text-muted mb-0">&copy; copyright <?php $date = date('Y'); echo $date?> TeachLab | All right reserved</p>
+        </section>
+
+        <section class="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Transform Your University Teaching Experience?</h2>
+                    <p>Join thousands of university professors and lecturers who have streamlined their course management and student assessment with TeachLab.</p>
+                    <div class="cta-buttons">
+                        <a href="#pricing" class="btn btn-primary">Get Started for Free</a>
+                        <a href="#demo" class="btn btn-secondary">See Demo</a>
+                    </div>
                 </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <a href="#" class="text-muted text-decoration-none me-3">Terms of Use</a>
-                    <a href="#" class="text-muted text-decoration-none me-3">Privacy Policy</a>
-                    <!-- <a href="#" class="text-muted text-decoration-none" data-bs-toggle="modal" data-bs-target="#contactModal">Contact Us</a> -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="img/logo.png" alt="" style="width:140px;">
+                        <!-- <span>TeachLab</span> -->
+                    </div>
+                    <p>The comprehensive course management platform designed specifically for university professors and lecturers.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Twitter">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="Facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            </svg>
+                        </a>
+                        <a href="#" aria-label="LinkedIn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <h3>Product</h3>
+                        <ul>
+                            <li><a href="#">Features</a></li>
+                            <li><a href="#">Pricing</a></li>
+                            <li><a href="#">Integrations</a></li>
+                            <li><a href="#">Changelog</a></li>
+                            <li><a href="#">Roadmap</a></li>
+                        </ul>
+                    </div>
+                    </div>
+                    <div class="footer-links-column">
+                        <h3>Resources</h3>
+                        <ul>
+                            <li><a href="#">Documentation</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Help Center</a></li>
+                            <li><a href="#">API Reference</a></li>
+                            <li><a href="#">Community</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Blog</a></li>
+                            <li><a href="#">Careers</a></li>
+                            <li><a href="#">Press</a></li>
+                            <li><a href="#">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 TeachLab - Empowering University Educators. All rights reserved.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
                 </div>
             </div>
         </div>
     </footer>
- <!-- end footer -->
-    <!-- Add this script before the closing body tag -->
-<script>
+
+    <div class="whatsapp-icon" id="whatsappIcon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="#25D366">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.967 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+    </div>
+    <div class="whatsapp-popup" id="whatsappPopup">
+        <div class="whatsapp-popup-header">
+            <h3>Contact Us on WhatsApp</h3>
+            <button id="closePopup">&times;</button>
+        </div>
+        <div class="whatsapp-popup-content">
+            <p>Get in touch with us instantly via WhatsApp for quick support and inquiries.</p>
+            <a href="https://wa.me/+252633558027" target="_blank" class="btn btn-whatsapp">Open WhatsApp Chat</a>
+        </div>
+    </div>
+    <script>
     function storePlan(planType) {
         // Store the selected plan
         localStorage.setItem('selectedPlan', planType);
@@ -295,8 +669,7 @@ Simplify Assignments</p>
         }
     });
 </script>
-    <!-- Add Bootstrap JS and Popper.js -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
-</html> 
+</html>
+

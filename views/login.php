@@ -82,7 +82,7 @@ if(isset($_SESSION['userid'])){
             </div>
           
                 <div class="px-2 mb-2">
-                <input type="submit" class="mt-2 btn btn-primary" value="Login" name='login'/>
+                <input type="submit" class="mt-2 btn btn-primary btn-sm" value="Login" name='login'/>
                 </div>
           </form>
         </div>

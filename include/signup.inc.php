@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include('../model/dbcon.php');
 include_once('send_email.php');
+include_once ('subscripton_monthly_calcualte.php');
 
 if(isset($_POST['singup'])){
 
@@ -13,11 +14,16 @@ if(isset($_POST['singup'])){
     $fullname = $_POST['fullname'];
     $pwd = $_POST['pwd'];
     $subscriptionplan = $_POST['subscriptionplan'];
-    $subscriptions = [];
+
+    
 
 
     //validate input fields
-    if(empty($email)){
+    if(empty($subscriptionplan)){
+        header('Location:../index.php?#pricing');
+        exit();
+    }
+    else if(empty($email)){
         header('Location:../views/signup.php?emptyemailfield');
         exit();
     }else if(empty($fullname)){
@@ -26,7 +32,10 @@ if(isset($_POST['singup'])){
     }else if(empty($pwd)){
         header('Location:../views/signup.php?emptypwdfield');
         exit();
-    }else{
+    }   
+    else{
+       
+
         //query
         $sql = "select * from users where email = '$email'";
         $result = mysqli_query($connection,$sql);
@@ -85,14 +94,30 @@ if(isset($_POST['singup'])){
                             $sql2 = "insert into users(userid,fullname,email,pwd,role,verified_status)values('$userrandomid','$fullname',
                             '$email','$hashpwd', 'teacher','0')";
                             $result2 = mysqli_query($connection,$sql2);
-                                if($subscriptionplan == 'free'){
-                                    $subscriptions['freeplan'] = 'free_plan';
-                                }else if($subscriptionplan == 'pro'){
-                                    $subscriptions['pro'] = 'pro';
-                                }
-                                $subscriptdays= ['free'=>'unlimited days','pro'=>'7 days'];
+                 
                             if($result2){        
-                                $sql3 = "insert into subscription(userid,subsatus,subplan,subamount)values('$userrandomid','active','$subscriptionplan','$subscriptdays[$subscriptionplan]')";
+                                                // get current date
+                                                $currentdate = new DateTime();
+                                                $subscriptioncalculated = calculateSubscription($currentdate->format('Y-m-d'), 'monthly');
+                                                $expire_date = $subscriptioncalculated['end_date'];
+                                                // echo $expire_date;
+                                                // die();
+                                              if($subscriptionplan == 'free'){
+                                               
+
+                                                $sql3 = "insert into subscription(userid,subsatus,subplan,subamount,expire_date)values('$userrandomid','active','free','0','$expire_date')";
+                                                
+                                            }else if($subscriptionplan == 'pro'){
+
+                                                
+                                                $sql3 = "insert into subscription(userid,subsatus,subplan,subamount,expire_date)values('$userrandomid','active','pro','0','$expire_date')";
+                                                
+                                            }else if($subscriptionplan == 'one-time-purches'){
+                                              
+
+                                               $sql3 = "insert into subscription(userid,subsatus,subplan,subamount,expire_date)values('$userrandomid','active','one-time-purches','0','$expire_date')";
+                                              }
+
                                 $result3 = mysqli_query($connection,$sql3);
                                 if($result3){
                                     $_SESSION['verification_userid'] = $userrandomid;

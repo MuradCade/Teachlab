@@ -59,7 +59,7 @@
           
           
                 <div class="px-2 mb-2">
-                <input type="submit" class="mt-2 btn btn-primary" value="Submit" name='submit'/>
+                <input type="submit" class="mt-2 btn btn-primary btn-sm" value="Submit" name='submit'/>
                 </div>
           </form>
         </div>

@@ -73,11 +73,11 @@ function checkquizamount($connection,$userid,$subplan){
 
 
 function checkifusersubsscriptionexpired($connection,$userid,$subplan,$substatus){
-    $sql = "select * from subscription where userid = '$userid' and subplan = '$subplan' and subsatus = '$substatus'";
+    $sql = "select * from subscription where userid = '$userid'";
     $result = mysqli_query($connection,$sql);
     if($result){
         while($row = mysqli_fetch_assoc($result)){
-            if($row['userid'] == $userid && $row['subplan'] == $subplan && $row['subsatus'] == $substatus){
+            if($row['subsatus'] == 'pro' &&$row['subplan'] == 'expire'){
                 return true;
             }else{
                 return false;
