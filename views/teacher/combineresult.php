@@ -136,11 +136,12 @@ $teacherid = $_SESSION['userid'] ?? null;
                 </div>
                 <?php if(isset($_POST['submit'])){
                     $coursename = $_POST['coursename'];
+                   
                     // echo $coursename;
                 
                     ?>
                               <div class="row mt-2">
-                                <div class="col-12 col-md-8 col-xl-8 mb-4">
+                                <div class="col-12 col-md-12 col-xl-10 mb-4">
                                 <div style='display:flex !important; align-items:center; justify-content:start; gap:10px;'>
                                 <div>
                                 <a href="slices/exportexcelcombined_data.slice.php?coursename=<?php echo $coursename;?>" class="btn btn-secondary">Convert To Excel</a>
@@ -151,7 +152,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                             </div>
                             </div>
                                    
-                                <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
+                                <div class="card mt-2 table-responsive" style='border:none !important; background-color:#f8f9fa !important;'>
                                     <table class="table table-bordered table-hover" id="myTable">
                                         <tr>
                                             <td>#</td>
@@ -171,6 +172,10 @@ $teacherid = $_SESSION['userid'] ?? null;
                                         $resultmain = mysqli_query($connection,$sqlmain);
                                         $rows = mysqli_fetch_assoc($resultmain);
                                         $formid =  $rows['quizformid']??'';
+                                        // echo "<pre>";
+                                        // var_dump($formid);
+                                        // die();
+                                        // echo "</pre>";
                                         // die();
                                             $sql2 = "SELECT 
                                                         markattendence.stdid, 

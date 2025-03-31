@@ -15,7 +15,7 @@ $teacherid = $_SESSION['userid'];
 
 //change password
 if(isset($_POST['savepwd']) && isset($teacherid)){
-    $pwd = $_POST['pwd'];
+    $pwd = mysqli_real_escape_string($connection ,$_POST['pwd']);
     if(empty($pwd)){
         header('location:changepassword.php?emptypwd');
         exit();
@@ -127,7 +127,7 @@ if(isset($_POST['savepwd']) && isset($teacherid)){
                             <form method='post'>
                             <div class="form-group mb-2">
                                 <label class='form-label'>New Password</label>
-                                <input type="text" class="form-control" placeholder="Enter New Password" name='pwd'>
+                                <input type="password" class="form-control" placeholder="Enter New Password" name='pwd'>
                             </div>
                             <button class='btn btn-primary btn-sm mt-2 fw-bold' name='savepwd'>Update</button>
                             </form>

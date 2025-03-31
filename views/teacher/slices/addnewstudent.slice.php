@@ -7,9 +7,9 @@ if (session_status() === PHP_SESSION_NONE) {
 
 if(isset($_POST['submit'])){
 
-    $studentid = $_POST['studentid'];
-    $studentname = $_POST['studentname'];
-    $coursename = $_POST['coursename'];
+    $studentid = mysqli_real_escape_string($connection ,$_POST['studentid']);
+    $studentname = mysqli_real_escape_string($connection ,$_POST['studentname']);
+    $coursename = mysqli_real_escape_string($connection ,$_POST['coursename']);
     $teacherid = $_SESSION['userid'];
     if(empty($studentid)){
         header('location:../addnewstudent.php?emptystudentid');

@@ -13,13 +13,13 @@ if (!isset($_SESSION['userid'])) {
 
 $teacherid = $_SESSION['userid'];
 
-
 //update user information
 if(isset($_POST['saveinfo']) && isset($teacherid)){
-    $fullname = $_POST['fullname'];
+    $fullname = mysqli_real_escape_string($connection ,$_POST['fullname']);
     $sql = "update users set fullname = '$fullname' where userid = '$teacherid'";
     $result = mysqli_query($connection,$sql);
     if($result){
+        $_SESSION['fullname'] = $fullname; // update session variable
         header('location:setting.php?updatesuccess');
         exit();
     }else{

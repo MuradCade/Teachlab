@@ -25,7 +25,7 @@ if(isset($_GET['delid'])){
     $result = mysqli_query($connection,$sql);
     if($result){
         $row = mysqli_fetch_assoc($result);
-        $coursename = $row['coursename'];
+        $coursename = mysqli_real_escape_string($connection ,$row['coursename']);
         // second task delete all the data of the  student associated with that coursename
         $sql2 = "delete from students where coursename = '$coursename' and teacherid ='$teacherid'";
         $result2 = mysqli_query($connection,$sql2);
@@ -164,7 +164,7 @@ if(isset($_GET['delid'])){
                                                     <td><?php echo $rownumber; ?></td>
                                                     <td><?php echo $row['coursename']; ?></td>
                                                     <td><?php echo date('M-j-Y ', strtotime($row['date'])); ?></td>
-                                                    <td><a href="updatecourse.php?courseid=<?php echo $row['courseid'] ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewcourse.php?delid=<?php echo $row['courseid']?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
+                                                    <td><a href="updatecourse.php?courseid=<?php echo base64_encode($row['courseid']) ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewcourse.php?delid=<?php echo $row['courseid']?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
                                                 </tr>
                                     <?php $rownumber++;
                                             }

@@ -1,0 +1,18 @@
+free acount
+-----------------
+email:tenijiy903@lassora.com
+
+
+pro account
+-----------------
+email : lodam71742@jomspar.com
+
+
+one time purches
+--------------
+email : yalap83779@hartaria.com
+
+
+
+
+checksubscriptionstatus($connection,$teacherid,'subplan') == 'one-time-purches' && checksubscriptionstatus($connection,$_SESSION['userid'],'subsatus') == 'active'  && checksubscriptionstatus($connection,$teacherid,'subamount') == 'infinite'

@@ -19,9 +19,9 @@ $teacherid = $_SESSION['userid'] ?? null;
 
 //save updated student information
 if(isset($_POST['update'])){
-    $studentid = $_POST['studentid'];
-    $studentname = $_POST['studentname'];
-    $coursename = $_POST['coursename'];
+    $studentid = mysqli_real_escape_string($connection ,$_POST['studentid']);
+    $studentname = mysqli_real_escape_string($connection ,$_POST['studentname']);
+    $coursename = mysqli_real_escape_string($connection ,$_POST['coursename']);
 
     if(empty($studentid)){
         header('location:viewstudent.php?emptystudentid');
@@ -258,7 +258,7 @@ if(isset($_GET['delid'])){
                                                     <td><?php echo $row['stdid']; ?></td>
                                                     <td><?php echo $row['stdfullname'] ?></td>
                                                     <td><?php echo $row['coursename'] ?></td>
-                                                    <td><a href="viewstudent.php?updateid=<?php echo $row['stdid'] ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewstudent.php?delid=<?php echo $row['stdid']?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
+                                                    <td><a href="viewstudent.php?updateid=<?php echo base64_encode($row['stdid']) ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewstudent.php?delid=<?php echo $row['stdid']?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
                                                 </tr>
                                     <?php $rownumber++;
                                             }
@@ -305,7 +305,7 @@ if(isset($_GET['delid'])){
                                              <!-- student update form -->
                                               <?php if(isset($_GET['updateid'])){
                                                 //get the student id to update its data
-                                                $studentid = $_GET['updateid'];
+                                                $studentid = base64_decode($_GET['updateid']);
                                                 $sql = "select * from students where stdid = '$studentid'";
                                                 $result = mysqli_query($connection,$sql);
 

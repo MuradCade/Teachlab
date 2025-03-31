@@ -8,7 +8,7 @@
 function securecourseidinurl($courseid,$teacherid, $connection){
      // get the coursename before updating  course information
  if (isset($courseid)) {
-    $courseid = $_GET['courseid'];
+    $courseid = base64_decode($_GET['courseid']);
     $teacherid = $_SESSION['userid'];
     $sqlquery = "select coursename from course where courseid = '$courseid' and teacherid = '$teacherid'";
     $resultquery = mysqli_query($connection, $sqlquery);

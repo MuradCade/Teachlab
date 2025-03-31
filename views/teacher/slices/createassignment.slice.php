@@ -8,13 +8,13 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 if(isset($_POST['submit'])){
-    $formtitle = $_POST['formtitle'];
-    $formdesc = $_POST['formdesc'];
-    $coursename = $_POST['coursename'];
-    $template = $_POST['template'];
+    $formtitle = mysqli_real_escape_string($connection ,$_POST['formtitle']);
+    $formdesc = mysqli_real_escape_string($connection ,$_POST['formdesc']);
+    $coursename = mysqli_real_escape_string($connection ,$_POST['coursename']);
+    $template = mysqli_real_escape_string($connection ,$_POST['template']);
     $uploadfiletype = $_POST['uploadfiletype'];
     $teacherid = $_SESSION['userid'];
-    $marks = $_POST['marks'];
+    $marks = mysqli_real_escape_string($connection ,$_POST['marks']);
     // generate random 6 number for formid
     $formid = random_int(100000, 999999);
     if(empty($formtitle) && empty($formedsc)){

@@ -23,11 +23,11 @@
     //update quizform information
     if(isset($_POST['update'])){
 
-    $quiztitle = $_POST['quiztitle'];
-    $quizdescription = $_POST['quizdescription'];
-    $quizstatus = $_POST['quizstatus'];
-    $numberofquestion = $_POST['numberofquestion'];
-    $quizformid = $_POST['quizformid'];
+    $quiztitle = mysqli_real_escape_string($connection, $_POST['quiztitle']);
+    $quizdescription = mysqli_real_escape_string($connection , $_POST['quizdescription']);
+    $quizstatus = mysqli_real_escape_string($connection , $_POST['quizstatus']);
+    $numberofquestion = mysqli_real_escape_string($connection , $_POST['numberofquestion']);
+    $quizformid = mysqli_real_escape_string($connection , $_POST['quizformid']);
 
     if(empty($quiztitle)){
         header('location:viewquizform.php?quizformid='.$quizformid.'&emptyquiztitlefield');
@@ -42,7 +42,8 @@
         header('location:viewquizform.php?quizformid='.$quizformid.'&emptynumberofquestionfield');
         exit();
     }else{
-        $sql = "update quizform set quiztitle = '$quiztitle', quizdesc = '$quizdescription', quizstatus = '$quizstatus', number_of_questions = '$numberofquestion'  where quizformid = '$quizformid' and teacherid = '$teacherid'";
+        
+        $sql = "update quizform set quiztitle = '{$quiztitle}', quizdesc = '{$quizdescription}', quizstatus = '{$quizstatus}', number_of_questions = '{$numberofquestion}'  where quizformid = '{$quizformid}' and teacherid = '{$teacherid}'";
         $result = mysqli_query($connection,$sql);
         if($result){
             header('location:viewquizform.php?quizformupdatedsuccessfully');
@@ -203,7 +204,7 @@
                     <div class="row mt-4">
                         <div class="col-lg-12 col-md-6 col-xl-12 mb-4">
                             <?php if(isset($_GET['quizformid'])){
-                                $quizformid = $_GET['quizformid'];
+                                $quizformid = base64_decode($_GET['quizformid']);
                                 $sql = "select * from quizform where quizformid = '$quizformid' and teacherid = '$teacherid' order by quiz_created_date ";
                                 $result = mysqli_query($connection,$sql);
                                 if(mysqli_num_rows($result) == 0){?>
@@ -334,7 +335,7 @@
                                                     <form method='GET'>
                                                     <button   name='details' class='btn btn-secondary btn-sm mb-1 d-inline-block fw-bold' data-bs-toggle="modal" data-bs-target="#quizformdetails"  value='<?php echo base64_encode($quiz['quizformid']);?>'>Details</button>
                                                     </form>
-                                                    <a href="viewquizform.php?quizformid=<?php echo $quiz['quizformid']?>" class="btn btn-primary mb-1 fw-bold btn-sm">Update</a>
+                                                    <a href="viewquizform.php?quizformid=<?php echo base64_encode($quiz['quizformid'])?>" class="btn btn-primary mb-1 fw-bold btn-sm">Update</a>
                                                     <a href="createquestions.php?quizformid=<?php echo $quiz['quizformid']?>" target="_blank" class="btn btn-info text-white fw-bold mb-1 btn-sm">Add Questions</a>
                                                     <a href="../quiz/takequiz.php?quizformid=<?php echo base64_encode($quiz['quizformid']);?>" target="_blank" class="btn btn-dark text-white mb-1 fw-bold btn-sm">View_Quiz_As_Student</a>
                                                     <a href="../quiz/takequiz.php?quizformid=<?php echo base64_encode($quiz['quizformid']);?>" target="_blank" class="btn btn-warning text-white mb-1 fw-bold btn-sm" onclick="copyToClipboard(event,this)">Share_Quiz_Link</a>
@@ -365,9 +366,7 @@
                                                         <p>Number_of_questions : <?= $singlequizformdata['number_of_questions']?></p>
                                                         <p>Quiz_status : <span class="<?= $singlequizformdata['quizstatus'] == 'active'?'text-success':'text-danger'?>"><?= $singlequizformdata['quizstatus']?></span></p>
 
-                                                  <?php  }
-                                                
-                                                ?>
+                                                  <?php }?>
                                             </div>
                                             <div class="modal-footer">
                                                 <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewquizform.php'>Close</a>
@@ -375,6 +374,7 @@
                                             </div>
                                         </div>
                                         </div>
+                                         
                                         <?php }?>
                                             <!-- quiz model ends here-->
                                             <?php $rowid++; }} ?>

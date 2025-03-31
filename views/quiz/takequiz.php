@@ -43,7 +43,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
       </div>
       </div>
        <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/'>TeachLab</a></p>
-   <?php }if(! isset($_SESSION['studentid']) && $row['quizstatus'] == 'active'){?>
+   <?php }if(!isset($_SESSION['studentid']) && $row['quizstatus'] == 'active'){?>
   
       <div class="container" id='quizstudentintro' s>
         <div class="row">
@@ -84,7 +84,11 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
           </div>
         </div>
       </div>
-   <?php }}} ?>
+      <div class="text-center">
+        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
+        </div>
+   <?php }?>
+  <?php }} ?>
 
  <!-- dipslay success and failed message -->
 

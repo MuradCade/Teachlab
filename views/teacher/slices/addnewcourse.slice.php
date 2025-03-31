@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 if(isset($_POST['submit'])){
     $teacherid = $_SESSION['userid'];
-    $coursename = $_POST['coursename'];
+    $coursename = mysqli_real_escape_string($connection ,$_POST['coursename']);
     if(empty($coursename)){
         header('location:../addnewcourse.php?emptycoursenamefield');
         exit();

@@ -21,11 +21,11 @@ $teacherid = $_SESSION['userid'];
 
 //update assignment form
 if(isset($_POST['update'])){
-    $formid = $_POST['formid'];
-    $formtitle = $_POST['formtitle'];
-    $formdesc = $_POST['formdesc'];
-    $formstatus = $_POST['formstatus'];
-    $marks = $_POST['marks'];
+    $formid = mysqli_real_escape_string($connection ,$_POST['formid']);
+    $formtitle = mysqli_real_escape_string($connection ,$_POST['formtitle']);
+    $formdesc = mysqli_real_escape_string($connection ,$_POST['formdesc']);
+    $formstatus = mysqli_real_escape_string($connection ,$_POST['formstatus']);
+    $marks = mysqli_real_escape_string($connection ,$_POST['marks']);
     if(empty($formtitle) || empty($formdesc)){
         header('location:viewassignmentform.php?emptyfields&updateformid='.$formid);
         exit();
@@ -278,7 +278,7 @@ if(isset($_GET['delassigmentform'])){
                                             <td><?php echo date('M-j-Y ', strtotime($row['date']));?></td>
                                             <td>
                                             <a href="viewassignmentform.php?details=<?php echo $row['formid']?>" class="btn btn-secondary d-inline-block btn-sm fw-bold">Details</a>    
-                                            <a href="viewassignmentform.php?updateformid=<?php echo $row['formid']?>" class="btn btn-primary btn-sm mb-1 fw-bold">Update</a>&numsp;<a href="viewassignmentform.php?entries=<?php echo $row['formid'];?>" class='btn btn-secondary btn-sm fw-bold'>Entries</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>"  target='a_blank' class='btn btn-info btn-sm text-white fw-bold'>View</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>" onclick="copyToClipboard(event,this)" class='btn btn-warning btn-sm fw-bold text-white'>Share</a>&numsp;<a href="viewassignmentform.php?delassigmentform=<?php echo $row['formid'];?>" class='btn btn-danger btn-sm fw-bold'>Delete</a> </td>
+                                            <a href="viewassignmentform.php?updateformid=<?php echo base64_encode($row['formid'])?>" class="btn btn-primary btn-sm mb-1 fw-bold">Update</a>&numsp;<a href="viewassignmentform.php?entries=<?php echo $row['formid'];?>" class='btn btn-secondary btn-sm fw-bold'>Entries</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>"  target='a_blank' class='btn btn-info btn-sm text-white fw-bold'>View</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>" onclick="copyToClipboard(event,this)" class='btn btn-warning btn-sm fw-bold text-white'>Share</a>&numsp;<a href="viewassignmentform.php?delassigmentform=<?php echo $row['formid'];?>" class='btn btn-danger btn-sm fw-bold'>Delete</a> </td>
                                         </tr>
 
                                         
@@ -325,7 +325,7 @@ if(isset($_GET['delassigmentform'])){
 
                 </div>
                 <?php if(isset($_GET['updateformid'])){
-                    $formid = $_GET['updateformid'];
+                    $formid = base64_decode($_GET['updateformid']);
                     $sql = "select * from assignmentform where formid = '$formid'";
                     $result = mysqli_query($connection,$sql);
                     while($rows = mysqli_fetch_assoc($result)){
@@ -337,7 +337,7 @@ if(isset($_GET['delassigmentform'])){
                     </style>
                 <!-- update assignment form -->
                        <div class="row">
-                        <div class="col-12 col-md-8 col-xl-5 mb-4">
+                        <div class="col-12 col-md-12 col-xl-12 mb-4">
                         <div class="card p-3 " style='border:none !important; background-color:#f8f9fa !important;'>
                                     <h4 class="card-title mt-1 mb-1 fw-bold" style='font-size:17px;margin-left:18px;'>
                                     Update Assignment Form
@@ -354,7 +354,7 @@ if(isset($_GET['delassigmentform'])){
                                     </div>
                                     <div class="form-group mb-3">
                                         <label class='form-label'>Form Description</label>
-                                        <textarea name="formdesc" rows="5" col="5" class='form-control' placeholder="Enter Form Description" ><?php echo $rows['description']?></textarea>
+                                        <textarea name="formdesc" rows="10" col="5" class='form-control' placeholder="Enter Form Description" ><?php echo $rows['description']?></textarea>
                                     </div>
                                         <div class="form-group mt-3">
                                             <label class='form-label'>Form Status</label>
