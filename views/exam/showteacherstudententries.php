@@ -3,7 +3,7 @@
     include '../../model/dbcon.php';
     if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
         $stdid = mysqli_real_escape_string($connection, $_GET['stdid']);
-        $sql = "select * from studentquiz where stdid = '$stdid'";
+        $sql = "select * from studentexam where stdid = '$stdid'";
         $result = mysqli_query($connection,$sql);
         if(mysqli_num_rows($result) == 0){
             echo "<center><h1>Sorry Student with that id doesn't exist.</h1>
@@ -18,24 +18,25 @@
                 
                 $questionids = $row['question_id'];
                 $studentid = $row['stdid'];
-                $quizformid = $row['quizformid'];
+                $examformid = $row['examformid'];
                
                 $studentAnswer = $row['selected_option'];
                 $studentinfo[] = $row;
                 
 
                 // check what type of quiz is this (true or false / single choice question)
-                $sqlmain = "select quiztype from quizform where quizformid = '$quizformid'";
+                $sqlmain = "select examtype from examform where examformid = '$examformid'";
                 $resultmain = mysqli_query($connection,$sqlmain);
                 $quiztypedata = mysqli_fetch_assoc($resultmain); 
+               
                 if(empty($quiztypedata)){
                     die("<center><h2>Sorry Quizform Is Not Found , so we can't display student information</h2><br><a href='../teacher/viewquizform.php' style=''>Go Back</a></center>");
 
                 }
-                if($quiztypedata['quiztype'] == 'singlechoicequestion' ){
+                if($quiztypedata['examtype'] == 'singlechoicequestion' ){
 
                     // Get question text
-                    $sql2 = "SELECT * FROM questions WHERE questionid = '{$questionids}' and quizformid = '$quizformid'";
+                    $sql2 = "SELECT * FROM examquestions WHERE questionid = '{$questionids}' and examformid = '$examformid'";
                     $result2 = mysqli_query($connection, $sql2);
                     $row2 = mysqli_fetch_assoc($result2);
                 $questiontext = $row2['questiontext'];
@@ -45,7 +46,7 @@
                 // echo "</pre>";
                 
                 // Get options and correct answer
-                $sql3 = "SELECT * FROM options WHERE questionid = '{$questionids}'  and quizformid = '$quizformid'";
+                $sql3 = "SELECT * FROM examoptions WHERE questionid = '{$questionids}'  and examformid = '$examformid'";
                 $result3 = mysqli_query($connection, $sql3);
                 $options = mysqli_fetch_assoc($result3);
                 $existingoptions[] = $options;
@@ -66,10 +67,10 @@
                     'isCorrect' => $isCorrect,
                     'correctAnswer' => $correctAnswer
                 ];
-            }else if($quiztypedata['quiztype'] == 'trueandfalse'){
+            }else if($quiztypedata['examtype'] == 'trueandfalse'){
 
                     // Get question text
-                    $sql2 = "SELECT * FROM questions WHERE questionid = '{$questionids}' and quizformid = '$quizformid'";
+                    $sql2 = "SELECT * FROM examquestions WHERE questionid = '{$questionids}' and examformid = '$examformid'";
                     $result2 = mysqli_query($connection, $sql2);
                     $row2 = mysqli_fetch_assoc($result2);
                 $questiontext = $row2['questiontext'];
@@ -79,7 +80,7 @@
                 // echo "</pre>";
                 
                 // Get options and correct answer
-                $sql3 = "SELECT * FROM true_false_options WHERE questionid = '{$questionids}'  and quizformid = '$quizformid'";
+                $sql3 = "SELECT * FROM examtrue_false_options WHERE questionid = '{$questionids}'  and examformid = '$examformid'";
                 $result3 = mysqli_query($connection, $sql3);
                 $options = mysqli_fetch_assoc($result3);
                 $existingoptions[] = $options;
@@ -173,20 +174,20 @@
                     <div class="card-header">
                         <p class='card-title fw-bold' style="text-transform: capitalize;">Student Name: <?php echo $studentinfo[0]['stdfullname'] ?? 'N/A'; ?></p>
                         <p class='card-title fw-bold'>Student ID: <?php echo $studentinfo[0]['stdid'] ?? 'N/A'; ?></p>
-                        <p class='card-title fw-bold'>Quiz Taken Date: <?php echo date('F j, Y g:i A', strtotime($studentinfo[0]['quiz_taken_date'])) ?? 'N/A'; ?></p>
+                        <p class='card-title fw-bold'>Quiz Taken Date: <?php echo date('F j, Y g:i A', strtotime($studentinfo[0]['exam_taken_date'])) ?? 'N/A'; ?></p>
                         <?php 
-                            $quizformid = $studentinfo[0]['quizformid'] ?? '';
+                            $quizformid = $studentinfo[0]['examformid'] ?? '';
                             $courseQuery = "SELECT *
-                                        FROM quizform 
-                                        WHERE quizformid = '$quizformid'";
+                                        FROM examform 
+                                        WHERE examformid = '$examformid'";
                             $courseResult = mysqli_query($connection, $courseQuery);
                             while($rows = mysqli_fetch_assoc($courseResult)){
                                 
                         
                         ?>
                         <p class='card-title fw-bold' style="text-transform: capitalize;">Course Name: <?php echo $rows['coursename']; ?></p>
-                        <p class='card-title fw-bold' style="text-transform: capitalize;">Quiz Title: <?php echo $rows['quiztitle']; ?></p>
-                        <p class='card-title fw-bold' style="text-transform: capitalize;">Quiz Type: <?php echo $rows['quiztype'] == 'trueandfalse'?'True And False Questions':'Single Choice Questions';
+                        <p class='card-title fw-bold' style="text-transform: capitalize;">Quiz Title: <?php echo $rows['examtitle']; ?></p>
+                        <p class='card-title fw-bold' style="text-transform: capitalize;">Quiz Type: <?php echo $rows['examtype'] == 'trueandfalse'?'True And False Questions':'Single Choice Questions';
 
 
     ?></p>
@@ -196,7 +197,7 @@
                         <?php if(isset($_GET['emptyanswersfields'])){ ?>
                         <p class='bg-danger text-white p-2'>Please select at least one answer</p>
                         <?php } ?>
-                    <form method="post" action='savestudentquiz.php'>
+                    <form>
                     <?php 
                     $questioncount = 1;
                     $questionsymbold = ['0'=>'a','1'=>'b','2'=>'c'];
@@ -214,7 +215,7 @@
                                         <div class="ms-4">
                                             <?php 
                                             // Determine options to show based on quiz type
-                                            $optionsToShow = ($quiztypedata['quiztype'] == 'singlechoicequestion') ? 
+                                            $optionsToShow = ($quiztypedata['examtype'] == 'singlechoicequestion') ? 
                                                 ['option_one', 'option_two', 'option_three'] : 
                                                 ['option_one', 'option_two'];
 
@@ -281,8 +282,8 @@
         
         // check if the quiz type is (true and false / single choice question) and then determine which option table we should read from
         // $quizformid = $_GET['entries'];
-        if($quiztypedata['quiztype'] == 'singlechoicequestion'){
-        $sql = "SELECT sq.quizmarks, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, quizform.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid join quizform on quizform.quizformid = '$quizformid' WHERE sq.stdid ='$stdid'; ";
+        if($quiztypedata['examtype'] == 'singlechoicequestion'){
+        $sql = "SELECT sq.exammarks, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, examform.number_of_questions FROM studentexam sq JOIN examoptions o ON sq.question_id = o.questionid AND sq.examformid = o.examformid join examform on examform.examformid = '$examformid' WHERE sq.stdid ='$stdid'; ";
 
         $result = mysqli_query($connection, $sql);
 
@@ -293,12 +294,12 @@
                     <p>Correct Answers: <?php echo $row['correct_count']?> </p>
                     <p>Wrong Answers: <?php echo $row['wrong_count']?> </p>
                     <p>Total Questions: <?php echo $row['number_of_questions']?> </p>
-                    <p>Quiz Marks: <?php echo $row['quizmarks']?> </p>
+                    <p>Quiz Marks: <?php echo $row['exammarks']?> </p>
                 </div>
             <?php }
         } 
-    }else if($quiztypedata['quiztype'] == 'trueandfalse'){
-        $sql = "SELECT sq.quizmarks, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, quizform.number_of_questions FROM studentquiz sq JOIN true_false_options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid join quizform on quizform.quizformid = '$quizformid' WHERE sq.stdid ='$stdid'; ";
+    }else if($quiztypedata['examtype'] == 'trueandfalse'){
+        $sql = "SELECT sq.exammarks, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, examform.number_of_questions FROM studentexam sq JOIN examtrue_false_options o ON sq.question_id = o.questionid AND sq.examformid = o.examformid join examform on examform.examformid = '$examformid' WHERE sq.stdid ='$stdid'; ";
 
         $result = mysqli_query($connection, $sql);
 
@@ -309,7 +310,7 @@
                     <p>Correct Answers: <?php echo $row['correct_count']?> </p>
                     <p>Wrong Answers: <?php echo $row['wrong_count']?> </p>
                     <p>Total Questions: <?php echo $row['number_of_questions']?> </p>
-                    <p>Quiz Marks: <?php echo $row['quizmarks']?> </p>
+                    <p>Quiz Marks: <?php echo $row['exammarks']?> </p>
                 </div>
             <?php }
         } 

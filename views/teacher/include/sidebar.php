@@ -52,7 +52,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         </li>
                         <li class="nav-item dropdown mt-3">
                             <a class="nav-link dropdown-toggle <?php checkactivesidebar($url,'markattandence.php'); checkactivesidebar($url,'viewattadencemarks.php'); echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':''; echo checksubscriptionstatus($connection,$teacherid,'subamount') == '0' ? 'disabled':'';?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false"style='font-size:15px;'>
-                                <i class="bi bi-check-circle-fill me-1"></i> Attendance
+                                <i class="bi bi-check-circle me-1"></i> Attendance
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAnalytics">
                                 <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'markattandence.php');?> fw-bold" href="markattandence.php">Mark Attendance</a></li>
@@ -62,7 +62,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         </li>
                         <li class="nav-item dropdown mt-3">
                             <a class="nav-link dropdown-toggle <?php checkactivesidebar($url,'createassignmentform.php'); checkactivesidebar($url,'viewassignmentform.php'); echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':''; echo checksubscriptionstatus($connection,$teacherid,'subamount') == '0' ? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-archive me-1"></i> Assignment Form
+                            <i class="bi bi-file-earmark-word me-1"></i> Assignment Form
                             </a>
                             <ul class="dropdown-menu mb-5" aria-labelledby="dropdownAnalytics">
                                 <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'createassignmentform.php');?> fw-bold" href="createassignmentform.php">Create AssignmentForm</a></li>
@@ -72,7 +72,7 @@ if (session_status() === PHP_SESSION_NONE) {
                         </li>
                         <li class="nav-item dropdown mt-3">
                             <a class="nav-link dropdown-toggle   <?php checkactivesidebar($url,'createquiz.php'); checkactivesidebar($url,'viewquizform.php');  echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':''; echo checksubscriptionstatus($connection,$teacherid,'subamount') == '0' ? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-archive me-1"></i> Quiz
+                            <i class="bi bi-question-diamond me-2"></i>    Quiz
                             </a>
                             <ul class="dropdown-menu mb-5" aria-labelledby="dropdownAnalytics">
                                 <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'createquiz.php');?> fw-bold" href="createquiz.php">Create Quiz Form</a></li>
@@ -80,16 +80,27 @@ if (session_status() === PHP_SESSION_NONE) {
                                 <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
                             </ul>
                         </li>
-                        
+                        <!-- exam tap starts here-->
+                        <li class="nav-item dropdown mt-3">
+                            <a class="nav-link dropdown-toggle   <?php checkactivesidebar($url,'create_examform.php'); checkactivesidebar($url,'viewexamform.php');  echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':''; echo checksubscriptionstatus($connection,$teacherid,'subamount') == '0' ? 'disabled':'';?>  fw-bold" href="#" style='font-size:15px;'id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-archive me-1"></i> Exam
+                            </a>
+                            <ul class="dropdown-menu mb-5" aria-labelledby="dropdownAnalytics">
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'create_examform.php');?> fw-bold" href="create_examform.php">Create Exam Form</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item  <?php checkactivesidebar($url,'viewexamform.php');?> fw-bold" href="viewexamform.php">View Exam Forms</a></li>
+                                <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
+                            </ul>
+                        </li>
+                        <!-- exam tap ends here-->
                         <li class="nav-item dropdown mt-3">
                             <a class="nav-link  text-secondary fw-bold" href="https://teachlab.canny.io/teachlab" target='_blank' style='font-size:15px;'>
-                            <i class="bi bi-info-circle-fill me-1"></i> Feedback
+                            <i class="bi bi-info-circle me-1"></i> Feedback
                             </a>
                          
                         </li>
                         <li class="nav-item mt-3">
                             <a class="nav-link  <?php checkactivesidebar($url,'combineresult.php'); echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':''; echo checksubscriptionstatus($connection,$teacherid,'subamount') == '0' ? 'disabled':'';?>  fw-bold" href="combineresult.php" style='font-size:15px;'>
-                            <i class="bi bi-bar-chart-fill me-1"></i>  Combine Result
+                            <i class="bi bi-bar-chart me-1"></i>  Combine Result
                             </a>
                         </li>
                         <li class="nav-item mt-3">

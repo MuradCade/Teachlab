@@ -19,20 +19,20 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 //export studentdata as excel file
-if(isset($_GET['quizformid'])){
-    $quizformid = $_GET['quizformid'];
+if(isset($_GET['examformid'])){
+    $examformid = $_GET['examformid'];
     // check if the quiztype is true and false / single choice question
-    $sqlmain = "select quiztype from quizform where quizformid = '$quizformid'";
+    $sqlmain = "select examtype from examform where examformid = '$examformid'";
     $resultmain = mysqli_query($connection,$sqlmain);
-    $quizformdata = mysqli_fetch_assoc($resultmain);
+    $examformdata = mysqli_fetch_assoc($resultmain);
     
-if($quizformdata['quiztype'] == 'trueandfalse'){
+if($examformdata['examtype'] == 'trueandfalse'){
     //  read all studendata related to specified coursename with teacherid
     $sql1 = "SELECT
                                             sq.stdfullname,
                                             sq.stdid,
-                                            sq.quizmarks,
-                                            sq.quiz_taken_date,
+                                            sq.exammarks,
+                                            sq.exam_taken_date,
                                             qf.number_of_questions,
                                             COUNT(sq.question_id) AS total_questions,
                                             COUNT(
@@ -42,22 +42,22 @@ if($quizformdata['quiztype'] == 'trueandfalse'){
                                                                 CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 ELSE NULL END
                                                             ) AS wrong_count
                                                         FROM
-                                                            studentquiz sq
-                                                        JOIN TRUE_false_options o
+                                                            studentexam sq
+                                                        JOIN examtrue_false_options o
                                                         ON
                                                             sq.question_id = o.questionid 
-                                                            AND sq.quizformid = o.quizformid
-                                                        JOIN quizform qf 
+                                                            AND sq.examformid = o.examformid
+                                                        JOIN examform qf 
                                                         ON
-                                                            sq.quizformid = qf.quizformid
+                                                            sq.examformid = qf.examformid
                                                         WHERE
                                                             qf.teacherid = '$teacherid'
-                                                            AND sq.quizformid = '$quizformid'
+                                                            AND sq.examformid = '$examformid'
                                                         GROUP BY
                                                             sq.stdfullname,
                                                             sq.stdid,
-                                                            sq.quizmarks,
-                                                            sq.quiz_taken_date,
+                                                            sq.exammarks,
+                                                            sq.exam_taken_date,
                                                             qf.number_of_questions
                                                             ";
     $result1 = mysqli_query($connection,$sql1);
@@ -94,8 +94,8 @@ if($quizformdata['quiztype'] == 'trueandfalse'){
         $activesheet->setCellValue('D'.$rowid,$row['wrong_count']);
         $activesheet->setCellValue('E'.$rowid,$row['correct_count']);
         $activesheet->setCellValue('F'.$rowid,$row['number_of_questions']);
-        $activesheet->setCellValue('G'.$rowid,$row['quizmarks']);
-        $activesheet->setCellValue('H'.$rowid,date('M-j-Y ', strtotime($row['quiz_taken_date'])));
+        $activesheet->setCellValue('G'.$rowid,$row['exammarks']);
+        $activesheet->setCellValue('H'.$rowid,date('M-j-Y ', strtotime($row['exam_taken_date'])));
 
     //   echo $row['stdid'];
         $rowid++;
@@ -106,7 +106,7 @@ if($quizformdata['quiztype'] == 'trueandfalse'){
         // if($rowid === mysqli_num_rows($result1)){
 
             // generate filename
-            $filename = 'true_false_question_quizformdata.xls';
+            $filename = 'true_false_questions_examformdata.xls';
             
             ob_end_clean();
           
@@ -119,13 +119,13 @@ if($quizformdata['quiztype'] == 'trueandfalse'){
 
     }
     else{
-        header('location:../viewquizform.php?dbqueryfailed');
+        header('location:../viewexamform.php?dbqueryfailed');
         exit();
     }
 
-}else if($quizformdata['quiztype'] == 'singlechoicequestion'){
+}else if($examformdata['examtype'] == 'singlechoicequestion'){
 //  read all studendata related to specified coursename with teacherid
-$sql2 = "SELECT sq.stdfullname,sq.stdid,sq.quizmarks,sq.quiz_taken_date,number_of_questions, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, qf.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid JOIN quizform qf ON sq.quizformid = qf.quizformid WHERE qf.teacherid = '$teacherid' and sq.quizformid = '$quizformid' GROUP BY sq.stdfullname, sq.stdid, sq.quizmarks, qf.number_of_questions ";
+$sql2 = "SELECT sq.stdfullname,sq.stdid,sq.exammarks,sq.exam_taken_date,number_of_questions, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, qf.number_of_questions FROM studentexam sq JOIN examoptions o ON sq.question_id = o.questionid AND sq.examformid = o.examformid JOIN examform qf ON sq.examformid = qf.examformid WHERE qf.teacherid = '$teacherid' and sq.examformid = '$examformid' GROUP BY sq.stdfullname, sq.stdid, sq.exammarks, qf.number_of_questions ";
 $result2 = mysqli_query($connection,$sql2);
 
 
@@ -161,8 +161,8 @@ $activesheet->setCellValue('C'.$rowid,$row['stdfullname']);
 $activesheet->setCellValue('D'.$rowid,$row['wrong_count']);
 $activesheet->setCellValue('E'.$rowid,$row['correct_count']);
 $activesheet->setCellValue('F'.$rowid,$row['number_of_questions']);
-$activesheet->setCellValue('G'.$rowid,$row['quizmarks']);
-$activesheet->setCellValue('H'.$rowid,date('M-j-Y ', strtotime($row['quiz_taken_date'])));
+$activesheet->setCellValue('G'.$rowid,$row['exammarks']);
+$activesheet->setCellValue('H'.$rowid,date('M-j-Y ', strtotime($row['exam_taken_date'])));
 
 //   echo $row['stdid'];
 $rowid++;
@@ -173,7 +173,7 @@ $rowid++;
 // if($rowid === mysqli_num_rows($result2)){
 
 // generate filename
-$filename = 'single_choice_questions_quizformdata.xlsx';
+$filename = 'single_choice_question_examformdata.xlsx';
 
 ob_end_clean();
 
@@ -186,7 +186,7 @@ $excelwrite->save('php://output');
 
 }
 else{
-    header('location:../viewquizform.php?dbqueryfailed');
+    header('location:../viewexamform.php?dbqueryfailed');
 exit();
 }
 }
@@ -194,6 +194,6 @@ exit();
   
 }
 else{
-    header('location:../viewquizform.php?redirect');
+    header('location:../viewexamform.php?redirect');
     exit();
 }

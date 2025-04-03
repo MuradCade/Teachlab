@@ -1,8 +1,8 @@
 <?php
     include('../../model/dbcon.php');
     include('slices/studentcreationvalidation.php');
-    include('slices/displayquizform.slice.php');
-    include_once('slices/display_single_quizform.php');
+    include('slices/displayexamform.slice.php');
+    include_once('slices/display_single_exam.php');
     // check if session already runing if not run new session
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
@@ -23,33 +23,34 @@
     //update quizform information
     if(isset($_POST['update'])){
 
-    $quiztitle = mysqli_real_escape_string($connection, $_POST['quiztitle']);
-    $quizdescription = mysqli_real_escape_string($connection , $_POST['quizdescription']);
-    $quizstatus = mysqli_real_escape_string($connection , $_POST['quizstatus']);
+    $examtitle = mysqli_real_escape_string($connection, $_POST['examtitle']);
+    $examdescription = mysqli_real_escape_string($connection , $_POST['examdescription']);
+    $examstatus = mysqli_real_escape_string($connection , $_POST['examstatus']);
     $numberofquestion = mysqli_real_escape_string($connection , $_POST['numberofquestion']);
-    $quizformid = mysqli_real_escape_string($connection , $_POST['quizformid']);
-
-    if(empty($quiztitle)){
-        header('location:viewquizform.php?quizformid='.$quizformid.'&emptyquiztitlefield');
+    $examformid = $_POST['examformid'];
+    
+    
+    if(empty(trim($examtitle))){
+        header('location:viewexamform.php?examformid='.base64_encode($examformid).'&emptyeaxmtitlefield');
         exit();
-    }else if(empty($quizdescription)){
-        header('location:viewquizform.php?quizformid='.$quizformid.'&emptydescriptionfield');
+    }else if(empty(trim($examdescription))){
+        header('location:viewexamform.php?examformid='.base64_encode($examformid).'&emptydescriptionfield');
         exit();
-    }else if(empty($quizstatus)){
-        header('location:viewquizform.php?quizformid='.$quizformid.'&emptyquizstatusfield');
+    }else if(empty(trim($examstatus))){
+        header('location:viewexamform.php?examformid='.base64_encode($examformid).'&emptyexamstatusfield');
         exit();
-    }else if(empty($numberofquestion)){
-        header('location:viewquizform.php?quizformid='.$quizformid.'&emptynumberofquestionfield');
+    }else if(empty(trim($numberofquestion))){
+        header('location:viewexamform.php?examformid='.base64_encode($examformid).'&emptynumberofquestionfield');
         exit();
     }else{
         
-        $sql = "update quizform set quiztitle = '{$quiztitle}', quizdesc = '{$quizdescription}', quizstatus = '{$quizstatus}', number_of_questions = '{$numberofquestion}'  where quizformid = '{$quizformid}' and teacherid = '{$teacherid}'";
+        $sql = "update examform set examtitle = '{$examtitle}', examdesc = '{$examdescription}', examstatus = '{$examstatus}', number_of_questions = '{$numberofquestion}'  where examformid = '{$examformid}' and teacherid = '{$teacherid}'";
         $result = mysqli_query($connection,$sql);
         if($result){
-            header('location:viewquizform.php?quizformupdatedsuccessfully');
+            header('location:viewexamform.php?examformupdatedsuccessfully');
             exit();
         }else{
-            header('location:viewquizform.php?quizformupdatefailed');
+            header('location:viewexamform.php?examformupdatefailed');
             exit();
         }
     } 
@@ -60,31 +61,32 @@
     if(isset($_GET['delid'])){
         $delid = $_GET['delid'];
         // delete all options related to currently deleting quizform
-        $sql1 = "delete from options where quizformid = '$delid'";
+        $sql1 = "delete from examoptions where examformid = '$delid'";
         $result1 = mysqli_query($connection,$sql1);
         if($result1){ 
             //delete student related to this quizform
-            $sql2 = "delete from studentquiz where quizformid = '$delid'";
+            $sql2 = "delete from studentexam where examformid = '$delid'";
             $result2 = mysqli_query($connection,$sql2);
             if($result2){
                 // delte all questions related to quizform
-                $sql3 = "delete from questions where quizformid = '$delid'";
+                $sql3 = "delete from examquestions where examformid = '$delid'";
                 $result3 = mysqli_query($connection,$sql3);
                 if($result3){
                     // now delete the quizform
-                    $sql4 = "delete from quizform where quizformid = '$delid'";
+                    $sql4 = "delete from examform where examformid = '$delid'";
                     $result4 = mysqli_query($connection,$sql4);
                     if($result4){
-                        $sql5 = "delete from true_false_options where quizformid = '$delid'";
-                        $result5 = mysqli_query($connection,$sql5);
-                        header('location:viewquizform.php?delsuccess');
+                         // now delete the quizform
+                    $sql5 = "delete from examtrue_false_options where examformid = '$delid'";
+                    $result5 = mysqli_query($connection,$sql5);
+                        header('location:viewexamform.php?delsuccess');
                         exit();
                     }
                 }
             }
         
         }else{
-            header('location:viewquizform.php?delfailed');
+            header('location:viewexamform.php?delfailed');
             exit();
         }
     }
@@ -94,18 +96,18 @@
 
 
     // update quiz entry quiz marks
-    if(isset($_GET['studentid']) && isset($_POST['updatequizentries'])){
+    if(isset($_POST['updatequizentries']) && isset($_GET['studentid']) ){
         if(isset($_GET['entries'])){
-            $quizformid = $_GET['entries'];
+            $examformid = $_GET['entries'];
             $studentid = $_GET['studentid'];
-            $quizmarks = $_POST['quizmarks'];
-            $sql = "update studentquiz set quizmarks = '$quizmarks' where stdid = '$studentid'";
+            $exammarks = $_POST['exammarks'];
+            $sql = "update studentexam set exammarks = '$exammarks' where stdid = '$studentid' and examformid = '$examformid'";
             $result = mysqli_query($connection,$sql);
             if($result){
-                header('location:viewquizform.php?entries='.$quizformid.'&quizmarksupdatedsuccessfully');
+                header('location:viewexamform.php?entries='.$examformid.'&quizmarksupdatedsuccessfully');
                 exit();
             }else{
-                header('location:viewquizform.php?entries='.$quizformid.'&quizmarksupdatefailed');
+                header('location:viewexamform.php?entries='.$examformid.'&quizmarksupdatefailed');
                 exit();
             }
         }
@@ -115,26 +117,15 @@
     // delete quiz entry
     if(isset($_GET['delstudentid'])){
         if(isset($_GET['entries'])){
-            $quizformid = $_GET['entries'];
+            $examformid = $_GET['entries'];
             $delid = $_GET['delstudentid'];
-
-        
-
-            $sql = "delete from studentquiz where stdid = '$delid'";
+            $sql = "delete from studentexam where stdid = '$delid'";
             $result = mysqli_query($connection,$sql);
             if($result){
-              
-                    
-                        header('location:viewquizform.php?entries='.$quizformid.'&studentdeletedsuccessfully');
-                        exit();
-                  
-                
-                   
-                  
-                    
-              
+            header('location:viewexamform.php?entries='.$examformid.'&studentdeletedsuccessfully');
+                exit();
             }else{
-                header('location:viewquizform.php?entries='.$quizformid.'&studentdeletionfailed');
+                header('location:viewexamform.php?entries='.$examformid.'&studentdeletionfailed');
                 exit();
             }
         }
@@ -146,7 +137,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>TeachLab - View Quiz Form</title>
+        <title>TeachLab - View Exam Form</title>
         <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -210,40 +201,41 @@
                     </nav>
 
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h1 class=" fw-medium" style='font-size:16px'>Quiz / <span>View Quiz Form</span></h1>
+                        <h1 class=" fw-medium" style='font-size:16px'>Exam / <span>View Exam Form</span></h1>
                     </div>
 
                     <!-- Quiz List Table -->
                     <div class="row mt-4">
                         <div class="col-lg-12 col-md-6 col-xl-12 mb-4">
-                            <?php if(isset($_GET['quizformid'])){
-                                $quizformid = base64_decode($_GET['quizformid']);
-                                $sql = "select * from quizform where quizformid = '$quizformid' and teacherid = '$teacherid' order by quiz_created_date ";
+                            <?php if(isset($_GET['examformid'])){
+                                $examformid = base64_decode($_GET['examformid']);
+                                $sql = "select * from examform where examformid = '$examformid' and teacherid = '$teacherid' order by exam_created_date ";
                                 $result = mysqli_query($connection,$sql);
                                 if(mysqli_num_rows($result) == 0){?>
                                     <div class="container">
                                     <p class="bg-danger text-white fw-bold p-2" role="alert">
-                                                Quiz id not valid
+                                                Exam id not valid
                                 </p>
-                                    <a href="viewquizform.php" class="btn btn-primary btn-sm fw-bold">Go Back</a>
+                                    <a href="viewexamform.php" class="btn btn-primary btn-sm fw-bold">Go Back</a>
                                     </div>
                                 <?php }else{ 
                                     
-                                    while($quizformdata = mysqli_fetch_assoc($result)){?>
+                                    while($examformdata = mysqli_fetch_assoc($result)){?>
                                     <div class="card" style="border:none !important; background-color:#f8f9fa !important;">
                                 <h4 class="card-title mt-4 px-3 fw-bold" style='font-size:17px !important;'>
-                                    Update Quiz Form
+                                    Update Exam Form
                                 </h4>
+                              
                                 <!-- display errors to the user -->
-                                    <?php if(isset($_GET['emptyquiztitlefield'])){ ?>
-                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Quiz Title Field</p>
+                                    <?php if(isset($_GET['emptyeaxmtitlefield'])){ ?>
+                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Exam Title Field</p>
                                     <?php }?>
                                     <?php if(isset($_GET['emptydescriptionfield'])){ ?>
-                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Quiz Description Field</p>
+                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Exam Description Field</p>
                                     <?php }?>
                                     
-                                    <?php if(isset($_GET['emptyquizstatusfield'])){ ?>
-                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Quiz Status Field</p>
+                                    <?php if(isset($_GET['emptyexamstatusfield'])){ ?>
+                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Exam Status Field</p>
                                     <?php }?>   
                                     <?php if(isset($_GET['emptynumberofquestionfield'])){ ?>
                                         <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Empty Number of Question Field</p>
@@ -252,42 +244,42 @@
                                 <form method="POST">
                                 <div class="mb-3">
                                 
-                                    <input type="hidden" class="form-control"  name="quizformid"  
-                                    value="<?php echo $quizformdata['quizformid']?>">
+                                    <input type="hidden" class="form-control"  name="examformid"  
+                                    value="<?php echo $examformdata['examformid']?>">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="quizTitle" class="form-label">Quiz Title</label>
-                                    <input type="text" class="form-control"  name="quiztitle"  placeholder="Enter Quiz Title"
-                                    value="<?php echo $quizformdata['quiztitle']?>">
+                                    <label for="quizTitle" class="form-label">Exam Title</label>
+                                    <input type="text" class="form-control"  name="examtitle"  placeholder="Enter Quiz Title"
+                                    value="<?php echo $examformdata['examtitle']?>">
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="quizDescription" class="form-label">Quiz Description</label>
-                                    <textarea class="form-control"  name="quizdescription" rows="4"  placeholder="Enter Quiz Description"><?php echo $quizformdata['quizdesc']?></textarea>
+                                    <label for="quizDescription" class="form-label">Exam Description</label>
+                                    <textarea class="form-control"  name="examdescription" rows="4"  placeholder="Enter Quiz Description"><?php echo $examformdata['examdesc']?></textarea>
                                 </div>
                                 
                               
                                 
                                 <div class="mb-3">
-                                    <label for="quizStatus" class="form-label">Quiz Status</label>
-                                    <select class="form-select" name="quizstatus">
-                                        <option value="active" <?php  echo $quizformdata['quizstatus'] == 'active' ? 'selected' : '';?>>Active</option>
-                                        <option value="disable" <?php  echo $quizformdata['quizstatus'] == 'disable' ? 'selected' : '';?>>Disable</option>
-                                        <option value="draft" <?php  echo $quizformdata['quizstatus'] == 'draft' ? 'selected' : '';?>>Draft</option>
+                                    <label for="quizStatus" class="form-label">Exam Status</label>
+                                    <select class="form-select" name="examstatus">
+                                        <option value="active" <?php  echo $examformdata['examstatus'] == 'active' ? 'selected' : '';?>>Active</option>
+                                        <option value="disable" <?php  echo $examformdata['examstatus'] == 'disable' ? 'selected' : '';?>>Disable</option>
+                                        <option value="draft" <?php  echo $examformdata['examstatus'] == 'draft' ? 'selected' : '';?>>Draft</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="numerofquestions" class="form-label">Number of Questions</label>
                                 <select name="numberofquestion" class="form-select">
-                                    <option value="5" <?php  echo $quizformdata['number_of_questions'] == '5' ? 'selected' : '';?>>5</option>
-                                    <option value="10" <?php  echo $quizformdata['number_of_questions'] == '10' ? 'selected' : '';?>>10</option>
-                                    <option value="20" <?php  echo $quizformdata['number_of_questions'] == '20' ? 'selected' : '';?>>20</option>
-                                    <option value="30" <?php  echo $quizformdata['number_of_questions'] == '30' ? 'selected' : '';?>>30</option>
+                                    <option value="5" <?php  echo $examformdata['number_of_questions'] == '5' ? 'selected' : '';?>>5</option>
+                                    <option value="10" <?php  echo $examformdata['number_of_questions'] == '10' ? 'selected' : '';?>>10</option>
+                                    <option value="20" <?php  echo $examformdata['number_of_questions'] == '20' ? 'selected' : '';?>>20</option>
+                                    <option value="30" <?php  echo $examformdata['number_of_questions'] == '30' ? 'selected' : '';?>>30</option>
                                 </select>
                                 </div>
                                
                                 <button type="submit" class="btn btn-primary  fw-bold btn-sm" name='update'>Update</button>
-                                <a href='viewquizform.php'  class="btn btn-secondary  fw-bold btn-sm">Cancel</a>
+                                <a href='viewexamform.php'  class="btn btn-secondary  fw-bold btn-sm">Cancel</a>
                             </form>
                                 </div>
                             </div>
@@ -300,17 +292,17 @@
                                         Quiz List
                                     </h4>
 
-                                    <?php if(isset($_GET['quizformupdatedsuccessfully'])){ ?>
-                                        <p class='bg-success p-2  mt-3 fw-bold text-break text-white'>Quiz Form Updated Successfully</p>
+                                    <?php if(isset($_GET['examformupdatedsuccessfully'])){ ?>
+                                        <p class='bg-success p-2  mt-3 fw-bold text-break text-white'>Exam Form Updated Successfully</p>
                                     <?php }?>
-                                    <?php if(isset($_GET['quizformupdatefailed'])){ ?>
-                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Quiz Form Update Failed</p>
+                                    <?php if(isset($_GET['examformupdatefailed'])){ ?>
+                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Exam Form Update Failed</p>
                                     <?php }?>
                                     <?php if(isset($_GET['delsuccess'])){ ?>
-                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Quiz Form Data Deleted Successfully</p>
+                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Exam Form Data Deleted Successfully</p>
                                     <?php }?>
                                     <?php if(isset($_GET['delfailed'])){ ?>
-                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Failed To Delete Quiz Form</p>
+                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Failed To Delete Exam Form</p>
                                     <?php }?>
                                 
                                         
@@ -320,69 +312,69 @@
                                         
                                                 <tr>
                                                     <td>#</td>
-                                                    <td>Quiz_Title</td>
-                                                    <td>Quiz_Type</td>
+                                                    <td>Exam_Title</td>
+                                                    <td>Exam_Type</td>
                                                     <td>Number_of_Questions</td>
                                                     <td>Course_Name</td>
-                                                    <td>Quiz_Form_Created_Date</td>
-                                                    <td>Quiz_Form_Status</td>
+                                                    <td>Exam_Form_Created_Date</td>
+                                                    <td>Exam_Form_Status</td>
                                                     <td>Actions</td>
                                                 </tr>
                                     
                                         <?php 
-                                            $quizform = displayquizform($connection,$teacherid);
+                                            $examform = displayexamform($connection,$teacherid);
                                             $rowid = 1;
-                                            if($quizform == ''){
+                                            if($examform == ''){
                                                 echo "<p>There is currently no data to be shown</p>";
                                             }else{
-                                            foreach($quizform as $quiz){ ?>
+                                            foreach($examform as $exam){ ?>
                                             <tr>
                                                 <td><?php echo $rowid?></td>
-                                                <td><?php echo $quiz['quiztitle']?></td>
-                                                <td class='text-break'><?php echo $quiz['quiztype']?></td>
-                                                <td><?php echo $quiz['number_of_questions']?></td>
-                                                <td><?php echo $quiz['coursename']?></td>
-                                                <td><?php echo date('M-j-Y ', strtotime($quiz['quiz_created_date']));?></td>
-                                                <td><p style='text-transform:capitalize;' class="<?php echo $quiz['quizstatus'] == 'active'?'text-success fw-bold':'text-danger fw-bold'?>"><?php echo $quiz['quizstatus'] ?></p></td>
+                                                <td><?php echo $exam['examtitle']?></td>
+                                                <td class='text-break'><?php echo $exam['examtype']?></td>
+                                                <td><?php echo $exam['number_of_questions']?></td>
+                                                <td><?php echo $exam['coursename']?></td>
+                                                <td><?php echo date('M-j-Y ', strtotime($exam['exam_created_date']));?></td>
+                                                <td><p style='text-transform:capitalize;' class="<?php echo $exam['examstatus'] == 'active'?'text-success fw-bold':'text-danger fw-bold'?>"><?php echo $exam['examstatus'] ?></p></td>
                                                 <td>
                                                     <form method='GET'>
-                                                    <button   name='details' class='btn btn-secondary btn-sm mb-1 d-inline-block fw-bold' data-bs-toggle="modal" data-bs-target="#quizformdetails"  value='<?php echo base64_encode($quiz['quizformid']);?>'>Details</button>
+                                                    <button   name='details' class='btn btn-secondary btn-sm mb-1 d-inline-block fw-bold' data-bs-toggle="modal" data-bs-target="#examformdetails"  value='<?php echo base64_encode($exam['examformid']);?>'>Details</button>
                                                     </form>
-                                                    <a href="viewquizform.php?quizformid=<?php echo base64_encode($quiz['quizformid'])?>" class="btn btn-primary mb-1 fw-bold btn-sm">Update</a>
-                                                    <a href="createquestions.php?quizformid=<?php echo $quiz['quizformid']?>" target="_blank" class="btn btn-info text-white fw-bold mb-1 btn-sm">Add Questions</a>
-                                                    <a href="../quiz/takequiz.php?quizformid=<?php echo base64_encode($quiz['quizformid']);?>" target="_blank" class="btn btn-dark text-white mb-1 fw-bold btn-sm">View_Quiz_As_Student</a>
-                                                    <a href="../quiz/takequiz.php?quizformid=<?php echo base64_encode($quiz['quizformid']);?>" target="_blank" class="btn btn-warning text-black mb-1 fw-bold btn-sm" onclick="copyToClipboard(event,this)">Share_Quiz_Link</a>
-                                                    <a href="viewquizform.php?entries=<?php echo $quiz['quizformid'];?>" class="btn btn-secondary mb-1 fw-bold btn-sm">Entries</a>
-                                                    <a href="viewquizform.php?delid=<?php echo $quiz['quizformid'];?>" class="btn btn-danger fw-bold btn-sm">Delete</a>
+                                                    <a href="viewexamform.php?examformid=<?php echo base64_encode($exam['examformid'])?>" class="btn btn-primary mb-1 fw-bold btn-sm">Update</a>
+                                                    <a href="create_examquestions.php?examformid=<?php echo $exam['examformid']?>" target="_blank" class="btn btn-info text-white fw-bold mb-1 btn-sm">Add Questions</a>
+                                                    <a href="../exam/take_exam.php?examformid=<?php echo base64_encode($exam['examformid']);?>" target="_blank" class="btn btn-dark text-white mb-1 fw-bold btn-sm">View_Exam_As_Student</a>
+                                                    <a href="../exam/take_exam.php?examformid=<?php echo base64_encode($exam['examformid']);?>" target="_blank" class="btn btn-warning text-black mb-1 fw-bold btn-sm" onclick="copyToClipboard(event,this)">Share_Exam_Link</a>
+                                                    <a href="viewexamform.php?entries=<?php echo $exam['examformid'];?>" class="btn btn-secondary mb-1 fw-bold btn-sm">Entries</a>
+                                                    <a href="viewexamform.php?delid=<?php echo $exam['examformid'];?>" class="btn btn-danger fw-bold btn-sm">Delete</a>
                                                 </td>
                                             </tr>
 
                                             <!-- quiz model that displays complete information starts here-->
                                         <?php if(isset($_GET['details'])){?>    
                                         <!-- Modal -->
-                                        <div class="modal " id="quizformdetails"  style="display:block;">
+                                        <div class="modal " id="examformdetails"  style="display:block;">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Quiz Form Details</h1>
                                             </div>
                                             <div class="modal-body">
-                                                <?php $singlequizinformation =  displaysinglequizform($connection,$_GET['details']);
+                                                <?php $singlequizinformation =  displaysingle_examform($connection,$_GET['details']);
 
                                                     foreach ($singlequizinformation as $singlequizformdata) {?>
                                                         
-                                                        <p>Quiz Title : <?= $singlequizformdata['quiztitle']?></p>
-                                                        <p>Quiz Description : <?= $singlequizformdata['quizdesc']?></p>
+                                                        <p>Quiz Title : <?= $singlequizformdata['examtitle']?></p>
+                                                        <p>Quiz Description : <?= $singlequizformdata['examdesc']?></p>
                                                         <p>Coursename : <?= $singlequizformdata['coursename']?></p>
-                                                        <p>Created_Date : <?= date('M-j-Y ', strtotime($singlequizformdata['quiz_created_date']))?></p>
-                                                        <p>Quiz_Type : <?= $singlequizformdata['quiztype'] == 'singlechoicequestion' ?'Single Choice Question':'True And False Question'?></p>
+                                                        <p>Created_Date : <?= date('M-j-Y ', strtotime($singlequizformdata['exam_created_date']))?></p>
+                                                        <p>Quiz_Type : <?= $singlequizformdata['examtype'] == 'singlechoicequestion' ?'Single Choice Question':'True And False Questions'?></p>
                                                         <p>Number_of_questions : <?= $singlequizformdata['number_of_questions']?></p>
-                                                        <p>Quiz_status : <span class="<?= $singlequizformdata['quizstatus'] == 'active'?'text-success':'text-danger'?>"><?= $singlequizformdata['quizstatus']?></span></p>
+                                                        <p>Quiz_status : <span class="<?= $singlequizformdata['examstatus'] == 'active'?'text-success':'text-danger'?>"><?= $singlequizformdata['examstatus']?></span></p>
 
                                                   <?php }?>
                                             </div>
                                             <div class="modal-footer">
-                                                <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewquizform.php'>Close</a>
+                                                <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewexamform.php'>Close</a>
                                             </div>
                                             </div>
                                         </div>
@@ -421,8 +413,8 @@
                                                     <h6 class="card-title text-uppercase text-muted mb-2">Total Student Entries</h6>
                                                     <h2 class="card-text fw-bold text-primary mb-0">
                                                         <?php 
-                                                            $quizformid1 = $_GET['entries'];
-                                                            $count_query = "select count(DISTINCT stdid) as total from studentquiz where quizformid = '$quizformid1'";
+                                                            $examformid1 = $_GET['entries'];
+                                                            $count_query = "select count(DISTINCT stdid) as total from studentexam where examformid = '$examformid1'";
                                                             $count_result = mysqli_query($connection, $count_query);
                                                             $count_data = mysqli_fetch_assoc($count_result);
                                                             echo $count_data['total'];
@@ -430,7 +422,7 @@
                                                     </h2>
                                                 </div>
                                                 <div class="card-footer bg-primary bg-opacity-10 border-0 text-center">
-                                                    <small class="text-muted">Students Completed Quiz</small>
+                                                    <small class="text-muted">Exam Participants</small>
                                                 </div>
                                             </div>
                                         </div> 
@@ -438,8 +430,8 @@
                                             <div class="col-lg-7 mb-2">
                                               <input type="text" placeholder="Search By student id or name" class='form-control mb-2' id='myInput' onkeyup="searchTable()">
                                                 <div>
-                                                <a href="viewquizform.php" class="btn btn-primary mb-1 fw-bold btn-sm">Go Back</a>
-                                                <a href="slices/exportquizformdata.slices.php?quizformid=<?php echo $quizformid1;?>" class="btn btn-secondary mb-1 fw-bold btn-sm">Convert To Excel</a>
+                                                <a href="viewexamform.php" class="btn btn-primary mb-1 fw-bold btn-sm">Go Back</a>
+                                                <a href="slices/exportexamformdata.slices.php?examformid=<?php echo $examformid1;?>" class="btn btn-secondary mb-1 fw-bold btn-sm">Convert To Excel</a>
                                                    
                                                 </div>
                                           </div>
@@ -455,19 +447,19 @@
                                                 <td>Actions</td>
                                             </tr>
                                             <?php 
-                                             $quizformid = $_GET['entries'];
+                                             $examformid = $_GET['entries'];
                                             // read quizform and see what is the type of this quizform
-                                            $sqlmain = "select quiztype from quizform where quizformid = '$quizformid'";
+                                            $sqlmain = "select examtype from examform where examformid = '$examformid'";
                                             $resultmain = mysqli_query($connection,$sqlmain);
-                                            $quizformdata = mysqli_fetch_assoc($resultmain);
+                                            $examformdata = mysqli_fetch_assoc($resultmain);
                                             // if the quiztype is trueandfalse then read from trueandfalse table
-                                           if($quizformdata['quiztype'] == 'trueandfalse'){
+                                           if(!empty($examformdata) && $examformdata['examtype'] == 'trueandfalse'){
 
                                                $sql = "SELECT
                                             sq.stdfullname,
                                             sq.stdid,
-                                            sq.quizmarks,
-                                            sq.quiz_taken_date,
+                                            sq.exammarks,
+                                            sq.exam_taken_date,
                                             qf.number_of_questions,
                                             COUNT(sq.question_id) AS total_questions,
                                             COUNT(
@@ -477,22 +469,22 @@
                                                                 CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 ELSE NULL END
                                                             ) AS wrong_count
                                                         FROM
-                                                            studentquiz sq
-                                                        JOIN TRUE_false_options o
+                                                            studentexam sq
+                                                        JOIN examtrue_false_options o
                                                         ON
                                                             sq.question_id = o.questionid 
-                                                            AND sq.quizformid = o.quizformid
-                                                        JOIN quizform qf 
+                                                            AND sq.examformid = o.examformid
+                                                        JOIN examform qf 
                                                         ON
-                                                            sq.quizformid = qf.quizformid
+                                                            sq.examformid = qf.examformid
                                                         WHERE
                                                             qf.teacherid = '$teacherid'
-                                                            AND sq.quizformid = '$quizformid'
+                                                            AND sq.examformid = '$examformid'
                                                         GROUP BY
                                                             sq.stdfullname,
                                                             sq.stdid,
-                                                            sq.quizmarks,
-                                                            sq.quiz_taken_date,
+                                                            sq.exammarks,
+                                                            sq.exam_taken_date,
                                                             qf.number_of_questions
                                                             ORDER BY
                                                               sq.stdfullname ASC,  -- Alphabetical order
@@ -500,31 +492,32 @@
                                                             ; ";
 
                                             $result = mysqli_query($connection,$sql);
-                                            if(mysqli_num_rows($result) == 0){
+                                            if(mysqli_num_rows($result) < 0){
                                                 echo "<p>There is currently no data to be shown</p>";
+                                                // exit();
                                             }else{
                                                 $rowid = 1;
                                                 while($row = mysqli_fetch_assoc($result)){?>
-                                                <form method='POST' action="viewquizform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $quizformid ?>">
+                                                <form method='POST' action="viewexamform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $examformid ?>">
                                                     <tr>
                                                         <td><?php echo $rowid?></td>
-                                                        <td><a href="../quiz/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
+                                                        <td><a href="../exam/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
                                                         <td><?php echo $row['stdfullname']?></td>
                                                         <td><?php echo $row['wrong_count']?></td>
                                                         <td><?php echo $row['correct_count']?></td>
                                                         <td><?php echo $row['number_of_questions']?></td>
-                                                        <td><?php echo date('M-j-Y ', strtotime($row['quiz_taken_date']))?></td>
-                                                        <td><input name='quizmarks' value="<?php echo $row['quizmarks']?>" style='width:60px !important;'/></td>
+                                                        <td><?php echo date('M-j-Y ', strtotime($row['exam_taken_date']))?></td>
+                                                        <td><input name='exammarks' value="<?php echo $row['exammarks']?>" style='width:60px !important;'/></td>
                                                         <td>
-                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm mb-2' name='updatequizentries'>Update</button>
-                                                            <a href="viewquizform.php?entries=<?php echo $quizformid ?>&delstudentid=<?php echo $row['stdid'] ?>" class='btn btn-danger fw-bold btn-sm'>Delete</a>
+                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm sm-mb-2' name='updatequizentries'>Update</button>
+                                                            <a href="viewexamform.php?entries=<?php echo $examformid ?>&delstudentid=<?php echo $row['stdid'] ?>" class='btn btn-danger fw-bold btn-sm'>Delete</a>
                                                         </td>
                                                     </tr>   
                                                     </form>
                                                 <?php $rowid++; }}
                                             }
                                             // if the quiztype is singlechoiceanswer read from options table
-                                            $sql = "SELECT sq.stdfullname,sq.stdid,sq.quizmarks,sq.quiz_taken_date,number_of_questions, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, qf.number_of_questions FROM studentquiz sq JOIN options o ON sq.question_id = o.questionid AND sq.quizformid = o.quizformid JOIN quizform qf ON sq.quizformid = qf.quizformid WHERE qf.teacherid = '$teacherid' and sq.quizformid = '$quizformid' GROUP BY sq.stdfullname, sq.stdid, sq.quizmarks, qf.number_of_questions ORDER BY
+                                            $sql = "SELECT sq.stdfullname,sq.stdid,sq.exammarks,sq.exam_taken_date,number_of_questions, COUNT(CASE WHEN sq.selected_option = o.is_correct_option THEN 1 END) AS correct_count, COUNT(CASE WHEN sq.selected_option <> o.is_correct_option THEN 1 END) AS wrong_count, qf.number_of_questions FROM studentexam sq JOIN examoptions o ON sq.question_id = o.questionid AND sq.examformid = o.examformid JOIN examform qf ON sq.examformid = qf.examformid WHERE qf.teacherid = '$teacherid' and sq.examformid = '$examformid' GROUP BY sq.stdfullname, sq.stdid, sq.exammarks, qf.number_of_questions ORDER BY
                                                               sq.stdfullname ASC,  -- Alphabetical order
                                                                 sq.stdid ASC   -- Alphabetical order ";
                                             $result = mysqli_query($connection,$sql);
@@ -533,19 +526,19 @@
                                             }else{
                                                 $rowid = 1;
                                                 while($row = mysqli_fetch_assoc($result)){?>
-                                                <form method='POST' action="viewquizform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $quizformid ?>">
+                                                <form method='POST' action="viewexamform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $examformid ?>">
                                                     <tr>
                                                         <td><?php echo $rowid?></td>
-                                                        <td><a href="../quiz/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
+                                                        <td><a href="../exam/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
                                                         <td><?php echo $row['stdfullname']?></td>
                                                         <td><?php echo $row['wrong_count']?></td>
                                                         <td><?php echo $row['correct_count']?></td>
                                                         <td><?php echo $row['number_of_questions']?></td>
-                                                        <td><?php echo date('M-j-Y ', strtotime($row['quiz_taken_date']))?></td>
-                                                        <td><input name='quizmarks' value="<?php echo $row['quizmarks']?>" style='width:80px !important;'/></td>
+                                                        <td><?php echo date('M-j-Y ', strtotime($row['exam_taken_date']))?></td>
+                                                        <td><input name='exammarks' value="<?php echo $row['exammarks']?>" style='width:80px !important;'/></td>
                                                         <td>
-                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm' name='updatequizentries'>Update</button>
-                                                            <a href="viewquizform.php?entries=<?php echo $quizformid ?>&delstudentid=<?php echo $row['stdid'] ?>" class='btn btn-danger fw-bold btn-sm'>Delete</a>
+                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm sm-mb-2' name='updatequizentries'>Update</button>
+                                                            <a href="viewexamform.php?entries=<?php echo $examformid ?>&delstudentid=<?php echo $row['stdid'] ?>" class='btn btn-danger fw-bold btn-sm'>Delete</a>
                                                         </td>
                                                     </tr>   
                                                     </form>

@@ -1,9 +1,9 @@
 <?php 
 include_once('../../model/dbcon.php');
-if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
-    $quizformid = $_GET['quizformid'];
+if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
+    $examformid = $_GET['examformid'];
 
-    $sql = "select * from quizform where quizformid = '$quizformid'";
+    $sql = "select * from examform where examformid = '$examformid'";
     $result = mysqli_query($connection,$sql);
     $row = mysqli_fetch_assoc($result);
 
@@ -19,15 +19,15 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
             $option_a = $_POST['option_a'];
             $option_b = $_POST['option_b'];
             $correct_answer = $_POST['correct_answer'];
-            $quiz_id = $_POST['quiz_id'];
+            $exam_id = $_POST['exam_id'];
 
         foreach($questionid as $key => $value){
             // step1 : check if the question already exist in the question table
-            $questionssql = "select * from questions where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+            $questionssql = "select * from examquestions where questionid = '$questionid[$key]' and examformid = '$exam_id'";
             $questionsresult = mysqli_query($connection,$questionssql);
             if(mysqli_num_rows($questionsresult) > 0){
                 // questions already exist update them
-                $updatequestionssql = "update questions set questiontext = '$questiontext[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+                $updatequestionssql = "update examquestions set questiontext = '$questiontext[$key]' where questionid = '$questionid[$key]' and examformid = '$exam_id'";
                 $updatequestionsresult = mysqli_query($connection,$updatequestionssql);
                 
                 // echo 'from questions';
@@ -35,17 +35,17 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
                 if($updatequestionsresult){
                 
                     //update existing options in the options table
-                    $optionsql = "update true_false_options set option_one = '$option_a[$key]',option_two = '$option_b[$key]',is_correct_option = '$correct_answer[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+                    $optionsql = "update examtrue_false_options set option_one = '$option_a[$key]',option_two = '$option_b[$key]',is_correct_option = '$correct_answer[$key]' where questionid = '$questionid[$key]' and examformid = '$exam_id'";
                     $optionsresult = mysqli_query($connection,$optionsql);
                     $response = true;
                     
                 }
             } else{
                 //step3: if neither question nor options exist in the database then insert them
-                $sql = "insert into questions(questionid,questiontext,quizformid) values('$questionid[$key]','$questiontext[$key]','$quiz_id')";
+                $sql = "insert into examquestions(questionid,questiontext,examformid) values('$questionid[$key]','$questiontext[$key]','$exam_id')";
                 $result = mysqli_query($connection,$sql);
                 if($result){
-                $sql2 = "insert into true_false_options(questionid,option_one,option_two,is_correct_option,quizformid) values('$questionid[$key]','$option_a[$key]','$option_b[$key]','$correct_answer[$key]','$quiz_id')";
+                $sql2 = "insert into examtrue_false_options(questionid,option_one,option_two,is_correct_option,examformid) values('$questionid[$key]','$option_a[$key]','$option_b[$key]','$correct_answer[$key]','$exam_id')";
                 $result2 = mysqli_query($connection,$sql2);
                 
                 $response = true;
@@ -54,10 +54,10 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
         }
 
         if(isset($response)){
-                header('location:createquestions.php?quizformid='.$quiz_id.'&success');
+                header('location:create_examquestions.php?examformid='.$exam_id.'&success');
                 exit();
             }else{
-                header('location:createquestions.php?quizformid='.$quiz_id.'&failed');
+                header('location:create_examquestions.php?examformid='.$exam_id.'&failed');
                 exit();
             }
 // save the quiz related to single choice questions
@@ -68,34 +68,34 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
             $option_b =  $_POST['option_b'];
             $option_c = $_POST['option_c'];
             $correct_answer = $_POST['correct_answer'];
-            $quiz_id = $_POST['quiz_id'];
+            $exam_id = $_POST['exam_id'];
             // echo $quiztype;
 
             foreach($questionid as $key => $value){
                 
-                // var_dump($quizformid);
+                // var_dump($examformid);
             // step1 : check if the question already exist in the question table
-            $questionssql = "select * from questions where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+            $questionssql = "select * from examquestions where questionid = '$questionid[$key]' and examformid = '$exam_id'";
             $questionsresult = mysqli_query($connection,$questionssql);
             if(mysqli_num_rows($questionsresult) > 0){
                 // questions already exist update them
-                $updatequestionssql = "update questions set questiontext = '$questiontext[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+                $updatequestionssql = "update examquestions set questiontext = '$questiontext[$key]' where questionid = '$questionid[$key]' and examformid = '$exam_id'";
                 $updatequestionsresult = mysqli_query($connection,$updatequestionssql);
                 
                 //step2 : if the question id is found that means there is options also need to be updated
                 if($updatequestionsresult){
                     //update existing options in the options table
-                    $optionsql = "update options set option_one = '$option_a[$key]',option_two = '$option_b[$key]',option_three = '$option_c[$key]',is_correct_option = '$correct_answer[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+                    $optionsql = "update examoptions set option_one = '$option_a[$key]',option_two = '$option_b[$key]',option_three = '$option_c[$key]',is_correct_option = '$correct_answer[$key]' where questionid = '$questionid[$key]' and examformid = '$exam_id'";
                     $optionsresult = mysqli_query($connection,$optionsql);
                     $response = true;
                     
                 }
             } else{
                 //step3: if neither question nor options exist in the database then insert them
-                $sql = "insert into questions(questionid,questiontext,quizformid) values('$questionid[$key]','$questiontext[$key]','$quiz_id')";
+                $sql = "insert into examquestions(questionid,questiontext,examformid) values('$questionid[$key]','$questiontext[$key]','$exam_id')";
                 $result = mysqli_query($connection,$sql);
                 if($result){
-                $sql2 = "insert into options(questionid,option_one,option_two,option_three,is_correct_option,quizformid) values('$questionid[$key]','$option_a[$key]','$option_b[$key]','$option_c[$key]','$correct_answer[$key]','$quiz_id')";
+                $sql2 = "insert into examoptions(questionid,option_one,option_two,option_three,is_correct_option,examformid) values('$questionid[$key]','$option_a[$key]','$option_b[$key]','$option_c[$key]','$correct_answer[$key]','$exam_id')";
                 $result2 = mysqli_query($connection,$sql2);
                 
                 $response = true;
@@ -104,10 +104,10 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
         }
 
         if(isset($response)){
-            header('location:createquestions.php?quizformid='.$quiz_id.'&success');
+            header('location:create_examquestions.php?examformid='.$exam_id.'&success');
             exit();
         }else{
-            header('location:createquestions.php?quizformid='.$quiz_id.'&failed');
+            header('location:create_examquestions.php?examformid='.$exam_id.'&failed');
             exit();
         }
         }
@@ -120,25 +120,25 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
 // show the questions and the options if they exist in the same form that handls storing and updating them
  $existingQuestions = [];
 $existingOptions = [];
-if (isset($_GET['quizformid'])) {
+if (isset($_GET['examformid'])) {
     // get the quiz status
-    $quizformid = $_GET['quizformid'];
-    $quizformid;
-    $sqlmain = "select quiztype from quizform where quizformid = '$quizformid'";
+    $examformid = $_GET['examformid'];
+    $examformid;
+    $sqlmain = "select examtype from examform where examformid = '$examformid'";
     $resultmain = mysqli_query($connection,$sqlmain);
-    $quizrow = mysqli_fetch_assoc($resultmain);
-    // echo $quizrow['quiztype'];
+    $examrow = mysqli_fetch_assoc($resultmain);
+    // echo $examrow['quiztype'];
 
     // if quizform equals trueandfalse display the trueandfalase options table
-    if($quizrow['quiztype'] == 'trueandfalse'){
+    if($examrow['examtype'] == 'trueandfalse'){
         
-            $questionsQuery = "SELECT * FROM questions WHERE quizformid = '$quizformid' ORDER BY questionid";
+            $questionsQuery = "SELECT * FROM examquestions WHERE examformid = '$examformid' ORDER BY questionid";
             $questionsResult = mysqli_query($connection, $questionsQuery);
             while ($question = mysqli_fetch_assoc($questionsResult)) {
                 $existingQuestions[$question['questionid']] = $question;
                 
                 // Fetch corresponding options
-                $optionsQuery = "SELECT * FROM true_false_options WHERE questionid = '{$question['questionid']}' AND quizformid = '$quizformid'";
+                $optionsQuery = "SELECT * FROM examtrue_false_options WHERE questionid = '{$question['questionid']}' AND examformid = '$examformid'";
                 $optionsResult = mysqli_query($connection, $optionsQuery);
                 $existingOptions[$question['questionid']] = mysqli_fetch_assoc($optionsResult);
             }
@@ -146,13 +146,13 @@ if (isset($_GET['quizformid'])) {
             // echo json_encode($existingQuestions);
             
         }else{
-            $questionsQuery = "SELECT * FROM questions WHERE quizformid = '$quizformid' ORDER BY questionid";
+            $questionsQuery = "SELECT * FROM examquestions WHERE examformid = '$examformid' ORDER BY questionid";
                 $questionsResult = mysqli_query($connection, $questionsQuery);
                 while ($question = mysqli_fetch_assoc($questionsResult)) {
                     $existingQuestions[$question['questionid']] = $question;
                     
                     // Fetch corresponding options
-                    $optionsQuery = "SELECT * FROM options WHERE questionid = '{$question['questionid']}' AND quizformid = '$quizformid'";
+                    $optionsQuery = "SELECT * FROM examoptions WHERE questionid = '{$question['questionid']}' AND examformid = '$examformid'";
                     $optionsResult = mysqli_query($connection, $optionsQuery);
                     $existingOptions[$question['questionid']] = mysqli_fetch_assoc($optionsResult);
                 }
@@ -174,26 +174,26 @@ if (isset($_GET['quizformid'])) {
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         </head>
         <body style='overflow-x:hidden'>
-      <?php if($row['quizstatus'] == 'active'){?>
+      <?php if($row['examstatus'] == 'active'){?>
     <div class="row">
         <div class="col-lg-7 col-md-10 col-sm-12 mx-auto mt-4">
             <div class="card">
                 <div class="card-header">
                     <?php if(isset($_GET['success'])){ ?>
-                        <div class="bg-success text-white p-2 fw-bold">Question Added/updated Successfully</div>
+                        <div class="bg-success text-white p-2 fw-bold">Exam Added/updated Successfully</div>
                     <?php }else if(isset($_GET['failed'])){?>
-                        <div class="bg-danger text-white p-2 fw-bold">Failed to Add/update Question</div>
+                        <div class="bg-danger text-white p-2 fw-bold">Failed to Add/update Exam</div>
                     <?php }?>
-                <h4 class='card-title fw-bold text-break'><?php echo $row['quiztitle']; ?></h4>
-                <p class='text-break '><?php echo $row['quizdesc']; ?></p>
+                <h4 class='card-title fw-bold text-break'><?php echo $row['examtitle']; ?></h4>
+                <p class='text-break '><?php echo $row['examdesc']; ?></p>
                 </div>
                 <div class="card-body">
-                <form  method="POST" action="createquestions.php?quizformid=<?php echo $row['quizformid']; ?>">
-                    <!-- quizformid -->
-                <input type="hidden" name="quiz_id" value="<?php echo $row['quizformid']; ?>">
+                <form  method="POST" action="create_examquestions.php?examformid=<?php echo $row['examformid']; ?>">
+                    <!-- examformid -->
+                <input type="hidden" name="exam_id" value="<?php echo $row['examformid']; ?>">
                 <!-- check if quiztype is single choice questions and if its generate form accordingly -->
-            <?php if($row['quiztype'] == 'singlechoicequestion'){?>
-                <h4 style='font-size:14px;'class='mb-4'>Dear Teacher keep in mind your are creating single choice  Quiz Question </h4>
+            <?php if($row['examtype'] == 'singlechoicequestion'){?>
+                <h4 style='font-size:16px;'class='mb-4'>Dear Teacher keep in mind your are creating single choice  Exam Question </h4>
                  <!-- help us determine how to save the quiz by identifying what is the type-->
                 <input type="hidden" name='quiztype' value="singlechoicequestion">
     <?php for($i = 1; $i <=$row['number_of_questions']; $i++): ?>
@@ -225,8 +225,8 @@ if (isset($_GET['quizformid'])) {
         </div>
     <?php endfor; ?>
                 <!-- check if quiz type is true or false and if its make each question single choice is true and false-->
-                        <?php }else if($row['quiztype'] == 'trueandfalse'){?>
-                        <h4 style='font-size:14px;'class='mb-4'>Dear Teacher keep in mind your are creating True And False Quiz Question </h4>
+                        <?php }else if($row['examtype'] == 'trueandfalse'){?>
+                        <h4 style='font-size:16px;'class='mb-4'>Dear Teacher keep in mind your are creating True And False Exam Question </h4>
        <!-- help us determine how to save the quiz by identifying what is the type-->
        <input type="hidden" name='quiztype' value="trueandfalse">
                         <?php for($i = 1; $i <=$row['number_of_questions']; $i++): ?>
@@ -283,9 +283,10 @@ if (isset($_GET['quizformid'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>
-
-<?php }else{
-    header('location:viewquizform.php?redirected');
-    exit();
-}?>
+<?php 
+}
+//}else{
+   // header('location:viewquizform.php?redirected');
+    //exit();
+//} ?>
 

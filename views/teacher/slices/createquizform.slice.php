@@ -5,7 +5,7 @@ if(session_status() === PHP_SESSION_NONE) {
 }
 
 if(isset($_POST['submit'])) {
-    
+   
     $teacherid = $_SESSION['userid'];
     $quizid =mysqli_real_escape_string($connection  , htmlspecialchars($_POST['quizid']));
     $quiztitle = mysqli_real_escape_string($connection , htmlspecialchars($_POST['quiztitle']));
@@ -15,7 +15,6 @@ if(isset($_POST['submit'])) {
     $numberofquestion = mysqli_real_escape_string($connection , htmlspecialchars($_POST['numberofquestion']));
     $quiztype = $_POST['quiztype'];
 
-   
     if(empty($quizid)) {
         header('location: ../createquiz.php?emptyquizid');
         exit();

@@ -6,9 +6,9 @@ if(session_status() == PHP_SESSION_NONE){
 
 
 
-if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
-  $quizformid = base64_decode($_GET['quizformid']);
-  $sql = "select * from quizform where quizformid = '$quizformid'";
+if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
+  $examformid = base64_decode($_GET['examformid']);
+  $sql = "select * from examform where examformid = '$examformid'";
   $result = mysqli_query($connection,$sql);
  
 
@@ -27,7 +27,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
      <?php if($result){
   while($row = mysqli_fetch_assoc($result)){
     // for security purpose we will check the quiz status is active or not
-    if($row['quizstatus'] == 'disable' || $row['quizstatus'] == 'draft'){?>
+    if($row['examstatus'] == 'disable' || $row['examstatus'] == 'draft'){?>
       <div class="container">
       <div class="row">
         <div class="col-5 col-md-6 col-sm-12 mx-auto ">
@@ -43,31 +43,31 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
       </div>
       </div>
        <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/'>TeachLab</a></p>
-   <?php }if(!isset($_SESSION['studentid']) && $row['quizstatus'] == 'active'){?>
+   <?php }if(!isset($_SESSION['studentid']) && $row['examstatus'] == 'active'){?>
   
       <div class="container" id='quizstudentintro' s>
         <div class="row">
           <div class="col-lg-8 col-md-8 col-sm-12 mx-auto mt-5">
             <div class="card">
               <?php if(isset($_GET['success'])){?>
-                <p class='bg-success text-white p-2'>Thank You , Quiz Submitted Successfully</p>
+                <p class='bg-success text-white p-2'>Thank You , Exam Submitted Successfully</p>
               <?php } ?>  
               <?php if(isset($_GET['emptyanswersfields'])){?>
-                <p class='bg-danger text-white p-2'>Please Fill The Form In Order To Begin Taking The Quiz</p>
+                <p class='bg-danger text-white p-2'>Please Fill The Form In Order To Begin Taking The Exam</p>
               <?php } ?>  
               <?php if(isset($_GET['alreadyattempted'])){?>
-                <p class='bg-danger text-white p-2'>Student with specified ID has already taken this quiz</p>
+                <p class='bg-danger text-white p-2'>Student with specified ID has already taken this Exam</p>
               <?php } ?>  
               <div class="card-header">
-                <p class='card-title fw-bold'><?php echo strtoupper($row['quiztitle']); ?></p>
-                <p class='text-truncate text-break'><?php echo $row['quizdesc'] ?></p>
+                <p class='card-title fw-bold'><?php echo strtoupper($row['examtitle']); ?></p>
+                <p class='text-truncate text-break'><?php echo $row['examdesc'] ?></p>
               </div>  
               <div class="card-body">
               <form method="post">
               <div class="form-group">
-                  <input type="hidden" class='form-control' name='quiztitle'  value="<?php echo $row['quiztitle'] ?>" >
-                  <input type="hidden" class='form-control' name='quizdesc'  value="<?php echo $row['quizdesc'] ?>" >
-                  <input type="hidden" class='form-control' name='quizformid'  value="<?php echo $row['quizformid'] ?>" >
+                  <input type="hidden" class='form-control' name='examtitle'  value="<?php echo $row['examtitle'] ?>" >
+                  <input type="hidden" class='form-control' name='examdesc'  value="<?php echo $row['examdesc'] ?>" >
+                  <input type="hidden" class='form-control' name='examformid'  value="<?php echo $row['examformid'] ?>" >
                 </div>
               <div class="form-group">
                   <label class='form-label'>Studen ID</label>
@@ -96,24 +96,24 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
     <!-- when take quiz button is clicked  we show the quiz questions -->
      <!-- we should create session and store the quizformid,quiztitle,quizdesc,studentid,studentname -->
      <?php if(isset($_POST['takequiz'])){
-      $quizformid = $_POST['quizformid']; 
-      $quiztitle = $_POST['quiztitle'];
-      $quizdesc = $_POST['quizdesc'];
+      $examformid = $_POST['examformid']; 
+      $examtitle = $_POST['examtitle'];
+      $examdesc = $_POST['examdesc'];
       $studentid = $_POST['studentid'];
       $studentname = $_POST['studentname'];
       if(empty($studentid) || empty($studentname)){
-        header('location:takequiz.php?quizformid='.base64_encode($quizformid).'&emptyanswersfields');
+        header('location:take_exam.php?examformid='.base64_encode($examformid).'&emptyanswersfields');
         exit();
       }else{
-        $sql = "select * from studentquiz where quizformid = '$quizformid' and stdid = '$studentid'";
+        $sql = "select * from studentexam where examformid = '$examformid' and stdid = '$studentid'";
         $result = mysqli_query($connection,$sql);
         if(mysqli_num_rows($result) > 0){
-          header('location:takequiz.php?quizformid='.base64_encode($quizformid).'&alreadyattempted');
+          header('location:take_exam.php?examformid='.base64_encode($examformid).'&alreadyattempted');
           exit();
         }else{
-      $_SESSION['quizformid'] = $quizformid;
-      $_SESSION['quiztitle'] = $quiztitle;
-      $_SESSION['quizdesc'] = $quizdesc;
+      $_SESSION['examformid'] = $examformid;
+      $_SESSION['examtitle'] = $examtitle;
+      $_SESSION['examdesc'] = $examdesc;
       $_SESSION['studentid'] = $studentid;
       $_SESSION['studentname'] = $studentname;
         }
@@ -130,12 +130,12 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
           $existingQuestions = [];
           $existingoptions = [];
           // get all the questions
-          $sql = "SELECT * FROM questions WHERE quizformid = '{$_SESSION['quizformid']}' ORDER BY questionid";
+          $sql = "SELECT * FROM examquestions WHERE examformid = '{$_SESSION['examformid']}' ORDER BY questionid";
           $result = mysqli_query($connection, $sql);
           while ($question = mysqli_fetch_assoc($result)) {
               $existingQuestions[$question['questionid']] = $question;
               // Fetch corresponding options
-              $optionsQuery = "SELECT * FROM options WHERE questionid = '{$question['questionid']}' AND quizformid = '{$_SESSION['quizformid']}'";
+              $optionsQuery = "SELECT * FROM examoptions WHERE questionid = '{$question['questionid']}' AND examformid = '{$_SESSION['examformid']}'";
               $optionsResult = mysqli_query($connection, $optionsQuery);
               $existingOptions[$question['questionid']] = mysqli_fetch_assoc($optionsResult);
              
@@ -151,26 +151,26 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
           <div class="col-lg-8 col-md-12 col-sm-5 mx-auto mt-3">
             <div class="card">
               <div class="card-header">
-                <p class='card-title fw-bold'><?php echo strtoupper($_SESSION['quiztitle']); ?></p>
-                <p class='text-break'><?php echo $_SESSION['quizdesc'] ?></p>
+                <p class='card-title fw-bold'><?php echo strtoupper($_SESSION['examtitle']); ?></p>
+                <p class='text-break'><?php echo $_SESSION['examdesc'] ?></p>
               </div>
               <div class="card-body">
                 <?php if(isset($_GET['emptyanswersfields'])){ ?>
                   <p class='bg-danger text-white p-2'>Please select at least one answer</p>
                 <?php } ?>
-              <form method="post" action='savestudentquiz.php'>
+              <form method="post" action='savestudentexam.php'>
               <?php 
              
-              $sql01 = "select quiztype from quizform where quizformid = '$quizformid'";
+              $sql01 = "select examtype from examform where examformid = '$examformid'";
               $result01 = mysqli_query($connection,$sql01);
               $quiztyperow = mysqli_fetch_assoc($result01);
-              if($quiztyperow['quiztype'] === "singlechoicequestion"){
+              if($quiztyperow['examtype'] === "singlechoicequestion"){
               foreach($existingQuestions as $question): 
                 // first check if the question tyoe is 
                 
                 // var_dump($quiztyperow);
                                 // Fetch options for current question
-                                $optionsQuery = "SELECT * FROM options WHERE questionid = '{$question['questionid']}' AND quizformid = '$quizformid'";
+                                $optionsQuery = "SELECT * FROM examoptions WHERE questionid = '{$question['questionid']}' AND examformid = '$examformid'";
                                 $optionsResult = mysqli_query($connection, $optionsQuery);
                                 $options = mysqli_fetch_assoc($optionsResult);
                             ?>
@@ -208,14 +208,14 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
                                 </div>
                             </div>
                             <?php endforeach; ?>
-                            <?php }else if ($quiztyperow['quiztype'] === "trueandfalse"){
+                            <?php }else if ($quiztyperow['examtype'] === "trueandfalse"){
                              
                               foreach($existingQuestions as $question): 
                                 // first check if the question tyoe is 
                                 
                                 // var_dump($quiztyperow);
                                                 // Fetch options for current question
-                                                $optionsQuery = "SELECT * FROM true_false_options WHERE questionid = '{$question['questionid']}' AND quizformid = '$quizformid'";
+                                                $optionsQuery = "SELECT * FROM examtrue_false_options WHERE questionid = '{$question['questionid']}' AND examformid = '$examformid'";
                                                 $optionsResult = mysqli_query($connection, $optionsQuery);
                                                 $options = mysqli_fetch_assoc($optionsResult);
                               ?>
