@@ -370,7 +370,7 @@
                     </div>
                 </div>
             </div>
-        </section>x
+        </section>
 
         <section id="testimonials" class="testimonials">
             <div class="container">
