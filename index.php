@@ -266,7 +266,7 @@
             <div class="container">
                 <div class="hero-content">
                     <h1>The Ultimate Teaching Assistant for Modern Educators</h1>
-                    <p>Streamline your teaching workflow with TeachLab. Manage student information, assignments, quizzes, and track progress - all in one powerful platform designed specifically for educators.</p>
+                    <p style="line-height: 1.5em;">Streamline your teaching workflow with TeachLab. Manage student information, assignments, quizzes,exams, and track progress - all in one powerful platform designed specifically for educators.</p>
                     <div class="hero-buttons">
                         <a href="#pricing" class="btn btn-primary">Get Started for Free</a>
                         <a href="#demo" class="btn btn-secondary">
@@ -278,9 +278,9 @@
                         </a>
                     </div>
                 </div>
-                <div class="dashboard-preview">
+                <!-- <div class="dashboard-preview">
                     <img src="dashboard.png" alt="TeachLab Dashboard Interface" class="dashboard-image">
-                </div>
+                </div> -->
             </div>
         </section>
 
@@ -627,11 +627,10 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 TeachLab - Empowering University Educators. All rights reserved.</p>
+                <p>&copy; 2025 TeachLab - Empowering University Educators. All rights reserved.</p>
                 <div class="footer-legal">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>
-                    <a href="#">Cookie Policy</a>
                 </div>
             </div>
         </div>
