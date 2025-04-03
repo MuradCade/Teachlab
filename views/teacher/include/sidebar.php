@@ -92,23 +92,13 @@ if (session_status() === PHP_SESSION_NONE) {
                             </ul>
                         </li>
                         <!-- exam tap ends here-->
-                        <li class="nav-item dropdown mt-3">
-                            <a class="nav-link  text-secondary fw-bold" href="https://teachlab.canny.io/teachlab" target='_blank' style='font-size:15px;'>
-                            <i class="bi bi-info-circle me-1"></i> Feedback
-                            </a>
-                         
-                        </li>
+                       
                         <li class="nav-item mt-3">
                             <a class="nav-link  <?php checkactivesidebar($url,'combineresult.php'); echo checkifusersubsscriptionexpired($connection,$_SESSION['userid'],'pro','expire')? 'disabled':''; echo checksubscriptionstatus($connection,$teacherid,'subamount') == '0' ? 'disabled':'';?>  fw-bold" href="combineresult.php" style='font-size:15px;'>
                             <i class="bi bi-bar-chart me-1"></i>  Combine Result
                             </a>
                         </li>
-                        <li class="nav-item mt-3">
-                            <a class="nav-link  
-                             fw-bold <?php checkactivesidebar($url,'subscription_manager.php'); ?>" href="subscription_manager.php" style='font-size:15px;'>
-                            <i class="bi bi-cash me-1"></i>  Subscriptions 
-                            </a>
-                        </li>
+                      
                    
                         <!-- <li class="nav-item mt-3">
                             <a class="nav-link text-secondary" href="#" style='font-size:15px;'>
@@ -129,12 +119,26 @@ if (session_status() === PHP_SESSION_NONE) {
 
                 <div class="position-sticky  mt-2">
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'setting.php');?> fw-bold" href="#" id="dropdownAccount" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                        <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'setting.php'); checkactivesidebar($url,'subscription_manager.php');?> fw-bold" href="#" id="dropdownAccount" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
                             <i class="bi bi-person-circle me-1"></i> Account
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
                             <li style='font-size:14px;'><a class="dropdown-item  " href="setting.php">Setting</a></li>
-                            <li style='font-size:14px;'><a class="dropdown-item" href="../../include/logout.php">Logout</a></li>
+                            
+                            <li class="nav-item dropdown">
+                            <a class="dropdown-item" href="https://teachlab.canny.io/teachlab" target='_blank' style='font-size:14px !important;'>
+                             Feedback
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="dropdown-item text-black 
+                             <?php checkactivesidebar($url,'subscription_manager.php'); ?>" href="subscription_manager.php" style='font-size:14px !important;'>
+                             Subscriptions 
+                            </a>
+                        </li>
+
+                        <li style='font-size:14px;'>
+                                <a class="dropdown-item" href="../../include/logout.php">Logout</a></li>
                         </ul>
                     </div>
                 </div>
