@@ -299,7 +299,6 @@
                                     <h4 class="card-title mb-0 px-2 mt-1 fw-bold" style='font-size:17px !important;'>
                                         Quiz  Form List
                                     </h4>
-
                                     <?php if(isset($_GET['quizformupdatedsuccessfully'])){ ?>
                                         <p class='bg-success p-2  mt-3 fw-bold text-break text-white'>Quiz Form Updated Successfully</p>
                                     <?php }?>
