@@ -33,7 +33,7 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
         <div class="col-5 col-md-6 col-sm-12 mx-auto ">
         <div class="card p-2 mt-5">
           <h4 class="card-header">
-            Quiz Form
+            Exam Form
           </h4>
           <div class="card-body">
           <p class="bg-danger text-white fw-bold p-2">This Exam form is no longer accepting submissions.</p>
