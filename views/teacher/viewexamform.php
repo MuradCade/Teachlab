@@ -356,20 +356,20 @@
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                             <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Quiz Form Details</h1>
+                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Exam Form Details</h1>
                                             </div>
                                             <div class="modal-body">
                                                 <?php $singlequizinformation =  displaysingle_examform($connection,$_GET['details']);
 
                                                     foreach ($singlequizinformation as $singlequizformdata) {?>
                                                         
-                                                        <p>Quiz Title : <?= $singlequizformdata['examtitle']?></p>
-                                                        <p>Quiz Description : <?= $singlequizformdata['examdesc']?></p>
+                                                        <p>Exam Title : <?= $singlequizformdata['examtitle']?></p>
+                                                        <p>Exam Description : <?= $singlequizformdata['examdesc']?></p>
                                                         <p>Coursename : <?= $singlequizformdata['coursename']?></p>
                                                         <p>Created_Date : <?= date('M-j-Y ', strtotime($singlequizformdata['exam_created_date']))?></p>
-                                                        <p>Quiz_Type : <?= $singlequizformdata['examtype'] == 'singlechoicequestion' ?'Single Choice Question':'True And False Questions'?></p>
+                                                        <p>Exam_Type : <?= $singlequizformdata['examtype'] == 'singlechoicequestion' ?'Single Choice Question':'True And False Questions'?></p>
                                                         <p>Number_of_questions : <?= $singlequizformdata['number_of_questions']?></p>
-                                                        <p>Quiz_status : <span class="<?= $singlequizformdata['examstatus'] == 'active'?'text-success':'text-danger'?>"><?= $singlequizformdata['examstatus']?></span></p>
+                                                        <p>Exam_status : <span class="<?= $singlequizformdata['examstatus'] == 'active'?'text-success':'text-danger'?>"><?= $singlequizformdata['examstatus']?></span></p>
 
                                                   <?php }?>
                                             </div>
@@ -388,13 +388,13 @@
                                     
                                 <div class="card p-2" style='font-size:17px !important;'>
                                     <h4 class="card-title">
-                                        Quiz Entries
+                                        Exam Entries
                                     </h4>
                                     <?php if(isset($_GET['quizmarksupdatedsuccessfully'])){ ?>
-                                        <p class='bg-success p-2  mt-3 fw-bold text-break text-white'>Quiz Marks Updated Successfully</p>
+                                        <p class='bg-success p-2  mt-3 fw-bold text-break text-white'>Exam Marks Updated Successfully</p>
                                     <?php }?>
                                     <?php if(isset($_GET['quizmarksupdatefailed'])){ ?>
-                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Failed To Update Quiz Marks</p>
+                                        <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Failed To Update Exam Marks</p>
                                     <?php }?>
                                     <?php if(isset($_GET['studentdeletedsuccessfully'])){ ?>
                                         <p class='bg-danger p-2  mt-3 fw-bold text-break text-white'>Student Data Deleted Successfully</p>

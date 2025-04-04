@@ -121,7 +121,7 @@ if(isset($_POST['save'])){
                 </div>
                 
                 <div class="row">
-                    <div class="col-12 col-md-8 col-xl-5 mb-4">
+                    <div class="col-12 col-md-10 col-xl-8 mb-4">
                         <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
                             <h4 class="card-title px-3 fw-bold mt-2 mb-0" style='font-size:17px !important;'>
                                 Mark Students Attendance
@@ -182,10 +182,10 @@ if(isset($_POST['save'])){
 
                 <!-- More Content Here -->
                  <div class="row">
-                    <div class="col-lg-12 col-md-8 col-sm-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
                           
 
-                    <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
+                    <div class="card mt-2 table-responsive" style='border:none !important; background-color:#f8f9fa !important;'>
                     <table class='table table-hover table-bordered table-responsiv' id='myTable'>
                     <tr>
                         <td>#</td>
@@ -193,7 +193,7 @@ if(isset($_POST['save'])){
                         <td>Student Name</td>
                         <td>Course Name</td>
                         <td>Attendance Marks</td>
-                        <td>Present or Absent</td>
+                        <td>Present_or_Absent</td>
                         <!-- <td>Action</td> -->
                     </tr>
 

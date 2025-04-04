@@ -218,7 +218,7 @@ if(isset($_GET['delassigmentform'])){
 
                 <div class="row">
                     <div class="col-12 col-md-12 col-xl-12 mb-4" id='assignmentformtable'>
-                        <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
+                        <div class="card table-responsive p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
                             <h4 class="card-title px-3 fw-bold mt-2 mb-0" style='font-size:17px !important;'>
                                 View Assignment Form
                             </h4>
@@ -276,7 +276,7 @@ if(isset($_GET['delassigmentform'])){
                                             <td><?php echo $row['marks'];?></td>
                                             <td><p class="<?php echo $row['formstatus'] == 'active' ? 'text-success fw-bold':'text-danger fw-bold'?>"><?php echo $row['formstatus'];?></p></td>
                                             <td><?php echo date('M-j-Y ', strtotime($row['date']));?></td>
-                                            <td>
+                                            <td class=' sm-d-flex'>
                                             <a href="viewassignmentform.php?details=<?php echo $row['formid']?>" class="btn btn-secondary d-inline-block btn-sm fw-bold">Details</a>    
                                             <a href="viewassignmentform.php?updateformid=<?php echo base64_encode($row['formid'])?>" class="btn btn-primary btn-sm mb-1 fw-bold">Update</a>&numsp;<a href="viewassignmentform.php?entries=<?php echo $row['formid'];?>" class='btn btn-secondary btn-sm fw-bold'>Entries</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>"  target='a_blank' class='btn btn-info btn-sm text-white fw-bold'>View</a>&numsp;<a href="../clients/assignmentform.clients.php?formid=<?php echo base64_encode($row['formid'])?>" onclick="copyToClipboard(event,this)" class='btn btn-warning btn-sm fw-bold text-white'>Share</a>&numsp;<a href="viewassignmentform.php?delassigmentform=<?php echo $row['formid'];?>" class='btn btn-danger btn-sm fw-bold'>Delete</a> </td>
                                         </tr>
@@ -395,7 +395,7 @@ if(isset($_GET['delassigmentform'])){
                                                 ?>
                     <div class="modal p-5" style='display:block !important; background-color:rgb(0, 0, 0,.86); '>
                      
-                          <div class="card p-2 mt-5 " style='overflow-y: auto !important;'>
+                          <div class="card  p-2 mt-5 " style='overflow-y: auto !important;'>
                             <h4 class="card-title">
                                 
                             </h4>
@@ -403,7 +403,7 @@ if(isset($_GET['delassigmentform'])){
                           
                                             <!-- card that shows total student enteries in quiz-->
                                             <div class="col-lg-3 col-md-4 col-sm-12 mb-4 mt-3">
-                                                <div class="card border-primary h-100 shadow-sm">
+                                                <div class="card   border-primary h-100 shadow-sm">
                                                     <div class="card-body text-center">
                                                    
                                                     <h6 class="card-title text-uppercase text-muted mb-2">Total Assignment Submission</h6>
@@ -424,7 +424,7 @@ if(isset($_GET['delassigmentform'])){
                                         <a href="slices/exportassignment.slices.php?assignmentformid=<?php echo $formid; ?>" class='btn btn-secondary btn-sm fw-bold'>Convert To Excel</a>
                                             <!-- end here-->
                             <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id" onkeyup="searchTable()"/>                       
-                                <table class='table table-bordered table-responsive table-hover 'id='myTable'>
+                                <table class='table table-bordered  table-hover 'id='myTable'>
                                     <tr>
                                         <td>#</td>
                                         <td>Student_ID</td>

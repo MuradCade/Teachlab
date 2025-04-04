@@ -18,7 +18,7 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TeachLab - Quiz</title>
+    <title>TeachLab - Take Exam</title>
     <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
@@ -36,14 +36,14 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
             Quiz Form
           </h4>
           <div class="card-body">
-          <p class="bg-danger text-white fw-bold p-2">This quiz form is no longer accepting submissions.</p>
+          <p class="bg-danger text-white fw-bold p-2">This Exam form is no longer accepting submissions.</p>
           </div>
         </div>
         </div>
       </div>
       </div>
        <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/'>TeachLab</a></p>
-   <?php }if(!isset($_SESSION['studentid']) && $row['examstatus'] == 'active'){?>
+   <?php } else if(!isset($_SESSION['studentid']) && $row['examstatus'] == 'active'){?>
   
       <div class="container" id='quizstudentintro' s>
         <div class="row">
@@ -84,7 +84,7 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
           </div>
         </div>
       </div>
-      <div class="text-center">
+      <div class="text-center" id='water-mark'>
         <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
         </div>
    <?php }?>
@@ -145,6 +145,9 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
         #quizstudentintro{
           display:none;
         }
+        #water-mark{
+          display:none;
+        }
         </style>
         <div class="container">
         <div class="row">
@@ -155,6 +158,9 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
                 <p class='text-break'><?php echo $_SESSION['examdesc'] ?></p>
               </div>
               <div class="card-body">
+              <?php if(mysqli_num_rows($result) == 0){?>
+             <p class='alert alert-danger p-2 '>Dear student, the Exam hasn’t been created yet. Please check back later.</p>
+            <?php }?>
                 <?php if(isset($_GET['emptyanswersfields'])){ ?>
                   <p class='bg-danger text-white p-2'>Please select at least one answer</p>
                 <?php } ?>
@@ -249,8 +255,9 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
                             </div>
                             <?php endforeach; ?>
                             <?php } ?> 
-              
-                <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Quiz</button>
+                            <?php if(mysqli_num_rows($result) > 0){?>
+                              <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Quiz</button>
+            <?php }?>
               </form>
               </div>
             </div>

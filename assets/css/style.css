@@ -694,14 +694,19 @@
     color: var(--primary);
   }
   
+  
   /* Responsive Styles */
   @media (max-width: 1024px) {
+   
     .footer-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
   
+
+ 
   @media (max-width: 768px) {
+    
     .desktop-menu {
       display: none;
     }
@@ -776,6 +781,7 @@
   }
   
   @media (max-width: 480px) {
+    
     .header-actions {
       gap: 8px;
     }

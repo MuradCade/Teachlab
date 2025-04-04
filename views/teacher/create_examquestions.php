@@ -169,16 +169,30 @@ if (isset($_GET['examformid'])) {
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>TeachLab - Add Question</title>
+            <title>TeachLab - Add Exam Questions</title>
             <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         </head>
         <body style='overflow-x:hidden'>
-      <?php if($row['examstatus'] == 'active'){?>
+      <?php if($row['examstatus'] == 'active' || $row['examstatus'] == 'disable'){?>
     <div class="row">
         <div class="col-lg-7 col-md-10 col-sm-12 mx-auto mt-4">
             <div class="card">
                 <div class="card-header">
+
+                    <!--notify the teacher the status of the quizform 1 -->
+                    <?php if($row['examstatus'] == 'disable'){?>
+                        <p class='alert alert-danger p-2 '>Dear Teacher, this exam form is currently disabled, meaning new students cannot participate in the exam.</p>
+                        <?php }?>
+                        <!-- end of disable status 1-->
+            <!--notify the teacher the status of the quizform 2 -->
+                        <?php if($row['examstatus'] == 'active'){?>
+                        <p class='alert alert-success p-2 '>Dear Teacher, the exam is currently active and accepting student submissions.</p>
+                        <?php }?>
+                        <!--end active status 2 -->
+
+
+
                     <?php if(isset($_GET['success'])){ ?>
                         <div class="bg-success text-white p-2 fw-bold">Exam Added/updated Successfully</div>
                     <?php }else if(isset($_GET['failed'])){?>
@@ -265,16 +279,16 @@ if (isset($_GET['examformid'])) {
         </div>
     </div>
 
-    <?php }else if($row['quizstatus'] == 'disable' || $row['quizstatus'] == 'draft'){?>
+    <?php }else if( $row['examstatus'] == 'draft'){?>
         <div class="row">
         <div class="col-lg-8 col-md-10 col-sm-12 mx-auto mt-4">
             <div class="card">
                 <div class="card-header">
-                <h4 class='card-title fw-bold text-break'><?php echo $row['quiztitle']; ?></h4>
-                <p class='text-break '><?php echo $row['quizdesc']; ?></p>
+                <h4 class='card-title fw-bold text-break'><?php echo $row['examtitle']; ?></h4>
+                <p class='text-break '><?php echo $row['examdesc']; ?></p>
                 </div>
                 <div class="card-body">
-        <div class="bg-danger text-center text-white p-2 fw-bold">Sorry, the quiz form is disabled. To access the quiz questions, please change the quiz status to active.</div>
+        <div class="text-danger  p-2 fw-bold">Dear Teacher in order to edit/add this examform question change the examform status from draft to disable or active.</div>
                 </div>
             </div>
         </div>

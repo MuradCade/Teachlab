@@ -129,7 +129,7 @@ if(isset($_GET['delid'])){
                 </div>
                 
                 <div class="row">
-                    <div class="col-12 col-md-8 col-xl-5 mb-4">
+                    <div class="col-12 col-md-12 col-xl-6 mb-4">
                         <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
                             <h4 class="card-title px-3 fw-bold mt-2 mb-0" style='font-size:17px !important;'>
                                 View Student Informations
@@ -216,16 +216,16 @@ if(isset($_GET['delid'])){
 
                 <!-- More Content Here -->
                  <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-12">
-                            <div style='display:flex !important; align-items:center; justify-content:space-evenly'>
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                            <div  class='d-flex flex-column gap-2 d-sm-block'>
                                 <div>
                                 <button style='flex-wrap:wrap !important;'class="btn btn-primary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?>" data-bs-toggle="modal" data-bs-target="#importasexcel">Upload Excel File</button>
                                 <a href="slices/exportexcel.php?coursename=<?php echo isset($_POST['coursename']) ? $_POST['coursename'] :'';?>" class="btn btn-secondary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'disabled'?>">Covert To Excel</a>
                                 
                             </div>
                             <div>
-
                                 <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id or name" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
+
                             </div>
                             </div>
 
@@ -258,7 +258,7 @@ if(isset($_GET['delid'])){
                                                     <td><?php echo $row['stdid']; ?></td>
                                                     <td><?php echo $row['stdfullname'] ?></td>
                                                     <td><?php echo $row['coursename'] ?></td>
-                                                    <td><a href="viewstudent.php?updateid=<?php echo base64_encode($row['stdid']) ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewstudent.php?delid=<?php echo $row['stdid']?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
+                                                    <td class='d-flex   d-sm-block'><a href="viewstudent.php?updateid=<?php echo base64_encode($row['stdid']) ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewstudent.php?delid=<?php echo $row['stdid']?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
                                                 </tr>
                                     <?php $rownumber++;
                                             }

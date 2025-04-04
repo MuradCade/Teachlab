@@ -19,7 +19,7 @@ if(isset($_POST['submitquiz'])) {
        
     //     echo  $questionId . (is_array($selectedAnswer) ? implode(', ', $selectedAnswer) : $selectedAnswer) . "<br>";
 if(empty($answers)){
-    header('location:takequiz.php?quizformid='.base64_encode($_SESSION['quizformid']).'&emptyanswersfields');
+    header('location:take_exam.php?examformid='.base64_encode($_SESSION['examformid']).'&emptyanswersfields');
 }else{
     foreach($answers as $questionId => $selectedAnswer) {
         

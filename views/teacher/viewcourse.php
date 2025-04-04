@@ -128,7 +128,7 @@ if(isset($_GET['delid'])){
                 </div>
 
                 <div class="row">
-                    <div class="col-12 col-md-8 col-xl-8 mb-4">
+                    <div class="col-12 col-md-10 col-xl-8 mb-4">
                         <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
                             <h4 class="card-title px-3 fw-bold mt-2 mb-0" style='font-size:17px !important;'>
                                 View Course Information

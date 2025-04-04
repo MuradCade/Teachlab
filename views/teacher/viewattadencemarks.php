@@ -134,7 +134,7 @@ if(isset($_GET['delid'])){
                 </div>
                 
                 <div class="row">
-                    <div class="col-12 col-md-8 col-xl-5 mb-4">
+                    <div class="col-8 col-md-10 col-xl-5 col-sm-12 mb-4">
                         <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
                             <h4 class="card-title px-3 fw-bold mt-2 mb-0" style='font-size:17px !important;'>
                             View Attendance Information
@@ -191,20 +191,24 @@ if(isset($_GET['delid'])){
 
                 <!-- More Content Here -->
                  <div class="row">
-                    <div class="col-lg-9 col-md-8 col-sm-12">
+                    <div class="col-lg-9 col-md-12 col-sm-12">
                           
 
                     <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
-                        <div class='d-flex align-items-center gap-2 justify-content-start'>
-                        <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id , studentname" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
+                        <div class='d-lg-flex item-center justify-content-start gap-2 d-sm-block '>
+                        <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-sm-1' id='myInput' placeholder="Search by id , studentname" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
                     <?php 
                         if(isset($_POST['submit'])){
                             $coursename = $_POST['coursename'];?>
-                                                    <a href="slices/exportattendance.slice.php?coursename=<?=  $coursename?>" class="btn btn-secondary btn-sm fw-bold mt-1">Convert To Excel</a>
+                                        <div class="mt-2">
+                                        <a href="slices/exportattendance.slice.php?coursename=<?=  $coursename?>" class="btn btn-secondary btn-sm fw-bold mt-1">Convert To Excel</a>
 
+                                        </div>
                         <?php }else{?>
-                            <a href="slices/exportattendance.slice.php" class="btn btn-secondary btn-sm fw-bold mt-1 disabled" >Convert To Excel</a>
+                                <div>
+                                <a href="slices/exportattendance.slice.php" class="btn btn-secondary btn-sm fw-bold mt-1 disabled " >Convert To Excel</a>
 
+                                </div>
                         <?php }
                     ?>
                     </div>

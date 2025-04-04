@@ -18,7 +18,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TeachLab - Quiz</title>
+    <title>TeachLab - Take Quiz</title>
     <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   </head>
@@ -43,7 +43,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
       </div>
       </div>
        <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/'>TeachLab</a></p>
-   <?php }if(!isset($_SESSION['studentid']) && $row['quizstatus'] == 'active'){?>
+   <?php }else if(!isset($_SESSION['studentid']) && $row['quizstatus'] == 'active'){?>
   
       <div class="container" id='quizstudentintro' s>
         <div class="row">
@@ -84,12 +84,15 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
           </div>
         </div>
       </div>
-      <div class="text-center">
+
+      <div class="text-center" id='water-mark'>
         <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
         </div>
+     
    <?php }?>
+   
   <?php }} ?>
-
+ 
  <!-- dipslay success and failed message -->
 
    
@@ -132,6 +135,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
           // get all the questions
           $sql = "SELECT * FROM questions WHERE quizformid = '{$_SESSION['quizformid']}' ORDER BY questionid";
           $result = mysqli_query($connection, $sql);
+          
           while ($question = mysqli_fetch_assoc($result)) {
               $existingQuestions[$question['questionid']] = $question;
               // Fetch corresponding options
@@ -145,16 +149,25 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
         #quizstudentintro{
           display:none;
         }
+        #water-mark{
+          display:none;
+        }
         </style>
         <div class="container">
         <div class="row">
           <div class="col-lg-8 col-md-12 col-sm-5 mx-auto mt-3">
+            
             <div class="card">
               <div class="card-header">
                 <p class='card-title fw-bold'><?php echo strtoupper($_SESSION['quiztitle']); ?></p>
                 <p class='text-break'><?php echo $_SESSION['quizdesc'] ?></p>
               </div>
               <div class="card-body">
+        <!--display message to notify the student that the quiz is not ready -->
+              <?php 
+            if(mysqli_num_rows($result) == 0){?>
+             <p class='alert alert-danger p-2 '>Dear student, the quiz hasn’t been created yet. Please check back later.</p>
+            <?php }?>
                 <?php if(isset($_GET['emptyanswersfields'])){ ?>
                   <p class='bg-danger text-white p-2'>Please select at least one answer</p>
                 <?php } ?>
@@ -250,7 +263,14 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
                             <?php endforeach; ?>
                             <?php } ?> 
               
-                <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Quiz</button>
+                             <!-- if there are no questions hide the submit button-->
+                            <?php 
+            if(mysqli_num_rows($result) > 0){?>
+            <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Quiz</button>
+            <?php } ?>
+               
+
+
               </form>
               </div>
             </div>

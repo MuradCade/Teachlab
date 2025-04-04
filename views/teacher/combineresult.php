@@ -142,7 +142,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                     ?>
                               <div class="row mt-2">
                                 <div class="col-12 col-md-12 col-xl-10 mb-4">
-                                <div style='display:flex !important; align-items:center; justify-content:start; gap:10px;'>
+                                <div class=''>
                                 <div>
                                 <a href="slices/exportexcelcombined_data.slice.php?coursename=<?php echo $coursename;?>" class="btn btn-secondary">Convert To Excel</a>
                                 
