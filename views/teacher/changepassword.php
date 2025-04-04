@@ -102,14 +102,14 @@ if(isset($_POST['savepwd']) && isset($teacherid)){
 
                 <div class="row">
                 <div class="row">
-                <div class="col-4">
+                <div class="col-lg-4 col-md-12 col-sm-12">
                     <div id="list-example" class="list-group">
                     <a class="list-group-item list-group-item-action" href='setting.php'>Update Your Password</a>
                     <a class="list-group-item list-group-item-action bg-primary text-white fw-bold" href="#">Change Password</a>
                     
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-lg-6 col-md-12 col-sm-12 mt-4">
                     <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
                             
                     <div class="card p-3"  style='border:none !important; background-color:#f8f9fa !important;'>

@@ -116,24 +116,24 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
   <!-- subscription-->
-
                 <div class="position-sticky  mt-2">
                     <div class="dropdown">
-                        <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'setting.php'); checkactivesidebar($url,'subscription_manager.php');?> fw-bold" href="#" id="dropdownAccount" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                        <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'setting.php'); checkactivesidebar($url,'subscription_manager.php'); checkactivesidebar($url,'changepassword.php');?> fw-bold" href="#" id="dropdownAccount" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
                             <i class="bi bi-person-circle me-1"></i> Account
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="dropdownAccount">
                             <li style='font-size:14px;'><a class="dropdown-item  " href="setting.php">Setting</a></li>
                             
-                            <li class="nav-item dropdown">
-                            <a class="dropdown-item" href="https://teachlab.canny.io/teachlab" target='_blank' style='font-size:14px !important;'>
-                             Feedback
-                            </a>
-                        </li>
+                           
                         <li class="nav-item">
                             <a class="dropdown-item text-black 
                              <?php checkactivesidebar($url,'subscription_manager.php'); ?>" href="subscription_manager.php" style='font-size:14px !important;'>
                              Subscriptions 
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="dropdown-item" href="https://teachlab.canny.io/teachlab" target='_blank' style='font-size:14px !important;'>
+                             Feedback
                             </a>
                         </li>
 

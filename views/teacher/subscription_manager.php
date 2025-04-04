@@ -128,8 +128,8 @@ if(isset($_GET['delid'])){
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-12 col-md-10 col-xl-11 mb-4">
-                        <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
+                    <div class="col-lg-12 col-md-12 col-xl-11 col-sm-12 mb-4">
+                        <div class="card p-2 rounded table-responsive" style='border:none !important; background-color:#f8f9fa !important;'>
                             <h4 class="card-title px-3 fw-bold mt-2 mb-0" style='font-size:17px !important;'>
                               Subscription Information
                             </h4>

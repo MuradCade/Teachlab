@@ -297,7 +297,7 @@
                             <div class="card p-2" style="border:none !important; background-color:#f8f9fa !important;">
                                 
                                     <h4 class="card-title mb-0 px-2 mt-1 fw-bold" style='font-size:17px !important;'>
-                                        Quiz List
+                                        Quiz  Form List
                                     </h4>
 
                                     <?php if(isset($_GET['quizformupdatedsuccessfully'])){ ?>
