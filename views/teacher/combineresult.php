@@ -141,7 +141,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                 
                     ?>
                               <div class="row mt-2">
-                                <div class="col-12 col-md-12 col-xl-10 mb-4">
+                                <div class="col-lg-12 col-md-12 col-xl-12 mb-4">
                                 <div class=''>
                                 <div>
                                 <a href="slices/exportexcelcombined_data.slice.php?coursename=<?php echo $coursename;?>" class="btn btn-secondary">Convert To Excel</a>
@@ -162,6 +162,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                                             <td>Total_Attandence_Marks</td>
                                             <td>Total_Assignment_Marks</td>
                                             <td>Total_Quiz_Marks</td>
+                                            <td>Total_Exam_Marks</td>
                                         </tr>
 
 
@@ -172,37 +173,55 @@ $teacherid = $_SESSION['userid'] ?? null;
                                         $resultmain = mysqli_query($connection,$sqlmain);
                                         $rows = mysqli_fetch_assoc($resultmain);
                                         $formid =  $rows['quizformid']??'';
+                                        //step2 get the formid of the examform
+                                        $sqlmain = "select * from examform where teacherid = '$teacherid' and coursename ='$coursename'";   
+                                        $resultmain = mysqli_query($connection,$sqlmain);
+                                        $rows = mysqli_fetch_assoc($resultmain);
+                                        $examformid =  $rows['examformid']??'';
+
                                         // echo "<pre>";
                                         // var_dump($formid);
                                         // die();
                                         // echo "</pre>";
                                         // die();
                                             $sql2 = "SELECT 
-                                                        markattendence.stdid, 
-                                                        markattendence.stdfullname, 
-                                                        markattendence.coursename, 
-                                                        SUM(markattendence.attendedmarks) AS attandancemarks, 
-                                                        COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks,
-                                                        COALESCE(quiz_totals.quizmarks, 0) AS quizmarks
-                                                     FROM 
-                                                        markattendence 
-                                                     LEFT JOIN 
-                                                        (SELECT stdid,formid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid) AS assignment_totals 
-                                                     ON 
-                                                        markattendence.stdid = assignment_totals.stdid 
-                                                     LEFT JOIN 
-                                                        (SELECT stdid, quizmarks,quizformid  FROM studentquiz where  quizformid = '$formid' GROUP BY stdid) AS quiz_totals 
-                                                     ON 
-                                                        markattendence.stdid = quiz_totals.stdid 
-                                                     WHERE 
-                                                        teacherid = '$teacherid' and
-                                                       coursename = '$coursename'  
-                                                       
-                                                       
-                                                     GROUP BY 
-                                                        assignment_totals.formid, 
-                                                        markattendence.stdfullname,markattendence.coursename ORDER BY markattendence.stdid;";
-                                                        
+                                                            markattendence.stdid, 
+                                                            markattendence.stdfullname, 
+                                                            markattendence.coursename, 
+                                                            SUM(markattendence.attendedmarks) AS attandancemarks, 
+                                                            COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks,
+                                                            COALESCE(quiz_totals.quizmarks, 0) AS quizmarks,
+                                                            COALESCE(exam_totals.exammarks, 0) AS exammarks
+                                                        FROM 
+                                                            markattendence 
+                                                        LEFT JOIN 
+                                                            (SELECT stdid, formid, SUM(marks) AS assignmentmarks 
+                                                            FROM assignmententries 
+                                                            GROUP BY stdid) AS assignment_totals 
+                                                        ON markattendence.stdid = assignment_totals.stdid 
+                                                        LEFT JOIN 
+                                                            (SELECT stdid, quizmarks, quizformid  
+                                                            FROM studentquiz 
+                                                            WHERE quizformid = '$formid' 
+                                                            GROUP BY stdid) AS quiz_totals 
+                                                        ON markattendence.stdid = quiz_totals.stdid 
+                                                        LEFT JOIN 
+                                                            (SELECT stdid, exammarks, examformid 
+                                                            FROM studentexam 
+                                                            WHERE examformid = '$examformid' 
+                                                            GROUP BY stdid) AS exam_totals
+                                                        ON markattendence.stdid = exam_totals.stdid
+                                                        WHERE 
+                                                            teacherid = '$teacherid' 
+                                                            AND coursename = '$coursename'  
+                                                        GROUP BY 
+                                                            assignment_totals.formid, 
+                                                            markattendence.stdfullname, 
+                                                            markattendence.coursename 
+                                                        ORDER BY 
+                                                            markattendence.stdid;
+                                                    ";
+
 
                                             $result2 = mysqli_query($connection,$sql2);
                                             $rowsid =1;
@@ -219,6 +238,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                                                         <td><?php echo $rows['attandancemarks']?></td>
                                                         <td><?php echo $rows['assignmentmarks']?></td>
                                                         <td><?php echo $rows['quizmarks']?></td>
+                                                        <td><?php echo $rows['exammarks']?></td>
                                                     </tr>
                                                 
                                                 

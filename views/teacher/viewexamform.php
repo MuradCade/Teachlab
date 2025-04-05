@@ -442,8 +442,8 @@
                                                 <td>Wrong_Questions</td>
                                                 <td>Correct_Questions</td>
                                                 <td>Total_Questions</td>
-                                                <td>Quiz_Date</td>
-                                                <td>Quiz_Marks</td>
+                                                <td>Exam_Date</td>
+                                                <td>Exam_Marks</td>
                                                 <td>Actions</td>
                                             </tr>
                                             <?php 

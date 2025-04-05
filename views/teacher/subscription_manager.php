@@ -186,8 +186,8 @@ if(isset($_GET['delid'])){
                                                 <p>Phone: <?= $rowsdata['number']?></p>
                                                 <p>Subscription_Plan: <?= $rowsdata['subscription_plan']?></p>
                                                 <p>Subscription_Amount: $<?= $rowsdata['amount']?></p>
-                                                <p>Started_Date: <?= $rowsdata['started_date']?></p>
-                                                <p>Expire_Date: <?= $rowsdata['expire_date']?></p>
+                                                <p>Started_Date: <?= date('M-j-Y ', strtotime($rowsdata['started_date']));?></p>
+                                                <p>Expire_Date: <?=  date('M-j-Y ', strtotime($rowsdata['expire_date']));?></p>
                                                 <p>Days_Left_to_expire: <?= $rowsdata['days_left']?> days</p>
                                                 <p>Payment_Status: <?= $rowsdata['payment_status']?></p>
                                                 <p style='text-transform:capitalize;'>Subscription_Status: <?= $rowsdata['subscription_status']?></p>

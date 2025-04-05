@@ -4,11 +4,8 @@ include_once('../../model/dbcon.php');
 session_start();
 
 if(isset($_POST['submitquiz'])) {
-    // Add this line to see the submitted data
-    // echo "<pre>";
-    // print_r($_POST);
-    // echo "</pre>";
-    
+
+   
     $answers = $_POST['answers'];
     $option_one = 'a';
     $option_two = 'b';
@@ -53,4 +50,14 @@ if(empty($answers)){
 }
     
     
+}else{
+ 
+ if(isset($_POST['quitexam'])){
+     unset($_SESSION['examtitle']);
+     unset($_SESSION['examdesc']);  
+     unset($_SESSION['studentid']);
+     unset($_SESSION['studentname']);
+     header('location:take_exam.php?examformid='.base64_encode($_SESSION['examformid']).'&examquited');
+     exit();
+ }
 }

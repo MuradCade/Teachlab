@@ -52,6 +52,9 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
               <?php if(isset($_GET['success'])){?>
                 <p class='bg-success text-white p-2'>Thank You , Quiz Submitted Successfully</p>
               <?php } ?>  
+              <?php if(isset($_GET['quizquited'])){?>
+                <p class='alert alert-warning p-2' style='font-size:16px;'>Dear Student, you have exited the quiz without submitting it. This means your attempt was not recorded, and you will be able to retake the quiz later.</p>
+              <?php } ?> 
               <?php if(isset($_GET['emptyanswersfields'])){?>
                 <p class='bg-danger text-white p-2'>Please Fill The Form In Order To Begin Taking The Quiz</p>
               <?php } ?>  
@@ -267,6 +270,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
                             <?php 
             if(mysqli_num_rows($result) > 0){?>
             <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Quiz</button>
+            <button type='submit' class='btn btn-secondary btn-sm mt-2 fw-bold' name='quitequiz'>Quit Quiz</button>
             <?php } ?>
                
 

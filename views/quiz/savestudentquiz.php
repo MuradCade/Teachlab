@@ -53,4 +53,13 @@ if(empty($answers)){
 }
     
     
+}else{
+    if(isset($_POST['quitequiz'])){
+        unset($_SESSION['quiztitle']);
+        unset($_SESSION['quizdesc']);  
+        unset($_SESSION['studentid']);
+        unset($_SESSION['studentname']);
+        header('location:takequiz.php?quizformid='.base64_encode($_SESSION['quizformid']).'&quizquited');
+        exit();
+    }
 }

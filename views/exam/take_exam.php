@@ -45,12 +45,15 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
        <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/' class='fw-bold'>TeachLab</a></p>
    <?php } else if(!isset($_SESSION['studentid']) && $row['examstatus'] == 'active'){?>
   
-      <div class="container" id='quizstudentintro' s>
+      <div class="container" id='quizstudentintro'>
         <div class="row">
           <div class="col-lg-8 col-md-10 col-sm-12 mx-auto mt-5">
             <div class="card">
               <?php if(isset($_GET['success'])){?>
                 <p class='bg-success text-white p-2'>Thank You , Exam Submitted Successfully</p>
+              <?php } ?>  
+              <?php if(isset($_GET['examquited'])){?>
+                <p class='alert alert-warning p-2' style='font-size:16px;'>Dear Student, you have exited the exam without submitting it. This means your attempt was not recorded, and you will be able to retake the exam later.</p>
               <?php } ?>  
               <?php if(isset($_GET['emptyanswersfields'])){?>
                 <p class='bg-danger text-white p-2'>Please Fill The Form In Order To Begin Taking The Exam</p>
@@ -156,6 +159,8 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
               <div class="card-header">
                 <p class='card-title fw-bold'><?php echo strtoupper($_SESSION['examtitle']); ?></p>
                 <p class='text-break'><?php echo $_SESSION['examdesc'] ?></p>
+              
+
               </div>
               <div class="card-body">
               <?php if(mysqli_num_rows($result) == 0){?>
@@ -185,7 +190,6 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
                                     <strong><?php echo $question['questionid'].' ) '?></strong> 
                                     <?php echo htmlspecialchars($question['questiontext']);?>
                                 </p>
-                                
                                 <div class="ms-4">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" 
@@ -257,6 +261,7 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
                             <?php } ?> 
                             <?php if(mysqli_num_rows($result) > 0){?>
                               <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Exam</button>
+                              <button type='submit' class='btn btn-secondary btn-sm mt-2 fw-bold' name='quitexam'>Quit Exam</button>
             <?php }?>
               </form>
               </div>
