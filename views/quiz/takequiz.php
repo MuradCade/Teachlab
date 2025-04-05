@@ -30,9 +30,9 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
     if($row['quizstatus'] == 'disable' || $row['quizstatus'] == 'draft'){?>
       <div class="container">
       <div class="row">
-        <div class="col-5 col-md-6 col-sm-12 mx-auto ">
+        <div class="col-lg-7 col-md-18 col-sm-12 mx-auto ">
         <div class="card p-2 mt-5">
-          <h4 class="card-header">
+          <h4 class="card-header" style='font-size:16px;'>
             Quiz Form
           </h4>
           <div class="card-body">
@@ -42,7 +42,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
         </div>
       </div>
       </div>
-       <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/'>TeachLab</a></p>
+       <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/'  class='fw-bold'>TeachLab</a></p>
    <?php }else if(!isset($_SESSION['studentid']) && $row['quizstatus'] == 'active'){?>
   
       <div class="container" id='quizstudentintro' s>
@@ -86,7 +86,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
       </div>
 
       <div class="text-center" id='water-mark'>
-        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
+        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/" class='fw-bold'>TeachLab</a></p>
         </div>
      
    <?php }?>
@@ -155,7 +155,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
         </style>
         <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-md-12 col-sm-5 mx-auto mt-3">
+          <div class="col-lg-7 col-md-12 col-sm-12 mx-auto mt-3">
             
             <div class="card">
               <div class="card-header">

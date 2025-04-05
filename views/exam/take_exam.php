@@ -30,9 +30,9 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
     if($row['examstatus'] == 'disable' || $row['examstatus'] == 'draft'){?>
       <div class="container">
       <div class="row">
-        <div class="col-5 col-md-6 col-sm-12 mx-auto ">
+        <div class="col-lg-6 col-md-10 col-sm-12 mx-auto ">
         <div class="card p-2 mt-5">
-          <h4 class="card-header">
+          <h4 class="card-header" style='font-size:16px;'>
             Exam Form
           </h4>
           <div class="card-body">
@@ -42,12 +42,12 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
         </div>
       </div>
       </div>
-       <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/'>TeachLab</a></p>
+       <p class='text-center mt-2'>This Form Is powered by <a href='https://teachlabs.unaux.com/' class='fw-bold'>TeachLab</a></p>
    <?php } else if(!isset($_SESSION['studentid']) && $row['examstatus'] == 'active'){?>
   
       <div class="container" id='quizstudentintro' s>
         <div class="row">
-          <div class="col-lg-8 col-md-8 col-sm-12 mx-auto mt-5">
+          <div class="col-lg-8 col-md-10 col-sm-12 mx-auto mt-5">
             <div class="card">
               <?php if(isset($_GET['success'])){?>
                 <p class='bg-success text-white p-2'>Thank You , Exam Submitted Successfully</p>
@@ -77,7 +77,7 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
                   <label class='form-label'>Studen Name</label>
                   <input type="text" class='form-control' name='studentname' placeholder='Enter Student Name'>
                 </div>
-                <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='takequiz'>Take The Quiz</button>
+                <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='takequiz'>Take The Exam</button>
               </form>
               </div>
             </div>
@@ -85,7 +85,7 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
         </div>
       </div>
       <div class="text-center" id='water-mark'>
-        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
+        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/" class='fw-bold'>TeachLab</a></p>
         </div>
    <?php }?>
   <?php }} ?>
@@ -151,7 +151,7 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
         </style>
         <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-md-12 col-sm-5 mx-auto mt-3">
+          <div class="col-lg-8 col-md-12 col-sm-12 mx-auto mt-3">
             <div class="card">
               <div class="card-header">
                 <p class='card-title fw-bold'><?php echo strtoupper($_SESSION['examtitle']); ?></p>
@@ -256,7 +256,7 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
                             <?php endforeach; ?>
                             <?php } ?> 
                             <?php if(mysqli_num_rows($result) > 0){?>
-                              <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Quiz</button>
+                              <button type='submit' class='btn btn-primary btn-sm mt-2 fw-bold' name='submitquiz'>Submit Exam</button>
             <?php }?>
               </form>
               </div>
