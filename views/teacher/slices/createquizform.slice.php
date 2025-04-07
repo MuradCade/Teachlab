@@ -35,12 +35,13 @@ if(isset($_POST['submit'])) {
         header('location: ../createquiz.php?emptyquizstatus');
         exit();
     }
-    else if(empty($numberofquestion)) {
-        header('location: ../createquiz.php?emptynumberofquestion');
-        exit();
-    }
+    
     else if(empty($quiztype)) {
         header('location: ../createquiz.php?emptyquiztype');
+        exit();
+    }
+    else if(empty($numberofquestion)) {
+        header('location: ../createquiz.php?emptynumberofquestion');
         exit();
     }
     else {

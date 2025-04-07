@@ -103,7 +103,7 @@ if (!isset($_SESSION['userid'])) {
                                 <?php } ?>
 
                                 <?php if(checkcourseamount($connection,$_SESSION['userid'],'free')){?>
-                                    <p class='alert alert-danger p-2'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.
+                                    <p class='alert alert-danger p-2' style='font-size:15px !important;'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.
                                         in order to upgrade go to home and click on upgrade button.
                                     </p>
                                 <?php } ?>

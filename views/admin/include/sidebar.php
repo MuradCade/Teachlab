@@ -2,6 +2,32 @@
 include_once('include/activestate.php');
 // find out the path to the current file:
  $url = $_SERVER['SCRIPT_NAME'];
+ // display intials of user  - muradcade will be displayed as mc
+function getSmartInitials($fullname) {
+    $fullname = trim($fullname);
+
+    // Case 1: If name has space
+    if (strpos($fullname, ' ') !== false) {
+        $words = explode(" ", $fullname);
+        $initials = '';
+        foreach ($words as $word) {
+            if (!empty($word)) {
+                $initials .= strtoupper($word[0]);
+            }
+        }
+        return $initials;
+    }
+
+    // Case 2: One word, try to get uppercase pattern (like camelCase or PascalCase)
+    preg_match_all('/[A-Z]/', $fullname, $matches);
+    if (count($matches[0]) >= 2) {
+        return strtoupper($matches[0][0] . $matches[0][1]);
+    }
+
+    // Case 3: Fallback → get first and middle character
+    return strtoupper($fullname[0] . $fullname[1]);
+}
+
 
  ?>
  <!-- Sidebar -->
@@ -12,6 +38,27 @@ include_once('include/activestate.php');
                               <button id="closeSidebar" type="button" class="btn btn-secondary position-absolute top-0 end-0 mt-2 me-2" aria-label="Close">
                     <i class="bi bi-x"></i>
                 </button>
+                
+                <div class="d-flex align-items-center bg-white p-2 shadow-sm rounded-2" style="border: 1px solid #f9f9f9;">
+                        <!-- Avatar -->
+                        <div class="rounded-circle bg-primary border text-white fw-bold d-flex justify-content-center align-items-center me-3 "
+                            style="width: 48px; height: 48px; font-size: 18px;">
+                            <?php
+                            // $intials =  getSmartInitials($_SESSION['fullname']);
+                            $initials = strtoupper(substr(getSmartInitials(htmlspecialchars($_SESSION['fullname'])), 0, 2));
+                            echo $initials;
+                            ?>
+                        </div>
+
+                        <!-- Name and Title -->
+                        <div class="d-flex flex-column">
+                            <p class="mb-0 text-truncate fw-bold" style="max-width: 100px;">
+                            <!-- display user intails-->
+                            <?php echo htmlspecialchars($_SESSION['fullname']); ?>
+                            </p>
+                            <small class="text-muted fw-medium">Admin</small>
+                        </div>
+                        </div>
                     <ul class="nav flex-column">
                         <li class="nav-item mt-1 mt-3">
                             <a class="nav-link <?php checkactivesidebar($url,'admin'); checkactivesidebar($url,'index.php')?> fw-bold" href="index.php" style='font-size:15px;'>
@@ -24,8 +71,10 @@ include_once('include/activestate.php');
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="course">
                                 <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewusers.php.php');?>  fw-bold" href="viewusers.php">View Users</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewusers.php.php');?>  fw-bold" href="viewusers.php">User Details</a></li>
                                 <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
                             </ul>
+                            
                         </li>
                         <li class="nav-item dropdown mt-3">
                             <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'manage_subscription.php'); ?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
@@ -33,6 +82,7 @@ include_once('include/activestate.php');
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAnalytics">
                                 <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewstudent.php');?> fw-bold" href="manage_subscription.php">Manage Subscription</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewstudent.php');?> fw-bold" href="manage_subscription.php">Subscription Orders</a></li>
                                 <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
                             </ul>
                         </li>

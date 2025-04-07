@@ -105,7 +105,7 @@ if(isset($_POST['singup'])){
                                               if($subscriptionplan == 'free'){
                                                
 
-                                                $sql3 = "insert into subscription(userid,subsatus,subplan,subamount,expire_date)values('$userrandomid','active','free','0','$expire_date')";
+                                                $sql3 = "insert into subscription(userid,subsatus,subplan,subamount,expire_date)values('$userrandomid','active','free','30','$expire_date')";
                                                 
                                             }else if($subscriptionplan == 'pro'){
 

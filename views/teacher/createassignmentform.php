@@ -89,8 +89,14 @@ if (!isset($_SESSION['userid'])) {
                                 Create Assignment Form
                             </h4>
                             <div class="card-body">
-                                <?php if (isset($_GET['emptyfields'])) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please fill all the fields to create assignment form</p>
+                                <?php if (isset($_GET['emptyformtitle'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty from title field</p>
+                                <?php } ?>
+                                <?php if (isset($_GET['emptyformdesc'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty form description field</p>
+                                <?php } ?>
+                                <?php if (isset($_GET['emptymarks'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty assignment marks</p>
                                 <?php } ?>
                                 <?php if (isset($_GET['queryfailed'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Failed to create assignment form</p>
@@ -102,13 +108,13 @@ if (!isset($_SESSION['userid'])) {
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before  creating new assignment form</p>
                                 <?php } ?>
                                 <?php if (checkassignmentamount($connection,$_SESSION['userid'],'free')) { ?>
-                                    <p class='alert alert-danger p-2'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.
+                                    <p class='alert alert-danger p-2' style='font-size:15px !important;'>Dear User, You have reached the maximum number of Assignment Form for your free plan. Please upgrade to a paid plan to create more Assignment Forms.
                                         in order to upgrade go to home and click on upgrade button.
                                     </p>
                                 <?php } ?>
                                
                                 
-                                <form method='post' action='slices/createassignment.slice.php'>
+                                <form method='POST' action='slices/createassignment.slice.php'>
                                     <div class="form-group mb-3">
                                         <label class='form-label'>Form Title</label>
                                         <input type="text" name='formtitle' class='form-control' placeholder="Enter Form Title"/>
@@ -124,7 +130,7 @@ if (!isset($_SESSION['userid'])) {
                                         <?php  
                                         // if teacher tries to create student before creating course show him none in course selection
                                            if(coursenames($_SESSION['userid'],$connection) == false){
-                                            echo '<option>none</option>';
+                                            echo "<option  value=''>none</option>";
                                            }else{
                                            
                                             foreach (coursenames($_SESSION['userid'],$connection) as $data) {?>
@@ -135,12 +141,8 @@ if (!isset($_SESSION['userid'])) {
                                         
                                         ?>
                                         </select>
-                                        <div class="form-group mt-3">
-                                            <label class='form-label'>Template</label>
-                                            <select name='template' class='form-select'>
-                                                <option value="default_template">Default Template</option>
-                                            </select>
                                         </div>
+                                        
                                         <div class="form-group mt-3">
                                             <label class='form-label'>Upload File Type</label>
                                             <select name='uploadfiletype' class='form-select'>
@@ -151,7 +153,6 @@ if (!isset($_SESSION['userid'])) {
                                             <label class="form-label">Assignment Marks</label>
                                             <input type="text" class="form-control" name='marks' placeholder="Enter Assignment Makrs">
                                         </div>
-                                    </div>
                                     <button class="btn btn-primary btn-sm mt-2 fw-bold  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?> <?php echo checkassignmentamount($connection,$_SESSION['userid'],'free') ? 'disabled' : ''?>" name='submit'>Submit</button>
                                 </form>
                             </div>

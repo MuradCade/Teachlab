@@ -120,7 +120,7 @@ $quizid = rand(1000, 9999);
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty Quiz type field</p>
                                 <?php } ?>
                                 <?php if (checkquizamount($connection,$_SESSION['userid'],'free')) { ?>
-                                    <p class='alert alert-danger p-2'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.
+                                    <p class='alert alert-danger p-2'style='font-size:15px !important;'>Dear User, You have reached the maximum number of Quiz Form for your free plan. Please upgrade to a paid plan to create more Quiz Forms.
                                         in order to upgrade go to home and click on upgrade button.
                                     </p>
                                 <?php } ?>
@@ -190,7 +190,7 @@ $quizid = rand(1000, 9999);
                                         <option value="30">30</option>
                                      </select>
                                     </div>
-                                    <button type="submit" class="btn btn-primary  fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?><?php echo checkquizamount($connection,$_SESSION['userid'],'free') ? 'disabled' : ''?>" name='submit'>Submit</button>
+                                    <button type="submit" class="btn btn-primary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?><?php echo checkquizamount($connection,$_SESSION['userid'],'free') ? 'disabled' : ''?>" name='submit'>Submit</button>
                                 </form>
                                     </div>
                                 

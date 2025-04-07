@@ -205,14 +205,14 @@ if(isset($_GET['delid'])){
 
                                         </div>
                         <?php }else{?>
-                                <div>
-                                <a href="slices/exportattendance.slice.php" class="btn btn-secondary btn-sm fw-bold mt-1 disabled " >Convert To Excel</a>
+                                <div class='mb-2 mt-2'>
+                                <a href="slices/exportattendance.slice.php" class="btn btn-secondary btn-sm fw-bold  disabled" >Convert To Excel</a>
 
                                 </div>
                         <?php }
                     ?>
                     </div>
-                    <table class='table table-hover table-bordered table-responsiv' id='myTable'>
+                    <table class='table table-hover table-bordered table-responsiv mt-2' id='myTable'>
                     <tr>
                         <td>#</td>
                         <td>Student ID</td>
@@ -234,7 +234,7 @@ if(isset($_GET['delid'])){
                         $result = mysqli_query($connection,$sql);
                         $rowid = 1;
                         if(mysqli_num_rows($result) == 0){
-                            echo "<span style='font-size:15px;'>Sorry , There’s currently no data to show.</span>";
+                            echo "<span style='font-size:15px;' class='mb-1 mt-2'>Sorry , There’s currently no data to show.</span>";
                         }else{
                         while($row = mysqli_fetch_assoc($result)){?>
                         <tr>

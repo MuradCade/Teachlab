@@ -130,7 +130,7 @@ if(isset($_POST['saveinfo']) && isset($teacherid)){
                             <div class="form-group">
                                 <label class='form-label'>Email</label>
                                 <input type="text" class="form-control" placeholder="Enter Email" name='email' value="<?php echo $row['email']?>" readonly>
-                                <p class='mt-2 ' style='font-size:15px;'><strong class='text-danger'>Warning : </strong> Updating your email is not possible,
+                                <p class='mt-2 ' style='font-size:14px;'><strong class='text-danger'>Warning : </strong> Updating your email is not possible,
                                 as it's essential for verifying your identity during login. </p>
                             </div>
                             <button class='btn btn-primary btn-sm mt-2 fw-bold' name='saveinfo'>Update</button>

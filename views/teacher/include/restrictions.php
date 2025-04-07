@@ -68,7 +68,27 @@ function checkquizamount($connection,$userid,$subplan){
     }
    
 }
-
+function checkexamamount($connection,$userid,$subplan){
+    $sql = "select * from subscription where userid = '$userid' and subplan = '$subplan'";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+        while($row = mysqli_fetch_assoc($result)){
+            if($row['userid'] == $userid && $row['subplan'] == $subplan){
+                $sql2  = "select count(*) as totalexam from examform where teacherid = '$userid'";
+                $result2 = mysqli_query($connection,$sql2);
+                if($result2){
+                    $row2 = mysqli_fetch_assoc($result2);
+                    if($row2['totalexam'] >=1){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+   
+}
 
 
 
