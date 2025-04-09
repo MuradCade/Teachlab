@@ -79,6 +79,13 @@ if(isset($_POST['savepwd']) && isset($teacherid)){
             }
         }
     </style>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 <body>
     <div class="container-fluid">
