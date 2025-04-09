@@ -66,23 +66,23 @@ function getSmartInitials($fullname) {
                             </a>
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'viewusers.php'); ?> fw-bold" href="#" id="course" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'viewusers.php'); checkactivesidebar($url,'userdetails.php'); ?> fw-bold" href="#" id="course" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
                                 <i class="bi bi-book me-1"></i> Users
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="course">
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewusers.php.php');?>  fw-bold" href="viewusers.php">View Users</a></li>
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewusers.php.php');?>  fw-bold" href="viewusers.php">User Details</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewusers.php');?>  fw-bold" href="viewusers.php">View Users</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'userdetails.php');?>  fw-bold" href="userdetails.php">User Details</a></li>
                                 <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
                             </ul>
                             
                         </li>
                         <li class="nav-item dropdown mt-3">
-                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'manage_subscription.php'); ?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
+                            <a class="nav-link dropdown-toggle  <?php checkactivesidebar($url,'manage_subscription.php');  checkactivesidebar($url,'subscription_orders.php');?> fw-bold" href="#" id="dropdownAnalytics" data-bs-toggle="dropdown" aria-expanded="false" style='font-size:15px;'>
                                 <i class="bi bi-person me-1"></i> Subscription
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAnalytics">
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewstudent.php');?> fw-bold" href="manage_subscription.php">Manage Subscription</a></li>
-                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'viewstudent.php');?> fw-bold" href="manage_subscription.php">Subscription Orders</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'manage_subscription.php');?> fw-bold" href="manage_subscription.php">Change Days Left</a></li>
+                                <li style="font-size:14px;"><a class="dropdown-item <?php checkactivesidebar($url,'subscription_orders.php');?> fw-bold" href="subscription_orders.php">Subscription Orders</a></li>
                                 <!-- <li><a class="dropdown-item" href="#">Reports</a></li> -->
                             </ul>
                         </li>

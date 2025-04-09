@@ -105,7 +105,7 @@ function singleuserdetails($userid, $connection)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeachLab - Manage Users</title>
+    <title>TeachLab - View Users</title>
     <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -200,6 +200,19 @@ function singleuserdetails($userid, $connection)
                             <?php if (isset($_GET['pwdfailed'])) { ?>
                                 <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Faild To Change User Password</p>
                             <?php } ?>
+                            
+                            
+                            <!-- Manage subscription alerts-->
+                            <?php if (isset($_GET['useridnotpassed'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Sorry , we failed to change user subscription status , no userid where passed</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['subscriptionsuccess'])) { ?>
+                                <p class='bg-success p-2 text-white fw-bold'  style='font-size:14px;'>Subscription Status Updated Successfully</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['subscriptionfailed'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Failed to update subscription status</p>
+                            <?php } ?>
+
 
                             <table class="table table-bordered table-hover">
                                 <tr>
@@ -230,7 +243,7 @@ function singleuserdetails($userid, $connection)
                                                 <td><input type='text' name='v_status' value="<?php echo $row['verified_status'] == '1' ? 'Yes' : 'No'; ?>" /> <?php echo getsubscriptioninfo($row['userid'], 'subplan', $connection) == "one-time-purches" ? "<i class='bi bi-check' style='font-size:18px;'></i>" :(getsubscriptioninfo($row['userid'], 'subplan', $connection) == "free" ? "<i class='bi bi-dash-square' style='font-size:18px;'></i>":"<i class='bi bi-send' style='font-size:18px;'></i>"); ?> </td>
                                                 <td><a href="viewusers.php?details=<?= base64_encode($row['userid']) ?>" class='btn btn-secondary btn-sm fw-bold  m-2'>Details</a><button class='btn btn-primary btn-sm fw-bold ' name='update'>Update Info</button>
                                                     <a href="viewusers.php?changepwd=<?= base64_encode($row['userid']) ?>" class='btn btn-warning btn-sm text-black fw-bold'>Changepwd</a>
-                                                    <a href="#" class='btn btn-info btn-sm text-black fw-bold'>Manage_Sub</a>
+                                                    <a href="viewusers.php?managesubscription=<?= base64_encode($row['userid']) ?>" class='btn btn-info btn-sm text-black fw-bold'>Manage_Sub</a>
                                                     <a href="viewusers.php?userid=<?php echo $row['userid'] ?>" class='btn btn-danger btn-sm fw-bold m-2'>Delete</a>
                                                 </td>
                                             </tr>
@@ -259,6 +272,7 @@ function singleuserdetails($userid, $connection)
                                                         <p>UserEmail: <?= $singleuserdata['email'] ?></p>
                                                         <p>UserRole: <?= ucwords($singleuserdata['role']) ?></p>
                                                         <p>User_Verified: <?= $singleuserdata['verified_status'] == '1' ? "<span class='text-success fw-bold'>Yes</span>" : "<span class='text-danger fw-bold'>No</span>" ?></p>
+                                                        <p>Subscription Status: <?= getsubscriptioninfo($userid, 'subsatus', $connection) == 'active' ? "<span class='text-success fw-bold'>Active</span>" :(getsubscriptioninfo($userid, 'subsatus', $connection) == 'expire' ?"<span class='text-danger fw-bold'>Expire</span>" :"<span class='text-primary fw-bold'>Pending</span>") ?></p>
                                                         <p>Subscriptin_Started_Date: <?= date('M-j-Y ', strtotime(getsubscriptioninfo($userid, 'date', $connection))) ?></p>
                                                         <p>Subscriptin_Expire_Date: <?= date('M-j-Y ', strtotime(getsubscriptioninfo($userid, 'expire_date', $connection))) ?></p>
                                                         <p>Subscription_Days_Left : <?= getsubscriptioninfo($userid, 'subamount', $connection) . ' Days' ?></p>
@@ -313,6 +327,46 @@ function singleuserdetails($userid, $connection)
 
                                 <!-- Change User Password Form Ends Here-->
 
+
+                                <!-- Change Subscription Form : change pro user subscription status(expire) and subamount(0) -->
+                                <?php if (isset($_GET['managesubscription'])) {
+                                    $userid = $_GET['managesubscription'];
+                                ?>
+                                    <div class='modal' style="display:block;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title " id="exampleModalLabel" style='font-size:16px !important;'>Manage Subscription</h1>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <form method="POST" action="slices/managesubscription.php">
+                                                        <div class="form-group">
+                                                            <label for="substatus" class='form-label'>Change Subscription Status</label>
+                                                            <select class="form-control" id="substatus" name='substatus'>
+                                                                <option value="expire">Expire</option>
+                                                                <option value="active">Active</option>
+                                                                <option value="one-time-purches">Life Time Access</option>
+                                                            </select>
+                                                            <input type="hidden" class="form-control" name='userid' value="<?= $userid; ?>">
+                                                        </div>
+                                                        <div class='mt-2'>
+                                                            <button class='btn btn-primary btn-sm fw-bold' name='submit'>Submit</button>
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewusers.php'>Close</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php } ?>
+
+                                <!-- Change Subscription Form-->
 
 
 

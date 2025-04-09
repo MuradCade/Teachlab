@@ -27,3 +27,7 @@ if(isset($_POST['changepwdbtn'])){
 
   
 }
+else{
+    header('location:../viewusers.php?redirected');
+            exit();
+}

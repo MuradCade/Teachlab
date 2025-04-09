@@ -25,7 +25,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $current_year = date('Y'); 
         
         // check if there is already subscription with current date
-        $sql = "select * from usersubscription_manager where userid = '{$_SESSION['userid']}'AND MONTH(started_date) = '$current_month' AND YEAR(	started_date) = '$current_year' AND payment_status = 'paid' AND subscription_status = 'active' ";
+        // $sql = "select * from usersubscription_manager where userid = '{$_SESSION['userid']}'AND MONTH(started_date) = '$current_month' AND YEAR(started_date) = '$current_year' AND payment_status = 'paid' AND subscription_status = 'pending' ";
+        $sql = "select * from usersubscription_manager where userid = '{$_SESSION['userid']}'AND MONTH(started_date) = '$current_month'  AND payment_status = 'paid' AND subscription_status = 'pending' ";
+      
         $result = mysqli_query($connection,$sql);
         if(mysqli_num_rows($result) == 0){
             $subscriptions = calculateSubscription($_POST['paymentdate'],'monthly');
@@ -39,6 +41,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                }
             // nothing found with specified date
             // $sql2 = "insert into usersubscription_manager(userid,fullname,number,subscription_plan,amount,started_date,expire_date,days_left,subscription_status)values('{$_SESSION['userid']}','{$_POST['fullname']}', '{$_POST['number']}', '{$data[$_POST['subplan']]}' , '{$_POST['amount']}', '{$_POST['paymentdate']}' , '{$subscriptions['end_date']}','{$data['daysleft']}','active')";
+            $sqlsubplan ="update subscription set date='{$_POST['paymentdate']}', subsatus = 'pending' ,expire_date ='{$subscriptions['end_date']}' , subamount = '0' where userid = '{$_SESSION['userid']}'";
+            $resultsubplan = mysqli_query($connection,$sqlsubplan);
             $result2 = mysqli_query($connection,$sql2);
 
             if($result2){
