@@ -43,7 +43,7 @@ if($quizformdata['quiztype'] == 'trueandfalse'){
                                                             ) AS wrong_count
                                                         FROM
                                                             studentquiz sq
-                                                        JOIN TRUE_false_options o
+                                                        JOIN true_false_options o
                                                         ON
                                                             sq.question_id = o.questionid 
                                                             AND sq.quizformid = o.quizformid

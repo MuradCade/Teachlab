@@ -2,8 +2,9 @@
     <?php
     include '../../model/dbcon.php';
     if(isset($_GET['stdid']) && !empty($_GET['stdid'])){
+        $quizformid = $_GET['quizformid'];
         $stdid = mysqli_real_escape_string($connection, $_GET['stdid']);
-        $sql = "select * from studentquiz where stdid = '$stdid'";
+        $sql = "select * from studentquiz where stdid = '$stdid' and quizformid = '$quizformid'";
         $result = mysqli_query($connection,$sql);
         if(mysqli_num_rows($result) == 0){
             echo "<center><h1>Sorry Student with that id doesn't exist.</h1>

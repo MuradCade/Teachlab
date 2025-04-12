@@ -501,7 +501,7 @@
                                                 <form method='POST' action="viewexamform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $examformid ?>">
                                                     <tr>
                                                         <td><?php echo $rowid?></td>
-                                                        <td><a href="../exam/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
+                                                        <td><a href="../exam/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>&examformid=<?php echo $examformid; ?>" target="_blank"><?php echo $row['stdid']?></a></td>
                                                         <td><?php echo $row['stdfullname']?></td>
                                                         <td><?php echo $row['wrong_count']?></td>
                                                         <td><?php echo $row['correct_count']?></td>
@@ -529,7 +529,7 @@
                                                 <form method='POST' action="viewexamform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $examformid ?>">
                                                     <tr>
                                                         <td><?php echo $rowid?></td>
-                                                        <td><a href="../exam/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
+                                                        <td><a href="../exam/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>&examformid=<?php echo $examformid; ?>" target="_blank"><?php echo $row['stdid']?></a></td>
                                                         <td><?php echo $row['stdfullname']?></td>
                                                         <td><?php echo $row['wrong_count']?></td>
                                                         <td><?php echo $row['correct_count']?></td>

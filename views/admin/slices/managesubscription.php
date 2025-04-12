@@ -4,7 +4,7 @@ include('../../../model/dbcon.php');
 
 if(isset($_POST['submit'])) {
     $userid = mysqli_escape_string($connection,base64_decode($_POST['userid']));
-    $substatus = trim($_POST['substatus']);
+    $substatus = $_POST['substatus'];
 
     if(empty(trim($userid))){
         header('location:../viewusers.php?useridnotpassed');

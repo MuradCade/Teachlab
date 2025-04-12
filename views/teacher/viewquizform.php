@@ -477,7 +477,7 @@
                                                             ) AS wrong_count
                                                         FROM
                                                             studentquiz sq
-                                                        JOIN TRUE_false_options o
+                                                        JOIN true_false_options o
                                                         ON
                                                             sq.question_id = o.questionid 
                                                             AND sq.quizformid = o.quizformid
@@ -507,7 +507,7 @@
                                                 <form method='POST' action="viewquizform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $quizformid ?>">
                                                     <tr>
                                                         <td><?php echo $rowid?></td>
-                                                        <td><a href="../quiz/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
+                                                        <td><a href="../quiz/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>&quizformid=<?php echo $quizformid?>" target="_blank"><?php echo $row['stdid']?></a></td>
                                                         <td><?php echo $row['stdfullname']?></td>
                                                         <td><?php echo $row['wrong_count']?></td>
                                                         <td><?php echo $row['correct_count']?></td>
@@ -515,7 +515,7 @@
                                                         <td><?php echo date('M-j-Y ', strtotime($row['quiz_taken_date']))?></td>
                                                         <td><input name='quizmarks' value="<?php echo $row['quizmarks']?>" style='width:60px !important;'/></td>
                                                         <td>
-                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm mb-2' name='updatequizentries'>Update</button>
+                                                            <button type='submit' class='btn btn-primary fw-bold btn-sm ' name='updatequizentries'>Update</button>
                                                             <a href="viewquizform.php?entries=<?php echo $quizformid ?>&delstudentid=<?php echo $row['stdid'] ?>" class='btn btn-danger fw-bold btn-sm'>Delete</a>
                                                         </td>
                                                     </tr>   
@@ -535,7 +535,7 @@
                                                 <form method='POST' action="viewquizform.php?studentid=<?php echo $row['stdid'] ?>&entries=<?php echo $quizformid ?>">
                                                     <tr>
                                                         <td><?php echo $rowid?></td>
-                                                        <td><a href="../quiz/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>" target="_blank"><?php echo $row['stdid']?></a></td>
+                                                        <td><a href="../quiz/showteacherstudententries.php?stdid=<?php echo $row['stdid']?>&quizformid=<?php echo $quizformid?>" target="_blank"><?php echo $row['stdid']?></a></td>
                                                         <td><?php echo $row['stdfullname']?></td>
                                                         <td><?php echo $row['wrong_count']?></td>
                                                         <td><?php echo $row['correct_count']?></td>
