@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2025 at 12:02 PM
+-- Generation Time: Apr 18, 2025 at 06:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,14 +39,6 @@ CREATE TABLE `assignmententries` (
   `assignmentid` int(4) NOT NULL,
   `pdf_file` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data for table `assignmententries`
---
-
-INSERT INTO `assignmententries` (`stdid`, `stdfullname`, `uploadedfile`, `coursename`, `marks`, `formid`, `date`, `filesize`, `assignmentid`, `pdf_file`) VALUES
-(26420, 'mustafe', 'Assignment one.docx', 'database', 5, 432749, '2025-04-05 13:25:35', '12.3466796875', 22, 'Assignment_one.pdf'),
-(63183, 'ahmed', 'Course_Description -Cultral policy.docx', 'database', 4, 432749, '2025-04-05 13:28:28', '19.236328125', 23, 'Course_Description_Cultral_policy.pdf');
 
 -- --------------------------------------------------------
 
@@ -94,7 +86,9 @@ CREATE TABLE `course` (
 INSERT INTO `course` (`courseid`, `coursename`, `teacherid`, `date`) VALUES
 (8, 'database', 37717, '2025-03-31 09:48:33'),
 (15, 'test', 37717, '2025-04-05 13:29:09'),
-(17, 'mm', 97315, '2025-04-07 12:50:24');
+(17, 'mm', 97315, '2025-04-07 12:50:24'),
+(18, 'test1', 37717, '2025-04-15 10:58:13'),
+(19, 'main', 48369, '2025-04-15 11:45:15');
 
 -- --------------------------------------------------------
 
@@ -149,7 +143,7 @@ CREATE TABLE `examform` (
   `examstatus` varchar(50) NOT NULL,
   `teacherid` int(10) NOT NULL,
   `number_of_questions` varchar(50) NOT NULL,
-  `examtype` text NOT NULL
+  `examtype` text NOT NULL DEFAULT 'singlechoicequestion'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -180,7 +174,7 @@ CREATE TABLE `examoptions` (
 --
 
 INSERT INTO `examoptions` (`optionid`, `questionid`, `option_one`, `option_two`, `option_three`, `is_correct_option`, `examformid`) VALUES
-(21, 1, 'test1', 'test2', 'test3', 'a', 9583),
+(21, 1, 'test', 'test2', 'test3', 'a', 9583),
 (22, 2, 'test3', 'test4', 'test5', 'a', 9583),
 (23, 3, 'test6', 'test7', 'test8', 'a', 9583),
 (24, 4, 'test9', 'test10', 'test11', 'a', 9583),
@@ -203,7 +197,7 @@ CREATE TABLE `examquestions` (
 --
 
 INSERT INTO `examquestions` (`questionid`, `questiontext`, `examformid`) VALUES
-(1, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. 1', 9583),
+(1, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.', 9583),
 (2, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. 2', 9583),
 (3, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. 3', 9583),
 (4, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. 4', 9583),
@@ -264,14 +258,6 @@ CREATE TABLE `markattendence` (
   `id` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data for table `markattendence`
---
-
-INSERT INTO `markattendence` (`stdid`, `stdfullname`, `coursename`, `teacherid`, `attendedmarks`, `date`, `present_column`, `absent_column`, `id`) VALUES
-(26420, 'mustafes', 'database', 37717, 2, '2025-04-05 13:21:22', 1, 0, 43),
-(63183, 'ahmed', 'database', 37717, 2, '2025-04-05 13:21:22', 1, 0, 44);
-
 -- --------------------------------------------------------
 
 --
@@ -305,7 +291,7 @@ CREATE TABLE `questions` (
 --
 
 INSERT INTO `questions` (`questiontext`, `quizformid`, `questionid`) VALUES
-('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 1', 3313, 1),
+('test question 1, kdncsdkcds\'cjsdcnsdcnsdkncsdc?', 3313, 1),
 ('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 2', 3313, 2),
 ('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 3', 3313, 3),
 ('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. 4', 3313, 4),
@@ -326,7 +312,7 @@ CREATE TABLE `quizform` (
   `quizstatus` varchar(50) DEFAULT NULL,
   `teacherid` int(10) DEFAULT NULL,
   `number_of_questions` varchar(50) DEFAULT NULL,
-  `quiztype` text NOT NULL
+  `quiztype` text NOT NULL DEFAULT 'singlechoicequestion'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -335,6 +321,28 @@ CREATE TABLE `quizform` (
 
 INSERT INTO `quizform` (`quizformid`, `quiztitle`, `quizdesc`, `coursename`, `quiz_created_date`, `quizstatus`, `teacherid`, `number_of_questions`, `quiztype`) VALUES
 (3313, 'quiz 1', 'cdcdfvdfv', 'database', '2025-04-05 11:13:04', 'active', 37717, '5', 'trueandfalse');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reportsharing`
+--
+
+CREATE TABLE `reportsharing` (
+  `id` int(10) NOT NULL,
+  `studentid` int(10) NOT NULL,
+  `coursename` text NOT NULL,
+  `sharing_ability` enum('attandence_marks','assignment_marks','quiz_marks','exam_marks','all_marks') DEFAULT NULL,
+  `teacherid` varchar(10) DEFAULT NULL,
+  `created_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reportsharing`
+--
+
+INSERT INTO `reportsharing` (`id`, `studentid`, `coursename`, `sharing_ability`, `teacherid`, `created_date`) VALUES
+(228985, 63183, 'database', 'all_marks', '37717', '2025-04-18 14:46:54');
 
 -- --------------------------------------------------------
 
@@ -353,22 +361,6 @@ CREATE TABLE `studentexam` (
   `exammarks` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `studentexam`
---
-
-INSERT INTO `studentexam` (`id`, `stdfullname`, `question_id`, `exam_taken_date`, `examformid`, `selected_option`, `stdid`, `exammarks`) VALUES
-(71, 'mustafe', 1, '2025-04-05 14:13:52', 9583, 'a', 26420, '15'),
-(72, 'mustafe', 2, '2025-04-05 14:13:52', 9583, 'a', 26420, '15'),
-(73, 'mustafe', 3, '2025-04-05 14:13:52', 9583, 'a', 26420, '15'),
-(74, 'mustafe', 4, '2025-04-05 14:13:52', 9583, 'a', 26420, '15'),
-(75, 'mustafe', 5, '2025-04-05 14:13:52', 9583, 'b', 26420, '15'),
-(76, 'ahmed', 1, '2025-04-05 14:13:17', 9583, 'b', 63183, '10'),
-(77, 'ahmed', 2, '2025-04-05 14:13:17', 9583, 'b', 63183, '10'),
-(78, 'ahmed', 3, '2025-04-05 14:13:17', 9583, 'b', 63183, '10'),
-(79, 'ahmed', 4, '2025-04-05 14:13:17', 9583, 'b', 63183, '10'),
-(80, 'ahmed', 5, '2025-04-05 14:13:17', 9583, 'a', 63183, '10');
-
 -- --------------------------------------------------------
 
 --
@@ -385,22 +377,6 @@ CREATE TABLE `studentquiz` (
   `quizmarks` varchar(50) DEFAULT NULL,
   `id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `studentquiz`
---
-
-INSERT INTO `studentquiz` (`stdfullname`, `question_id`, `quiz_taken_date`, `quizformid`, `selected_option`, `stdid`, `quizmarks`, `id`) VALUES
-('mustafe', 1, '2025-04-05 14:13:40', 3313, 'a', 26420, '30', 31),
-('mustafe', 2, '2025-04-05 14:13:40', 3313, 'a', 26420, '30', 32),
-('mustafe', 3, '2025-04-05 14:13:40', 3313, 'a', 26420, '30', 33),
-('mustafe', 4, '2025-04-05 14:13:40', 3313, 'a', 26420, '30', 34),
-('mustafe', 5, '2025-04-05 14:13:40', 3313, 'b', 26420, '30', 35),
-('ahmed', 1, '2025-04-05 14:13:37', 3313, 'b', 63183, '20', 36),
-('ahmed', 2, '2025-04-05 14:13:37', 3313, 'b', 63183, '20', 37),
-('ahmed', 3, '2025-04-05 14:13:37', 3313, 'b', 63183, '20', 38),
-('ahmed', 4, '2025-04-05 14:13:37', 3313, 'b', 63183, '20', 39),
-('ahmed', 5, '2025-04-05 14:13:37', 3313, 'a', 63183, '20', 40);
 
 -- --------------------------------------------------------
 
@@ -429,7 +405,10 @@ INSERT INTO `students` (`stdid`, `stdfullname`, `coursename`, `teacherid`) VALUE
 (102, 'y', 'mm', 97315),
 (103, 'a', 'mm', 97315),
 (104, 's', 'mm', 97315),
-(105, 't', 'mm', 97315);
+(105, 't', 'mm', 97315),
+(63183, 'ahmed', 'database', 37717),
+(26420, 'mustafe', 'database', 37717),
+(57515, 'yusuf', 'test', 37717);
 
 -- --------------------------------------------------------
 
@@ -609,6 +588,12 @@ ALTER TABLE `quizform`
   ADD PRIMARY KEY (`quizformid`);
 
 --
+-- Indexes for table `reportsharing`
+--
+ALTER TABLE `reportsharing`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `studentexam`
 --
 ALTER TABLE `studentexam`
@@ -652,13 +637,13 @@ ALTER TABLE `usersubscription_manager`
 -- AUTO_INCREMENT for table `assignmententries`
 --
 ALTER TABLE `assignmententries`
-  MODIFY `assignmentid` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `assignmentid` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `course`
 --
 ALTER TABLE `course`
-  MODIFY `courseid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `courseid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `email_verification`
@@ -688,7 +673,7 @@ ALTER TABLE `forgetpwd`
 -- AUTO_INCREMENT for table `markattendence`
 --
 ALTER TABLE `markattendence`
-  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `options`
@@ -700,13 +685,13 @@ ALTER TABLE `options`
 -- AUTO_INCREMENT for table `studentexam`
 --
 ALTER TABLE `studentexam`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `studentquiz`
 --
 ALTER TABLE `studentquiz`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `subscription`

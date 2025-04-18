@@ -1,9 +1,0 @@
-share with students:-
-1- id 
-2- studentid
-3- studentamount(one student , multiple students)
-
-3- date(report generated date)
-4- whatmarks(attandence,assignment,quiz,exam,all)
-5- sharing type : one-time(expires after one time), persistance (never expires)
-6- 

@@ -22,12 +22,15 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
             $quiz_id = $_POST['quiz_id'];
 
         foreach($questionid as $key => $value){
+            $qtext = mysqli_real_escape_string($connection,$questiontext[$key]);
+            $opa = mysqli_real_escape_string($connection,$option_a[$key]);
+            $opb = mysqli_real_escape_string($connection,$option_b[$key]);
             // step1 : check if the question already exist in the question table
             $questionssql = "select * from questions where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
             $questionsresult = mysqli_query($connection,$questionssql);
             if(mysqli_num_rows($questionsresult) > 0){
                 // questions already exist update them
-                $updatequestionssql = "update questions set questiontext = '$questiontext[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+                $updatequestionssql = "update questions set questiontext = '$qtext' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
                 $updatequestionsresult = mysqli_query($connection,$updatequestionssql);
                 
                 // echo 'from questions';
@@ -35,17 +38,17 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
                 if($updatequestionsresult){
                 
                     //update existing options in the options table
-                    $optionsql = "update true_false_options set option_one = '$option_a[$key]',option_two = '$option_b[$key]',is_correct_option = '$correct_answer[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+                    $optionsql = "update true_false_options set option_one = '$opa',option_two = '$opb',is_correct_option = '$correct_answer[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
                     $optionsresult = mysqli_query($connection,$optionsql);
                     $response = true;
                     
                 }
             } else{
                 //step3: if neither question nor options exist in the database then insert them
-                $sql = "insert into questions(questionid,questiontext,quizformid) values('$questionid[$key]','$questiontext[$key]','$quiz_id')";
+                $sql = "insert into questions(questionid,questiontext,quizformid) values('$questionid[$key]','$qtext','$quiz_id')";
                 $result = mysqli_query($connection,$sql);
                 if($result){
-                $sql2 = "insert into true_false_options(questionid,option_one,option_two,is_correct_option,quizformid) values('$questionid[$key]','$option_a[$key]','$option_b[$key]','$correct_answer[$key]','$quiz_id')";
+                $sql2 = "insert into true_false_options(questionid,option_one,option_two,is_correct_option,quizformid) values('$questionid[$key]','$opa','$opb','$correct_answer[$key]','$quiz_id')";
                 $result2 = mysqli_query($connection,$sql2);
                 
                 $response = true;
@@ -72,30 +75,33 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
             // echo $quiztype;
 
             foreach($questionid as $key => $value){
-                
+                $qtext2 = mysqli_real_escape_string($connection,$questiontext[$key]);
+                $opa2 = mysqli_real_escape_string($connection,$option_a[$key]);
+                $opb2 = mysqli_real_escape_string($connection,$option_b[$key]);
+                $opc2 = mysqli_real_escape_string($connection,$option_c[$key]);
                 // var_dump($quizformid);
             // step1 : check if the question already exist in the question table
             $questionssql = "select * from questions where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
             $questionsresult = mysqli_query($connection,$questionssql);
             if(mysqli_num_rows($questionsresult) > 0){
                 // questions already exist update them
-                $updatequestionssql = "update questions set questiontext = '$questiontext[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+                $updatequestionssql = "update questions set questiontext = '$qtext2' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
                 $updatequestionsresult = mysqli_query($connection,$updatequestionssql);
                 
                 //step2 : if the question id is found that means there is options also need to be updated
                 if($updatequestionsresult){
                     //update existing options in the options table
-                    $optionsql = "update options set option_one = '$option_a[$key]',option_two = '$option_b[$key]',option_three = '$option_c[$key]',is_correct_option = '$correct_answer[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
+                    $optionsql = "update options set option_one = '$opa2',option_two = '$opb2',option_three = '$opc2',is_correct_option = '$correct_answer[$key]' where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
                     $optionsresult = mysqli_query($connection,$optionsql);
                     $response = true;
                     
                 }
             } else{
                 //step3: if neither question nor options exist in the database then insert them
-                $sql = "insert into questions(questionid,questiontext,quizformid) values('$questionid[$key]','$questiontext[$key]','$quiz_id')";
+                $sql = "insert into questions(questionid,questiontext,quizformid) values('$questionid[$key]','$qtext2','$quiz_id')";
                 $result = mysqli_query($connection,$sql);
                 if($result){
-                $sql2 = "insert into options(questionid,option_one,option_two,option_three,is_correct_option,quizformid) values('$questionid[$key]','$option_a[$key]','$option_b[$key]','$option_c[$key]','$correct_answer[$key]','$quiz_id')";
+                $sql2 = "insert into options(questionid,option_one,option_two,option_three,is_correct_option,quizformid) values('$questionid[$key]','$opa2','$opb2','$opc2','$correct_answer[$key]','$quiz_id')";
                 $result2 = mysqli_query($connection,$sql2);
                 
                 $response = true;

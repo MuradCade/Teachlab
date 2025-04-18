@@ -1,5 +1,5 @@
 <?php
-   include('env.php');
+   include_once('env.php');
       $servername = HOSTNAME;
       $username = USER_NAME;
       $pwd = PASSWORD;

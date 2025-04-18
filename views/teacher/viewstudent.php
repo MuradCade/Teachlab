@@ -18,29 +18,29 @@ if (!isset($_SESSION['userid'])) {
 $teacherid = $_SESSION['userid'] ?? null;
 
 //save updated student information
-if(isset($_POST['update'])){
-    $studentid = mysqli_real_escape_string($connection ,$_POST['studentid']);
-    $studentname = mysqli_real_escape_string($connection ,$_POST['studentname']);
-    $coursename = mysqli_real_escape_string($connection ,$_POST['coursename']);
+if (isset($_POST['update'])) {
+    $studentid = mysqli_real_escape_string($connection, $_POST['studentid']);
+    $studentname = mysqli_real_escape_string($connection, $_POST['studentname']);
+    $coursename = mysqli_real_escape_string($connection, $_POST['coursename']);
     // this coursename is specific for only updating student with coursename and id
-    $stdcoursename = mysqli_escape_string($connection,$_POST['stdcoursename']);
+    $stdcoursename = mysqli_escape_string($connection, $_POST['stdcoursename']);
 
-    if(empty($studentid)){
+    if (empty($studentid)) {
         header('location:viewstudent.php?emptystudentid');
         exit();
-    }else if(empty($studentname)){
+    } else if (empty($studentname)) {
         header('location:viewstudent.php?emptystudentname');
         exit();
-    }else if(empty($coursename)){
+    } else if (empty($coursename)) {
         header('location:viewstudent.php?emptycoursename');
         exit();
-    }else{
+    } else {
         $sql = "update students set stdfullname = '$studentname',coursename = '$coursename' where stdid = '$studentid' and coursename ='$stdcoursename'";
-        $result = mysqli_query($connection,$sql);
-        if($result){
+        $result = mysqli_query($connection, $sql);
+        if ($result) {
             header('location:viewstudent.php?updatesuccess');
             exit();
-        }else{
+        } else {
             header('location:viewstudent.php?updatequeryfailed');
             exit();
         }
@@ -49,22 +49,22 @@ if(isset($_POST['update'])){
 
 
 //delete specific student
-if(isset($_GET['delid'])){
-    
+if (isset($_GET['delid'])) {
+
     $studentdelid = $_GET['delid'];
     $coursename = $_GET['coursename'];
 
     $sql = "delete from students where stdid = '$studentdelid' and coursename ='$coursename'";
-    $result = mysqli_query($connection,$sql);
-    if($result){
+    $result = mysqli_query($connection, $sql);
+    if ($result) {
         header('location:viewstudent.php?delsuccess');
-            exit();
-    }else{
+        exit();
+    } else {
         header('location:viewstudent.php?delqueryfailed');
-            exit();
+        exit();
     }
 }
- 
+
 ?>
 
 <!DOCTYPE html>
@@ -79,7 +79,6 @@ if(isset($_GET['delid'])){
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
-      
         #sidebar {
             height: 100vh;
             position: absolute;
@@ -112,12 +111,15 @@ if(isset($_GET['delid'])){
         }
     </style>
     <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
 
-  gtag('config', 'G-00CYL9RWEC');
-</script>
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-00CYL9RWEC');
+    </script>
 </head>
 
 <body>
@@ -139,7 +141,7 @@ if(isset($_GET['delid'])){
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2" style='font-size:15px;'>Students / <span> View Student Informations</span></h1>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-12 col-md-12 col-xl-6 mb-4">
                         <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
@@ -149,28 +151,28 @@ if(isset($_GET['delid'])){
                             <div class="card-body">
                                 <?php if (isset($_GET['emptystudentid'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
-                                    The Studentid column is empty in the Excel file. Please ensure all columns have the correct data.
+                                        The Studentid column is empty in the Excel file. Please ensure all columns have the correct data.
                                     </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['emptystudentname'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
-                                    The Studentname column is empty in the Excel file. Please ensure all columns have the correct data.
+                                        The Studentname column is empty in the Excel file. Please ensure all columns have the correct data.
                                     </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['emptycoursename'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
-                                    The Coursename column is empty in the Excel file. Please ensure all columns have the correct data.
+                                        The Coursename column is empty in the Excel file. Please ensure all columns have the correct data.
                                     </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['coursenamenotexist'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
-                                    Sorry , uploaded excel file contains coursename that doesn't exist , please make  sure the coursename exist, before uploading the file
+                                        Sorry , uploaded excel file contains coursename that doesn't exist , please make sure the coursename exist, before uploading the file
                                     </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['updatesuccess'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; ' id='t1'>Student information updated successfully </p>
                                 <?php } ?>
-                                <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
+                                <?php if (coursenames($_SESSION['userid'], $connection) == false) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
                                 <?php } ?>
                                 <?php if (isset($_GET['delsuccess'])) { ?>
@@ -184,41 +186,41 @@ if(isset($_GET['delid'])){
                                 <?php } ?>
                                 <?php if (isset($_GET['dataexist'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:14px !important; '>
-                                    The uploaded file contains data that already exists in the database, Please review the content before proceeding with the upload.
+                                        The uploaded file contains data that already exists in the database, Please review the content before proceeding with the upload.
                                     </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['filedtoimportfile'])) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Sorry,  import process failed.</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Sorry, import process failed.</p>
                                 <?php } ?>
                                 <?php if (isset($_GET['chosefile'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please choose file to be imported.</p>
                                 <?php } ?>
-                               
-                                
+
+
                                 <form method='post'>
                                     <div class="form-group mb-2">
                                         <label class='form-label'>Course Name</label>
                                         <select class="form-select" name='coursename'>
-                                           
-                                        <?php  
-                                        // if teacher tries to create student before creating course show him none in course selection
-                                           if(coursenames($_SESSION['userid'],$connection) == false){
-                                            echo '<option>none</option>';
-                                           }else{
-                                           
-                                            foreach (coursenames($_SESSION['userid'],$connection) as $data) {?>
-                                                <option value='<?php echo $data['coursename']?>'><?php echo $data['coursename']?></option>
-                                            <?php }
-                                           }
 
-                                        
-                                        ?>
+                                            <?php
+                                            // if teacher tries to create student before creating course show him none in course selection
+                                            if (coursenames($_SESSION['userid'], $connection) == false) {
+                                                echo '<option>none</option>';
+                                            } else {
+
+                                                foreach (coursenames($_SESSION['userid'], $connection) as $data) { ?>
+                                                    <option value='<?php echo $data['coursename'] ?>'><?php echo $data['coursename'] ?></option>
+                                            <?php }
+                                            }
+
+
+                                            ?>
                                         </select>
                                         <p style='font-size:14px !important;' class='mt-2'><i class='bi bi-info-circle-fill text-danger me-1'></i><strong class='text-danger'>Important : </strong>To view student information, please provide the specific course name.</p>
                                     </div>
                                     <!-- // if teacher tries to create student before creating course disable submit button -->
 
-                                    <button class="btn btn-primary btn-sm mt-2 fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled' : ''?>" name='submit'>Submit</button>
+                                    <button class="btn btn-primary btn-sm mt-2 fw-bold <?php echo coursenames($_SESSION['userid'], $connection) == false ? 'disabled' : '' ?>" name='submit'>Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -227,162 +229,162 @@ if(isset($_GET['delid'])){
                 </div>
 
                 <!-- More Content Here -->
-                 <div class="row">
+                <div class="row">
                     <div class="col-lg-8 col-md-12 col-sm-12">
-                            <div  class='d-flex flex-column gap-2 d-sm-block'>
-                                <div>
-                                <button style='flex-wrap:wrap !important;'class="btn btn-primary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?>" data-bs-toggle="modal" data-bs-target="#importasexcel">Upload Excel File</button>
-                                <a href="slices/exportexcel.php?coursename=<?php echo isset($_POST['coursename']) ? $_POST['coursename'] :'';?>" class="btn btn-secondary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'disabled'?>">Covert To Excel</a>
-                                
+                        <div class='d-flex flex-column gap-2 d-sm-block'>
+                            <div>
+                                <button style='flex-wrap:wrap !important;' class="btn btn-primary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'], $connection) == false ? 'disabled' : '' ?>" data-bs-toggle="modal" data-bs-target="#importasexcel">Upload Excel File</button>
+                                <a href="slices/exportexcel.php?coursename=<?php echo isset($_POST['coursename']) ? $_POST['coursename'] : ''; ?>" class="btn btn-secondary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'], $connection) == false ? 'disabled' : '' ?> <?php echo isset($_POST['coursename']) ? '' : 'disabled' ?>">Covert To Excel</a>
+
                             </div>
                             <div>
-                                <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id or name" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
+                                <input style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id or name" onkeyup="searchTable()" <?php echo coursenames($_SESSION['userid'], $connection) == false ? 'disabled' : '' ?> <?php echo isset($_POST['coursename']) ? '' : 'readonly' ?> />
 
                             </div>
-                            </div>
+                        </div>
 
-                    <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
-                    <table class='table table-hover table-bordered table-responsive' id='myTable'>
-                    <tr>
-                        <td>#</td>
-                        <td>Student ID</td>
-                        <td>Student Name</td>
-                        <td>Course Name</td>
-                        <td>Action</td>
-                    </tr>
+                        <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
+                            <table class='table table-hover table-bordered table-responsive' id='myTable'>
+                                <tr>
+                                    <td>#</td>
+                                    <td>Student ID</td>
+                                    <td>Student Name</td>
+                                    <td>Course Name</td>
+                                    <td>Action</td>
+                                </tr>
 
-                    <?php
-                    
-                    if (isset($teacherid) && isset($_POST['submit'])) {
-                                        $coursename = $_POST['coursename'];
-                                        $rownumber = 1;
-                                        $sql = "select * from students where coursename = '$coursename' and teacherid = '$teacherid'";
-                                        $result = mysqli_query($connection, $sql);
-                                        if (mysqli_num_rows($result) == 0) {
-                                            echo "<span style='font-size:15px;' class='mb-2 mt-2'>There’s currently no data to show, 
+                                <?php
+
+                                if (isset($teacherid) && isset($_POST['submit'])) {
+                                    $coursename = $_POST['coursename'];
+                                    $rownumber = 1;
+                                    $sql = "select * from students where coursename = '$coursename' and teacherid = '$teacherid'";
+                                    $result = mysqli_query($connection, $sql);
+                                    if (mysqli_num_rows($result) == 0) {
+                                        echo "<span style='font-size:15px;' class='mb-2 mt-2'>There’s currently no data to show, 
                                                 Please Assign students to this coursename.</span>";
-                                        } else {
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                    ?>
-                                                <tr>
-                                                    <td><?php echo $rownumber; ?></td>
-                                                    <td><?php echo $row['stdid']; ?></td>
-                                                    <td><?php echo $row['stdfullname'] ?></td>
-                                                    <td><?php echo $row['coursename'] ?></td>
-                                                    <td class='d-flex   d-sm-block'><a href="viewstudent.php?updateid=<?php echo base64_encode($row['stdid']) ?>&coursename=<?php echo $row['coursename'] ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewstudent.php?delid=<?php echo $row['stdid']?>&coursename=<?php echo $row['coursename'] ?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
-                                                </tr>
-                                    <?php $rownumber++;
-                                            }
-                                        }
                                     } else {
-                                        echo 'There’s currently no data to show.';
-                                    }  ?>
-                    </table>
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                ?>
+                                            <tr>
+                                                <td><?php echo $rownumber; ?></td>
+                                                <td><?php echo $row['stdid']; ?></td>
+                                                <td><?php echo $row['stdfullname'] ?></td>
+                                                <td><?php echo $row['coursename'] ?></td>
+                                                <td class='d-flex   d-sm-block'><a href="viewstudent.php?updateid=<?php echo base64_encode($row['stdid']) ?>&coursename=<?php echo $row['coursename'] ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewstudent.php?delid=<?php echo $row['stdid'] ?>&coursename=<?php echo $row['coursename'] ?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
+                                            </tr>
+                                <?php $rownumber++;
+                                        }
+                                    }
+                                } else {
+                                    echo 'There’s currently no data to show.';
+                                }  ?>
+                            </table>
+                        </div>
                     </div>
-                    </div>
-                 </div>
-                                                  <!-- import as excel model -->
-                      <div class="modal fade" id="importasexcel" tabindex="-1" aria-labelledby="importasexcel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
+                </div>
+                <!-- import as excel model -->
+                <div class="modal fade" id="importasexcel" tabindex="-1" aria-labelledby="importasexcel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fw-medium" id="exampleModalLabel" style='font-size:16px !important;'>Import As Excel Sheet</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form method="post" action="slices/importexcel.php" enctype="multipart/form-data">
-                                           <div class="form-group">
-                                            <label class='form-label'>Select File</label>
-                                            <input type="file" name='excelfile' class='form-control'/>
-                                            <p style='font-size:14px !important; font-weight:500 !important;' class='mt-2'><i class='bi bi-info-circle-fill text-danger me-1'></i><strong class='text-danger'>Important : </strong>
+                                    <div class="form-group">
+                                        <label class='form-label'>Select File</label>
+                                        <input type="file" name='excelfile' class='form-control' />
+                                        <p style='font-size:14px !important; font-weight:500 !important;' class='mt-2'><i class='bi bi-info-circle-fill text-danger me-1'></i><strong class='text-danger'>Important : </strong>
                                             You can only upload One Excel file, Other file types are not allowed.
-                                                Please ensure your file is in Excel format.
-                                            </p>
-                                            <button class="btn btn-primary btn-sm mt-2 fw-bold" name='save'>submit</button>
+                                            Please ensure your file is in Excel format.
+                                        </p>
+                                        <button class="btn btn-primary btn-sm mt-2 fw-bold" name='save'>submit</button>
 
-                                           </div>
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                             </div>
-                            </div>
                         </div>
-                        </div>
+                    </div>
+                </div>
 
-                  <!-- end of the import file model -->
+                <!-- end of the import file model -->
 
-                                             <!-- student update form -->
-                                              <?php if(isset($_GET['updateid']) && isset($_GET['coursename'])){
-                                                //get the student id to update its data
-                                                $studentid = base64_decode($_GET['updateid']);
-                                                $coursename = $_GET['coursename'];
-                                                $sql = "select * from students where stdid = '$studentid' and coursename ='$coursename'";
-                                                $result = mysqli_query($connection,$sql);
+                <!-- student update form -->
+                <?php if (isset($_GET['updateid']) && isset($_GET['coursename'])) {
+                    //get the student id to update its data
+                    $studentid = base64_decode($_GET['updateid']);
+                    $coursename = $_GET['coursename'];
+                    $sql = "select * from students where stdid = '$studentid' and coursename ='$coursename'";
+                    $result = mysqli_query($connection, $sql);
 
-                                                ?>
-                                             <div class="modal" style='display:block !important; background-color:rgb(0, 0, 0,.86); '>
+                ?>
+                    <div class="modal" style='display:block !important; background-color:rgb(0, 0, 0,.86); '>
                         <div class="modal-dialog">
                             <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fw-medium" id="exampleModalLabel" style='font-size:16px !important;'>Update Student Information</h1>
-                                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
-                            </div>
-                            <div class="modal-body">
-                            <form method='post' action='viewstudent.php'>
-                                <?php  while($row = mysqli_fetch_assoc($result)){?>
-                                <div class="form-group mb-3">
-                                    <label class='form-label'>Student ID</label>
-                                    <input type="text" name='studentid' class='form-control' value="<?php echo $row['stdid'];?>" />
-                                    <input type="hidden" name='stdcoursename' class='form-control' value="<?php echo $coursename;?>" />
+                                <div class="modal-header">
+                                    <h1 class="modal-title fw-medium" id="exampleModalLabel" style='font-size:16px !important;'>Update Student Information</h1>
+                                    <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                                 </div>
-                                <div class="form-group mb-3">
-                                    <label class='form-label'>Student Name</label>
-                                    <input type="text" name='studentname' class='form-control' placeholder="Enter Studentname"
-                                    value="<?php echo $row['stdfullname'];?>" />
-                                </div>
-                                <div class="form-group mb-2">
-                                    <label class='form-label'>Course Name</label>
-                                    <select class="form-select" name='coursename'>
-                                        
-                                        <?php  
-                                        // if teacher tries to create student before creating course show him none in course selection
-                                      
-                                            
-                                            foreach (coursenames($_SESSION['userid'],$connection) as $data) {?>
-                                                <option value='<?php echo $data['coursename']?>'><?php echo $data['coursename']?></option>
-                                                <?php }
-                                           
-                                           
-                                           
-                                           ?>
+                                <div class="modal-body">
+                                    <form method='post' action='viewstudent.php'>
+                                        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                                            <div class="form-group mb-3">
+                                                <label class='form-label'>Student ID</label>
+                                                <input type="text" name='studentid' class='form-control' value="<?php echo $row['stdid']; ?>" />
+                                                <input type="hidden" name='stdcoursename' class='form-control' value="<?php echo $coursename; ?>" />
+                                            </div>
+                                            <div class="form-group mb-3">
+                                                <label class='form-label'>Student Name</label>
+                                                <input type="text" name='studentname' class='form-control' placeholder="Enter Studentname"
+                                                    value="<?php echo $row['stdfullname']; ?>" />
+                                            </div>
+                                            <div class="form-group mb-2">
+                                                <label class='form-label'>Course Name</label>
+                                                <select class="form-select" name='coursename'>
+
+                                                    <?php
+                                                    // if teacher tries to create student before creating course show him none in course selection
 
 
-                                        </select>
-                                        </div>
-                                        <!-- // if teacher tries to create student before creating course disable submit button -->
+                                                    foreach (coursenames($_SESSION['userid'], $connection) as $data) { ?>
+                                                        <option value='<?php echo $data['coursename'] ?>'><?php echo $data['coursename'] ?></option>
+                                                    <?php }
 
-                                        <button class="btn btn-primary btn-sm mt-2 fw-bold" name='update'>Update</button>
+
+
+                                                    ?>
+
+
+                                                </select>
+                                            </div>
+                                            <!-- // if teacher tries to create student before creating course disable submit button -->
+
+                                            <button class="btn btn-primary btn-sm mt-2 fw-bold" name='update'>Update</button>
                                         <?php  } ?>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="viewstudent.php" type="button" class="btn btn-secondary" >Close</a>
-                                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
-                            </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="viewstudent.php" type="button" class="btn btn-secondary">Close</a>
+                                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                </div>
                             </div>
                         </div>
-                        </div>
-                            <?php } ?>
-                  <!-- end of the stdudent update model -->
-               
+                    </div>
+                <?php } ?>
+                <!-- end of the stdudent update model -->
+
             </main>
         </div>
     </div>
 
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
@@ -399,30 +401,28 @@ if(isset($_GET['delid'])){
         });
 
 
-                  //search table by id
-                  function searchTable() {
-    var input, filter, found, table, tr, td, i, j;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td");
-        for (j = 0; j < td.length; j++) {
-            if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                found = true;
+        //search table by id
+        function searchTable() {
+            var input, filter, found, table, tr, td, i, j;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                    found = false;
+                } else {
+                    tr[i].style.display = "none";
+                }
             }
         }
-        if (found) {
-            tr[i].style.display = "";
-            found = false;
-        } else {
-            tr[i].style.display = "none";
-        }
-    }
-}
-    
-        
     </script>
 </body>
 

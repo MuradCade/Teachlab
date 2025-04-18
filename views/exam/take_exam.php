@@ -106,11 +106,11 @@ if(isset($_GET['examformid']) && !empty($_GET['examformid'])){
     <!-- when take quiz button is clicked  we show the quiz questions -->
      <!-- we should create session and store the quizformid,quiztitle,quizdesc,studentid,studentname -->
      <?php if(isset($_POST['takequiz'])){
-      $examformid = $_POST['examformid']; 
-      $examtitle = $_POST['examtitle'];
-      $examdesc = $_POST['examdesc'];
-      $studentid = $_POST['studentid'];
-      $studentname = $_POST['studentname'];
+      $examformid = mysqli_real_escape_string($connection,$_POST['examformid']); 
+      $examtitle = mysqli_real_escape_string($connection,$_POST['examtitle']);
+      $examdesc = mysqli_real_escape_string($connection,$_POST['examdesc']);
+      $studentid = mysqli_real_escape_string($connection,$_POST['studentid']);
+      $studentname = mysqli_real_escape_string($connection,$_POST['studentname']);
       if(empty($studentid) || empty($studentname)){
         header('location:take_exam.php?examformid='.base64_encode($examformid).'&emptyanswersfields');
         exit();
