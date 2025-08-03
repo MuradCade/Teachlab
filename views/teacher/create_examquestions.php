@@ -23,8 +23,9 @@ if (isset($_GET['examformid']) && !empty($_GET['examformid'])) {
 
             foreach ($questionid as $key => $value) {
                 $qtext = mysqli_real_escape_string($connection,$questiontext[$key]);
-                $opa = mysqli_real_escape_string($connection,$option_a[$key]);
-                $opb = mysqli_real_escape_string($connection,$option_b[$key]);
+                 $opa =   mysqli_real_escape_string($connection,$option_a[$key]);
+                 $opb =   mysqli_real_escape_string($connection,$option_b[$key]);
+                 
                 // step1 : check if the question already exist in the question table
                 $questionssql = "select * from examquestions where questionid = '$questionid[$key]' and examformid = '$exam_id'";
                 $questionsresult = mysqli_query($connection, $questionssql);
@@ -75,9 +76,9 @@ if (isset($_GET['examformid']) && !empty($_GET['examformid'])) {
 
             foreach ($questionid as $key => $value) {
                 $qtext2 = mysqli_real_escape_string($connection,$questiontext[$key]);
-                $opa2 = mysqli_real_escape_string($connection,$option_a[$key]);
-                $opb2 = mysqli_real_escape_string($connection,$option_b[$key]);
-                $opc2 = mysqli_real_escape_string($connection,$option_c[$key]);
+                 $opa2 =   mysqli_real_escape_string($connection,$option_a[$key]);
+                 $opb2 =   mysqli_real_escape_string($connection,$option_b[$key]);
+                 $opc2 =   mysqli_real_escape_string($connection,$option_c[$key]);
                 // var_dump($examformid);
                 // step1 : check if the question already exist in the question table
                 $questionssql = "select * from examquestions where questionid = '$questionid[$key]' and examformid = '$exam_id'";

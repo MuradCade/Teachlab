@@ -14,6 +14,8 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
         $quiztype = $_POST['quiztype'];
         // save the quiz related to true and false questions
         if($quiztype == 'trueandfalse'){
+         
+        
             $questiontext = $_POST['questionstext'];
             $questionid = $_POST['questionid'];
             $option_a = $_POST['option_a'];
@@ -23,8 +25,8 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
 
         foreach($questionid as $key => $value){
             $qtext = mysqli_real_escape_string($connection,$questiontext[$key]);
-            $opa = mysqli_real_escape_string($connection,$option_a[$key]);
-            $opb = mysqli_real_escape_string($connection,$option_b[$key]);
+            $opa =   mysqli_real_escape_string($connection,$option_a[$key]);
+            $opb =   mysqli_real_escape_string($connection,$option_b[$key]);
             // step1 : check if the question already exist in the question table
             $questionssql = "select * from questions where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";
             $questionsresult = mysqli_query($connection,$questionssql);
@@ -65,6 +67,7 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
             }
 // save the quiz related to single choice questions
         }else if($quiztype =='singlechoicequestion'){
+
             $questiontext =  $_POST['questionstext'];
             $questionid = $_POST['questionid'];
             $option_a =  $_POST['option_a'];
@@ -75,10 +78,10 @@ if(isset($_GET['quizformid']) && !empty($_GET['quizformid'])){
             // echo $quiztype;
 
             foreach($questionid as $key => $value){
-                $qtext2 = mysqli_real_escape_string($connection,$questiontext[$key]);
-                $opa2 = mysqli_real_escape_string($connection,$option_a[$key]);
-                $opb2 = mysqli_real_escape_string($connection,$option_b[$key]);
-                $opc2 = mysqli_real_escape_string($connection,$option_c[$key]);
+                 $qtext2 = mysqli_real_escape_string($connection,$questiontext[$key]);
+                 $opa2 =   mysqli_real_escape_string($connection,$option_a[$key]);
+                 $opb2 =   mysqli_real_escape_string($connection,$option_b[$key]);
+                 $opc2 =   mysqli_real_escape_string($connection,$option_c[$key]);
                 // var_dump($quizformid);
             // step1 : check if the question already exist in the question table
             $questionssql = "select * from questions where questionid = '$questionid[$key]' and quizformid = '$quiz_id'";

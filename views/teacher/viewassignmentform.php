@@ -464,7 +464,7 @@ if (isset($_GET['delassigmentform'])) {
                                     <td><?php $filesize = round($rows['filesize']);
                                         echo $filesize . ' MB'; ?></td>
                                     <td><?php echo date('M-j-Y ', strtotime($rows['date'])); ?></td>
-                                    <td><a href='uploads/<?= $rows['uploadedfile'] ?>' download='uploads/<?= $rows['uploadedfile'] ?>' class='btn btn-info btn-sm fw-bold text-white mt-2 mb-2'>Download Document</a>&numsp;<button class='btn btn-primary btn-sm fw-bold' name='updatentries'>Update</button>&numsp;<a href="viewassignmentform.php?deleteid=<?php echo $rows['stdid'] ?>" class='btn btn-danger btn-sm text-white fw-bold'>
+                                    <td><a href='uploads/<?= $rows['uploadedfile'] ?>' download='uploads/<?= $rows['uploadedfile'] ?>' class='btn btn-info btn-sm fw-bold text-white mt-2 mb-2'>Download Document</a>&numsp;<button class='btn btn-primary btn-sm fw-bold' name='updatentries'>Update</button>&numsp;<a href="viewassignmentform.php?deleteid=<?php echo $rows['stdid'] ?>" class='btn btn-danger text-white fw-bold'>
                                             Delete
                                         </a>&numsp;<a href="showassignmentdocument.php?docname=<?php echo $rows['pdf_file'] ?>" target="_blank" class='btn btn-secondary btn-sm fw-bold mt-1'>View Document</a></td>
                                 </tr>

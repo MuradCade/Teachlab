@@ -8,7 +8,7 @@ include('turnwordintopdf.php');
                 $base64 = base64_encode($formid);
                 $stdid = mysqli_real_escape_string($connection,$_POST['stdid']);
                 $stdname = mysqli_real_escape_string($connection,$_POST['stdname']);
-                $fileuploaded = mysqli_real_escape_string($connection,$_FILES['fileuploaded']['name']);
+                $fileuploaded = mysqli_real_escape_string($connection , $_FILES['fileuploaded']['name']);
                 // get rid of if filename contains space and add underscore
                 // $getridoffilespac = str_replace(['-', ' '], ['','_'], $fileuploaded);
                 $getridoffileleadingspace = preg_replace('/[\s\-]+/', '_', $fileuploaded);
@@ -17,8 +17,8 @@ include('turnwordintopdf.php');
                 //this variable holds filename with out the extension
                 $filewithoutextension = pathinfo($getridoffilespace, PATHINFO_FILENAME).'.pdf';
                 $extension = pathinfo($fileuploaded, PATHINFO_EXTENSION);
-                $coursename = $_GET['coursename'];
-                $marks = $_GET['marks'];
+                $coursename = mysqli_real_escape_string($connection,$_GET['coursename']);
+                $marks = mysqli_real_escape_string($connection,$_GET['marks']);
                 // echo $extension;
                 $allowedwordfiles = ['docx','doc'];
 

@@ -81,7 +81,7 @@ if(isset($_GET['formid'])){
                 <input  type='file' class='form-control' name='fileuploaded'/>
                 <span style='font-size:14px;'> (only upload  <?php echo $row['uploadedfilename'];?> files)</span>
             </div>
-            <button class='btn btn-primary  fw-bold' name='submit'>Submit</button>
+            <button class='btn btn-primary  fw-bold btn-md ' name='submit'>Submit</button>
     </form>
         </div>
     </div>
