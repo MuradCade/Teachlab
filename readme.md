@@ -49,7 +49,7 @@ TeachLab is NOT licensed under the MIT License. This is a proprietary software a
 TeachLab is a web-based platform. To get started, simply visit our website and sign up for an account:
 
 ### Visit the TeachLab Website:
-- Go to [TeachLab Website](https://teachlabs.unaux.com/) and create an account.
+- Go to [TeachLab Website](https://teachlabsnewho.byethost7.com/) and create an account.
 
 - Log In: Once your account is created, you can log in to start managing your classes, attendance, assignments, quizzes, and exams.
 
@@ -61,5 +61,6 @@ If you encounter any issues or need assistance with setting up TeachLab, feel fr
 - Email: teachlabinc@gmail.com
 
 - GitHub:[Open an Issue](https://github.com/MuradCade/Teachlab/issues/new)
+
 
 
