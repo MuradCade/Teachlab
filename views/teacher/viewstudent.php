@@ -1,6 +1,7 @@
 <?php
 include('./../../model/dbcon.php');
 include('slices/studentcreationvalidation.php');
+
 // check if session already runing if not run new session
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -18,9 +19,11 @@ $teacherid = $_SESSION['userid'] ?? null;
 
 //save updated student information
 if(isset($_POST['update'])){
-    $studentid = $_POST['studentid'];
-    $studentname = $_POST['studentname'];
-    $coursename = $_POST['coursename'];
+    $studentid = mysqli_real_escape_string($connection ,$_POST['studentid']);
+    $studentname = mysqli_real_escape_string($connection ,$_POST['studentname']);
+    $coursename = mysqli_real_escape_string($connection ,$_POST['coursename']);
+    // this coursename is specific for only updating student with coursename and id
+    $stdcoursename = mysqli_escape_string($connection,$_POST['stdcoursename']);
 
     if(empty($studentid)){
         header('location:viewstudent.php?emptystudentid');
@@ -32,7 +35,7 @@ if(isset($_POST['update'])){
         header('location:viewstudent.php?emptycoursename');
         exit();
     }else{
-        $sql = "update students set stdfullname = '$studentname',coursename = '$coursename' where stdid = '$studentid'";
+        $sql = "update students set stdfullname = '$studentname',coursename = '$coursename' where stdid = '$studentid' and coursename ='$stdcoursename'";
         $result = mysqli_query($connection,$sql);
         if($result){
             header('location:viewstudent.php?updatesuccess');
@@ -47,8 +50,11 @@ if(isset($_POST['update'])){
 
 //delete specific student
 if(isset($_GET['delid'])){
+    
     $studentdelid = $_GET['delid'];
-    $sql = "delete from students where stdid = '$studentdelid'";
+    $coursename = $_GET['coursename'];
+
+    $sql = "delete from students where stdid = '$studentdelid' and coursename ='$coursename'";
     $result = mysqli_query($connection,$sql);
     if($result){
         header('location:viewstudent.php?delsuccess');
@@ -105,6 +111,13 @@ if(isset($_GET['delid'])){
             }
         }
     </style>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 
 <body>
@@ -128,20 +141,31 @@ if(isset($_GET['delid'])){
                 </div>
                 
                 <div class="row">
-                    <div class="col-12 col-md-8 col-xl-5 mb-4">
+                    <div class="col-12 col-md-12 col-xl-6 mb-4">
                         <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
                             <h4 class="card-title px-3 fw-bold mt-2 mb-0" style='font-size:17px !important;'>
                                 View Student Informations
                             </h4>
                             <div class="card-body">
                                 <?php if (isset($_GET['emptystudentid'])) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty studentid field</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    The Studentid column is empty in the Excel file. Please ensure all columns have the correct data.
+                                    </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['emptystudentname'])) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty studentname field</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    The Studentname column is empty in the Excel file. Please ensure all columns have the correct data.
+                                    </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['emptycoursename'])) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Empty coursename field</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    The Coursename column is empty in the Excel file. Please ensure all columns have the correct data.
+                                    </p>
+                                <?php } ?>
+                                <?php if (isset($_GET['coursenamenotexist'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    Sorry , uploaded excel file contains coursename that doesn't exist , please make  sure the coursename exist, before uploading the file
+                                    </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['updatesuccess'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; ' id='t1'>Student information updated successfully </p>
@@ -157,6 +181,11 @@ if(isset($_GET['delid'])){
                                 <?php } ?>
                                 <?php if (isset($_GET['savedsuccessfully'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>File imported successfully</p>
+                                <?php } ?>
+                                <?php if (isset($_GET['dataexist'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:14px !important; '>
+                                    The uploaded file contains data that already exists in the database, Please review the content before proceeding with the upload.
+                                    </p>
                                 <?php } ?>
                                 <?php if (isset($_GET['filedtoimportfile'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Sorry,  import process failed.</p>
@@ -199,21 +228,21 @@ if(isset($_GET['delid'])){
 
                 <!-- More Content Here -->
                  <div class="row">
-                    <div class="col-lg-8 col-md-8 col-sm-12">
-                            <div style='display:flex !important; align-items:center; justify-content:space-evenly'>
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                            <div  class='d-flex flex-column gap-2 d-sm-block'>
                                 <div>
                                 <button style='flex-wrap:wrap !important;'class="btn btn-primary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?>" data-bs-toggle="modal" data-bs-target="#importasexcel">Upload Excel File</button>
                                 <a href="slices/exportexcel.php?coursename=<?php echo isset($_POST['coursename']) ? $_POST['coursename'] :'';?>" class="btn btn-secondary btn-sm fw-bold <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'disabled'?>">Covert To Excel</a>
                                 
                             </div>
                             <div>
-
                                 <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id or name" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
+
                             </div>
                             </div>
 
                     <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
-                    <table class='table table-hover table-bordered table-responsiv' id='myTable'>
+                    <table class='table table-hover table-bordered table-responsive' id='myTable'>
                     <tr>
                         <td>#</td>
                         <td>Student ID</td>
@@ -224,14 +253,13 @@ if(isset($_GET['delid'])){
 
                     <?php
                     
-                    
                     if (isset($teacherid) && isset($_POST['submit'])) {
                                         $coursename = $_POST['coursename'];
                                         $rownumber = 1;
                                         $sql = "select * from students where coursename = '$coursename' and teacherid = '$teacherid'";
                                         $result = mysqli_query($connection, $sql);
                                         if (mysqli_num_rows($result) == 0) {
-                                            echo "<span style='font-size:15px;'>There’s currently no data to show, <br>
+                                            echo "<span style='font-size:15px;' class='mb-2 mt-2'>There’s currently no data to show, 
                                                 Please Assign students to this coursename.</span>";
                                         } else {
                                             while ($row = mysqli_fetch_assoc($result)) {
@@ -241,7 +269,7 @@ if(isset($_GET['delid'])){
                                                     <td><?php echo $row['stdid']; ?></td>
                                                     <td><?php echo $row['stdfullname'] ?></td>
                                                     <td><?php echo $row['coursename'] ?></td>
-                                                    <td><a href="viewstudent.php?updateid=<?php echo $row['stdid'] ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewstudent.php?delid=<?php echo $row['stdid']?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
+                                                    <td class='d-flex   d-sm-block'><a href="viewstudent.php?updateid=<?php echo base64_encode($row['stdid']) ?>&coursename=<?php echo $row['coursename'] ?>" class='btn btn-primary btn-sm fw-bold '>Update</a>&numsp;<a href="viewstudent.php?delid=<?php echo $row['stdid']?>&coursename=<?php echo $row['coursename'] ?>" class='btn btn-danger btn-sm fw-bold '>Delete</a></td>
                                                 </tr>
                                     <?php $rownumber++;
                                             }
@@ -262,12 +290,12 @@ if(isset($_GET['delid'])){
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form method="post" action='slices/importexcel.php' enctype="multipart/form-data">
+                                <form method="post" action="slices/importexcel.php" enctype="multipart/form-data">
                                            <div class="form-group">
                                             <label class='form-label'>Select File</label>
                                             <input type="file" name='excelfile' class='form-control'/>
-                                            <p style='font-size:15px !important; font-weight:500 !important;' class='mt-2'><i class='bi bi-info-circle-fill text-danger me-1'></i><strong class='text-danger'>Important : </strong>
-                                            You can only upload Excel files, Other file types are not allowed.
+                                            <p style='font-size:14px !important; font-weight:500 !important;' class='mt-2'><i class='bi bi-info-circle-fill text-danger me-1'></i><strong class='text-danger'>Important : </strong>
+                                            You can only upload One Excel file, Other file types are not allowed.
                                                 Please ensure your file is in Excel format.
                                             </p>
                                             <button class="btn btn-primary btn-sm mt-2 fw-bold" name='save'>submit</button>
@@ -286,10 +314,11 @@ if(isset($_GET['delid'])){
                   <!-- end of the import file model -->
 
                                              <!-- student update form -->
-                                              <?php if(isset($_GET['updateid'])){
+                                              <?php if(isset($_GET['updateid']) && isset($_GET['coursename'])){
                                                 //get the student id to update its data
-                                                $studentid = $_GET['updateid'];
-                                                $sql = "select * from students where stdid = '$studentid'";
+                                                $studentid = base64_decode($_GET['updateid']);
+                                                $coursename = $_GET['coursename'];
+                                                $sql = "select * from students where stdid = '$studentid' and coursename ='$coursename'";
                                                 $result = mysqli_query($connection,$sql);
 
                                                 ?>
@@ -305,7 +334,8 @@ if(isset($_GET['delid'])){
                                 <?php  while($row = mysqli_fetch_assoc($result)){?>
                                 <div class="form-group mb-3">
                                     <label class='form-label'>Student ID</label>
-                                    <input type="text" name='studentid' class='form-control' value="<?php echo $row['stdid'];?>" readonly/>
+                                    <input type="text" name='studentid' class='form-control' value="<?php echo $row['stdid'];?>" />
+                                    <input type="hidden" name='stdcoursename' class='form-control' value="<?php echo $coursename;?>" />
                                 </div>
                                 <div class="form-group mb-3">
                                     <label class='form-label'>Student Name</label>

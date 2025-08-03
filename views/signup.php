@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="module" src="https://cdn.jsdelivr.net/gh/lekoala/pop-notify@master/pop-notify.min.js"></script>
     <link href="https://cdn.jsdelivr.net/gh/lekoala/pop-notify/pop-notify.css" rel="stylesheet">
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
   </head>
   <body style="background-color:#f2f2f2;">
 
@@ -49,6 +56,7 @@
           <div class="form-group p-2">
               <label class="form-label" style="font-size:15px;">Email</label>
               <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email..." autocomplete="false"/>
+              <input type="hidden" id="subsplan" name="subscriptionplan" class="form-control"/>
           </div>
           <div class="form-group p-2">
               <label class="form-label" style="font-size:15px;">Fullname</label>
@@ -66,7 +74,7 @@
          
           </div>
                 <div class="px-2 mb-2">
-                <input type="submit" class="mt-2 btn btn-primary" value="Create Account" name='singup'/>
+                <input type="submit" class="mt-2 btn btn-primary btn-sm" value="Create Account" name='singup'/>
                 </div>
           </form>
         </div>
@@ -95,6 +103,11 @@ show.addEventListener('click',function(){
     hide.style.display='block';
     show.style.display='none';
 });
+
+
+let subsplan = document.getElementById('subsplan');
+const existingPlan = localStorage.getItem('selectedPlan');
+subsplan.value = existingPlan;
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

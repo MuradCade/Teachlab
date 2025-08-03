@@ -15,7 +15,7 @@ $teacherid = $_SESSION['userid'];
 
 //change password
 if(isset($_POST['savepwd']) && isset($teacherid)){
-    $pwd = $_POST['pwd'];
+    $pwd = mysqli_real_escape_string($connection ,$_POST['pwd']);
     if(empty($pwd)){
         header('location:changepassword.php?emptypwd');
         exit();
@@ -79,6 +79,13 @@ if(isset($_POST['savepwd']) && isset($teacherid)){
             }
         }
     </style>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 <body>
     <div class="container-fluid">
@@ -102,14 +109,14 @@ if(isset($_POST['savepwd']) && isset($teacherid)){
 
                 <div class="row">
                 <div class="row">
-                <div class="col-4">
+                <div class="col-lg-4 col-md-12 col-sm-12">
                     <div id="list-example" class="list-group">
                     <a class="list-group-item list-group-item-action" href='setting.php'>Update Your Password</a>
                     <a class="list-group-item list-group-item-action bg-primary text-white fw-bold" href="#">Change Password</a>
                     
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-lg-6 col-md-12 col-sm-12 mt-4">
                     <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
                             
                     <div class="card p-3"  style='border:none !important; background-color:#f8f9fa !important;'>
@@ -127,9 +134,9 @@ if(isset($_POST['savepwd']) && isset($teacherid)){
                             <form method='post'>
                             <div class="form-group mb-2">
                                 <label class='form-label'>New Password</label>
-                                <input type="text" class="form-control" placeholder="Enter New Password" name='pwd'>
+                                <input type="password" class="form-control" placeholder="Enter New Password" name='pwd'>
                             </div>
-                            <button class='btn btn-primary  mt-2 fw-bold' name='savepwd'>Update</button>
+                            <button class='btn btn-primary btn-sm mt-2 fw-bold' name='savepwd'>Update</button>
                             </form>
                         </div>
                         

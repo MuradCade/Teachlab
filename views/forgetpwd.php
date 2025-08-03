@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="module" src="https://cdn.jsdelivr.net/gh/lekoala/pop-notify@master/pop-notify.min.js"></script>
     <link href="https://cdn.jsdelivr.net/gh/lekoala/pop-notify/pop-notify.css" rel="stylesheet">
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
   </head>
   <body style="background-color:#f2f2f2;">
 
@@ -38,7 +45,9 @@
         <?php }?>
        <?php if(isset($_GET['emailsent'])){?>
         <p class='bg-success text-white fw-bold p-1 text-center ' style='font-size:15px;'>
-            Email sent successfully , please check your email provider
+            Email sent successfully , please be patient it takes couple of minute for the email to reach you , <br>
+            keep an eye on your email provider.
+
         </p>
         <?php }?>
        <?php if(isset($_GET['emailfailed'])){?>
@@ -57,7 +66,7 @@
           
           
                 <div class="px-2 mb-2">
-                <input type="submit" class="mt-2 btn btn-primary" value="Submit" name='submit'/>
+                <input type="submit" class="mt-2 btn btn-primary btn-sm" value="Submit" name='submit'/>
                 </div>
           </form>
         </div>
@@ -67,25 +76,7 @@
     <p class="text-center mt-1 fw-medium mt-2" style="font-size:14px;font-weight:600 !important;">Already Have Account? <a href="login.php">Login</a></p>
 
 
-<script>        
-let hide = document.getElementById('hide');
-let show = document.getElementById('show');
-let pwd = document.getElementById('pwd');
 
-
-
-hide.addEventListener('click',function(){
-        pwd.type = 'text';
-        show.style.display='block';
-        hide.style.display='none';
-
-        
-});
-show.addEventListener('click',function(){
-    pwd.type = 'password';
-    hide.style.display='block';
-    show.style.display='none';
-});
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

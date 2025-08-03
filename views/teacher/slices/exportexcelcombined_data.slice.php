@@ -20,7 +20,35 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 if(isset($_GET['coursename'])){
     $coursename = $_GET['coursename'];
     //  read all studendata related to specified coursename with teacherid
-    $sql = "SELECT markattendence.stdid, markattendence.stdfullname, markattendence.coursename, SUM(markattendence.attendedmarks) AS attandancemarks, COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks FROM markattendence LEFT JOIN ( SELECT stdid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid ) AS assignment_totals ON markattendence.stdid = assignment_totals.stdid where teacherid = '$teacherid' and coursename = '$coursename' GROUP BY markattendence.stdid, markattendence.stdfullname; ";
+ 
+    $sql = "SELECT markattendence.stdid, 
+               markattendence.stdfullname, 
+               markattendence.coursename, 
+               SUM(markattendence.attendedmarks) AS attandancemarks, 
+               COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks,
+               COALESCE(quiz_totals.quizmarks, 0) AS quizmarks,
+               COALESCE(exam_totals.exammarks, 0) AS exammarks
+        FROM 
+               markattendence 
+        LEFT JOIN 
+               (SELECT stdid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid) AS assignment_totals 
+        ON 
+               markattendence.stdid = assignment_totals.stdid 
+        LEFT JOIN  
+               (SELECT stdid, quizmarks FROM studentquiz GROUP BY stdid) AS quiz_totals 
+        ON 
+               markattendence.stdid = quiz_totals.stdid 
+        LEFT JOIN  
+               (SELECT stdid, exammarks AS exammarks FROM studentexam GROUP BY stdid) AS exam_totals 
+        ON 
+               markattendence.stdid = exam_totals.stdid 
+        WHERE 
+               teacherid = '$teacherid' 
+               AND coursename = '$coursename' 
+        GROUP BY 
+               markattendence.stdid, 
+               markattendence.stdfullname;";
+                                                    
     $result = mysqli_query($connection,$sql);
    if(mysqli_num_rows($result) == 0){
     header('location:../combineresult.php?emptdb');
@@ -39,6 +67,7 @@ if(isset($_GET['coursename'])){
          $rowid = 2;
          // $colid = 0;
          while($row = mysqli_fetch_assoc($result)){
+            
                  //code descriping the cells title
              $activesheet->setCellValue('A1','#');
              $activesheet->setCellValue('B1','Student ID');
@@ -46,6 +75,8 @@ if(isset($_GET['coursename'])){
              $activesheet->setCellValue('D1','Coursename');
              $activesheet->setCellValue('E1','Total_Attandence_Marks');
              $activesheet->setCellValue('F1','Total_Assignment_Marks');
+             $activesheet->setCellValue('G1','Total_Quiz_Marks');
+             $activesheet->setCellValue('H1','Total_Exam_Marks');
          // code descriping the cells content
          $activesheet->setCellValue('A'.$rowid,$rowid);
          $activesheet->setCellValue('B'.$rowid,$row['stdid']);
@@ -53,6 +84,8 @@ if(isset($_GET['coursename'])){
          $activesheet->setCellValue('D'.$rowid,$row['coursename']);
          $activesheet->setCellValue('E'.$rowid,$row['attandancemarks']);
          $activesheet->setCellValue('F'.$rowid,$row['assignmentmarks']);
+         $activesheet->setCellValue('G'.$rowid,$row['quizmarks']);
+         $activesheet->setCellValue('H'.$rowid,$row['exammarks']);
  
      //   echo $row['stdid'];
          $rowid++;
@@ -60,18 +93,20 @@ if(isset($_GET['coursename'])){
        
  
      }
-         // if($rowid === mysqli_num_rows($result)){
-             // echo 'match';
+        //  if($rowid === mysqli_num_rows($result)){
+            //  echo 'match';
  
-             // generate filename
-             $filename = 'AllData'.'xls';
+            //  generate filename
+             $filename = 'AllData.xlsx';
              
              ob_end_clean();
            
              header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
              header('Content-Disposition: attachment; filename="'.urlencode($filename).'"');
              $excelwrite->save('php://output');
-         // }
+        //  }else{
+        //     echo 'yoo';
+        //  }
  
  
  

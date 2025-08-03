@@ -4,18 +4,21 @@ include('turnwordintopdf.php');
    if(isset($_POST['submit'])){
             if(isset($_GET['formid']) && isset($_GET['filetype']) && isset($_GET['coursename'])&& isset($_GET['marks'])){
                 $filealowedinassignmentform = $_GET['filetype'];
-                $formid = $_GET['formid'];
+                $formid = mysqli_real_escape_string($connection,$_GET['formid']);
                 $base64 = base64_encode($formid);
-                $stdid = $_POST['stdid'];
-                $stdname = $_POST['stdname'];
-                $fileuploaded = $_FILES['fileuploaded']['name'];
+                $stdid = mysqli_real_escape_string($connection,$_POST['stdid']);
+                $stdname = mysqli_real_escape_string($connection,$_POST['stdname']);
+                $fileuploaded = mysqli_real_escape_string($connection , $_FILES['fileuploaded']['name']);
                 // get rid of if filename contains space and add underscore
-                $getridoffilespac = str_replace(['-', ' '], ['','_'], $fileuploaded);;
+                // $getridoffilespac = str_replace(['-', ' '], ['','_'], $fileuploaded);
+                $getridoffileleadingspace = preg_replace('/[\s\-]+/', '_', $fileuploaded);
+                $getridoffilespace = str_replace(' ', '_', $getridoffileleadingspace);
+                // $getridoffilespac .= str_replace(' ', '_', $fileuploaded);;
                 //this variable holds filename with out the extension
-                $filewithoutextension = pathinfo($getridoffilespac, PATHINFO_FILENAME).'.pdf';
+                $filewithoutextension = pathinfo($getridoffilespace, PATHINFO_FILENAME).'.pdf';
                 $extension = pathinfo($fileuploaded, PATHINFO_EXTENSION);
-                $coursename = $_GET['coursename'];
-                $marks = $_GET['marks'];
+                $coursename = mysqli_real_escape_string($connection,$_GET['coursename']);
+                $marks = mysqli_real_escape_string($connection,$_GET['marks']);
                 // echo $extension;
                 $allowedwordfiles = ['docx','doc'];
 

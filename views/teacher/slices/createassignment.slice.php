@@ -8,21 +8,26 @@ if (session_status() === PHP_SESSION_NONE) {
 
 
 if(isset($_POST['submit'])){
-    $formtitle = $_POST['formtitle'];
-    $formdesc = $_POST['formdesc'];
-    $coursename = $_POST['coursename'];
-    $template = $_POST['template'];
+    $formtitle = mysqli_real_escape_string($connection ,$_POST['formtitle']);
+    $formdesc = mysqli_real_escape_string($connection ,$_POST['formdesc']);
+    $coursename = mysqli_real_escape_string($connection ,$_POST['coursename']);
     $uploadfiletype = $_POST['uploadfiletype'];
     $teacherid = $_SESSION['userid'];
-    $marks = $_POST['marks'];
+    $marks = mysqli_real_escape_string($connection ,$_POST['marks']);
     // generate random 6 number for formid
     $formid = random_int(100000, 999999);
-    if(empty($formtitle) && empty($formedsc)){
-        header('location:../createassignmentform.php?emptyfields');
+    if(empty(trim($formtitle))){
+        header('location:../createassignmentform.php?emptyformtitle');
+        exit();
+    }else if(empty(trim($formdesc))){
+        header('location:../createassignmentform.php?emptyformdesc');
+        exit();
+    }else if(empty(trim($marks))){
+        header('location:../createassignmentform.php?emptymarks');
         exit();
     }else{
         $sql = "insert into assignmentform(formid,title,description,coursename,marks,template,uploadedfilename,formstatus,teacherid)values(
-        '$formid','$formtitle','$formdesc','$coursename','$marks','$template','$uploadfiletype','active',$teacherid)";
+        '$formid','$formtitle','$formdesc','$coursename','$marks','default_template','$uploadfiletype','active',$teacherid)";
         $result = mysqli_query($connection,$sql);
         if($result){
             header('location:../createassignmentform.php?formcreated');

@@ -13,13 +13,13 @@ if (!isset($_SESSION['userid'])) {
 
 $teacherid = $_SESSION['userid'];
 
-
 //update user information
 if(isset($_POST['saveinfo']) && isset($teacherid)){
-    $fullname = $_POST['fullname'];
+    $fullname = mysqli_real_escape_string($connection ,$_POST['fullname']);
     $sql = "update users set fullname = '$fullname' where userid = '$teacherid'";
     $result = mysqli_query($connection,$sql);
     if($result){
+        $_SESSION['fullname'] = $fullname; // update session variable
         header('location:setting.php?updatesuccess');
         exit();
     }else{
@@ -74,6 +74,13 @@ if(isset($_POST['saveinfo']) && isset($teacherid)){
             }
         }
     </style>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 <body>
     <div class="container-fluid">
@@ -97,14 +104,14 @@ if(isset($_POST['saveinfo']) && isset($teacherid)){
 
                 <div class="row">
                 <div class="row">
-                <div class="col-4">
+                <div class="col-lg-4 col-md-12 col-sm-12">
                     <div id="list-example" class="list-group">
                     <a class="list-group-item list-group-item-action bg-primary text-white fw-bold ">Update Profile Information</a>
                     <a class="list-group-item list-group-item-action  " href="changepassword.php">Change Password</a>
                     
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-lg-6 col-md-12 col-sm-12 mt-3">
                     <div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true" class="scrollspy-example" tabindex="0">
                             <?php if(isset($teacherid)){
                                 $sql = "select fullname,email from users where userid = '$teacherid'";
@@ -130,10 +137,10 @@ if(isset($_POST['saveinfo']) && isset($teacherid)){
                             <div class="form-group">
                                 <label class='form-label'>Email</label>
                                 <input type="text" class="form-control" placeholder="Enter Email" name='email' value="<?php echo $row['email']?>" readonly>
-                                <p class='mt-2 ' style='font-size:15px;'><strong class='text-danger'>Warning : </strong> Updating your email is not possible,
+                                <p class='mt-2 ' style='font-size:14px;'><strong class='text-danger'>Warning : </strong> Updating your email is not possible,
                                 as it's essential for verifying your identity during login. </p>
                             </div>
-                            <button class='btn btn-primary  mt-2 fw-bold' name='saveinfo'>Update</button>
+                            <button class='btn btn-primary btn-sm mt-2 fw-bold' name='saveinfo'>Update</button>
                                 </form>
                         </div>
                         

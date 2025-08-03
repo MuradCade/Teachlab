@@ -13,18 +13,10 @@ if (!isset($_SESSION['userid'])) {
 
 
 if(isset($_POST['update'])){
-    $userid = $_POST['userid'];
-    $subsatus = $_POST['substatus'];
-    $subplan = $_POST['subplan'];
-    $subamount = $_POST['subamount'];
+    $userid = mysqli_escape_string($connection,$_POST['userid']);
+    $subamount = mysqli_escape_string($connection,$_POST['subamount']);
     if(empty($userid)){
         header('location:manage_subscription.php?emptyuserid');
-        exit();
-    }else if(empty($subsatus)){
-        header('location:manage_subscription.php?emptysubscriptionstatus');
-        exit();
-    }else if(empty($subplan)){
-        header('location:manage_subscription.php?emptysubscriptionplan');
         exit();
     }else if(empty($subamount)){
         header('location:manage_subscription.php?emptysubscriptionamount');
@@ -32,15 +24,13 @@ if(isset($_POST['update'])){
     }
     else{
        
-            $sql = "update subscription set subsatus = '$subsatus', subplan = '$subplan' ,subamount = '$subamount' where userid = '$userid'";
+            $sql = "update subscription set subamount = '$subamount' where userid = '$userid'";
             $result = mysqli_query($connection,$sql);
             if($result){
-                $sql2 = "update users set subscription_status = '$subsatus' where userid = '$userid'";
-                $result2 = mysqli_query($connection,$sql2);
-                if($result2){
+                
                     header('location:manage_subscription.php?q1updatesuccess');
                     exit();
-                }
+                
     
             }
        
@@ -50,14 +40,25 @@ if(isset($_POST['update'])){
 
 
 //delete
-if(isset($_GET['userid'])){
-    $userid = $_GET['userid'];
-    $sql = "delete from users where userid = '$userid'";
+if(isset($_GET['delid'])){
+    $userid = base64_decode($_GET['delid']);
+    $sql = "delete from subscription where userid = '$userid'";
     $result = mysqli_query($connection,$sql);
     if($result){
-        header('location:viewusers.php?delsuccess');
+        header('location:manage_subscription.php?delsuccess');
                 exit();
     }
+}
+// get user fullname 
+function getuserinfo($connection,$userid,$params){
+    $sql = "select * from users where userid = '$userid'";
+    $result = mysqli_query($connection,$sql);
+    while($row = mysqli_fetch_assoc($result)){
+        return $row[$params];
+    }
+
+    
+    
 }
 
 
@@ -68,7 +69,7 @@ if(isset($_GET['userid'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeachLab - Manage Subscription</title>
+    <title>TeachLab - Change Days Left</title>
     <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -123,16 +124,24 @@ if(isset($_GET['userid'])){
                 </nav>
 
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2" style='font-size:17px;'>View Users</h1>
+                    <h1 class="h2" style='font-size:17px;'>Subscription / Change Days Left</h1>
                 </div>
 
                 <div class="row">
-                    <div class="col-8 col-md-6 col-xl-8 mb-4">
+                    <div class="col-lg-10 col-md-10 col-xl-12 mb-4">
+                        <!-- update subscription amount (days left)-->
+                        <?php if(isset($_GET['q1updatesuccess'])){?>
+                            <p class="bg-success p-2 text-white fw-bold" style='font-size:14px;'>Subscription Data Updated Successfully</p>
+                            <?php } ?>
+                        <?php if(isset($_GET['delsuccess'])){?>
+                            <p class="bg-success p-2 text-white fw-bold" style='font-size:14px;'>Subscription Data Deleted Successfully</p>
+                            <?php } ?>
                         <table class="table table-bordered table-hover">
                             <tr>
                                 <td>#</td>
                                 <td>userid</td>
-                                <td>date</td>
+                                <td>fullname</td>
+                                <td>user_role</td>
                                 <td>subscription_status</td>
                                 <td>subscription_plan</td>
                                 <td>subscription_days</td>
@@ -150,12 +159,13 @@ if(isset($_GET['userid'])){
                                     <form method="post">
                                         <tr>
                                             <td><?php echo $rowid;?></td>
-                                            <td><input type='text' value="<?php echo $row['userid']?>" name='userid' readonly/></td>
-                                            <td><?php echo date('M-j-Y ', strtotime($row['date']));?></td>
-                                            <td><input type='text' value="<?php echo $row['subsatus']?>" name='substatus' /></td>
-                                            <td><input type='text' value="<?php echo $row['subplan']?>" name='subplan'/></td>
+                                            <td><input type='text' value="<?php echo $row['userid']?>" name='userid' readonly style='border:none;width:60px'/></td>
+                                            <td><?php echo getuserinfo($connection,$row['userid'],'fullname')?></td>
+                                            <td><?php echo getuserinfo($connection,$row['userid'],'role')?></td>
+                                            <td><?php echo $row['subsatus']?></td>
+                                            <td><?php echo $row['subplan']?></td>
                                             <td><input type='text' name='subamount' value="<?php echo $row['subamount'];?>"/></td>
-                                            <td><button class='btn btn-primary btn-sm fw-bold' name='update'>Update</button></td>
+                                            <td><button class='btn btn-primary btn-sm fw-bold me-2' name='update'>Update</button><a href="manage_subscription.php?delid=<?=base64_encode($row['userid']); ?>" class='btn btn-danger btn-sm fw-bold'>Delete</a></td>
                                         </tr>
                                     </form>
                                     <?php $rowid++;}

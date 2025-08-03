@@ -31,7 +31,14 @@ if(isset($_GET['formid'])){
     <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
     <title>Teachlab - Assignment Form</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  </head>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>  
+</head>
   <body style="background-color:#f5f5f5;overflow-x: hidden;">
     <div class="row">
         <div class="col-md-9 ms-sm-auto col-lg-8 mx-auto mt-2">
@@ -74,14 +81,14 @@ if(isset($_GET['formid'])){
                 <input  type='file' class='form-control' name='fileuploaded'/>
                 <span style='font-size:14px;'> (only upload  <?php echo $row['uploadedfilename'];?> files)</span>
             </div>
-            <button class='btn btn-primary  fw-bold' name='submit'>Submit</button>
+            <button class='btn btn-primary  fw-bold btn-md ' name='submit'>Submit</button>
     </form>
         </div>
     </div>
         </div>
     </div>
         <div class="text-center">
-        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
+        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/" class='fw-bold'>TeachLab</a></p>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
@@ -215,7 +222,7 @@ body{
         </div>
     </div>
         <div class="text-center">
-        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/">TeachLab</a></p>
+        <p class='mt-2'>This Form Is Powered By <a href="https://teachlabs.unaux.com/" class='fw-bold'>TeachLab</a></p>
         </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>

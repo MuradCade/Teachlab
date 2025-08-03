@@ -23,6 +23,13 @@ if(!isset($_SESSION['verification_userid'])){
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script type="module" src="https://cdn.jsdelivr.net/gh/lekoala/pop-notify@master/pop-notify.min.js"></script>
     <link href="https://cdn.jsdelivr.net/gh/lekoala/pop-notify/pop-notify.css" rel="stylesheet">
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
   </head>
   <body style="background-color:#f2f2f2;">
 
@@ -37,7 +44,10 @@ if(!isset($_SESSION['verification_userid'])){
          </div>
          
        <?php if(isset($_GET['emailsent'])){?>
-        <p class='bg-success text-white fw-bold p-1 text-start ' style='font-size:15px;'>email send successfully , check your email  to verify the code</p>
+        <p class='bg-success text-white fw-bold p-1 text-start ' style='font-size:14px;'>
+        Email sent successfully , please be patient it takes couple of minute for the email to reach you , <br>
+        keep an eye on your email provider.
+        </p>
         <?php }?>
         <?php if(isset($_GET['emptyverificationfield'])){?>
         <p class='bg-danger text-white fw-bold p-1 text-start ' style='font-size:15px;'>Empty verification field</p>
@@ -53,7 +63,7 @@ if(!isset($_SESSION['verification_userid'])){
               <input type="text"  name="v_code" class="form-control" placeholder="Enter Verification Code" autocomplete="false"/>
           </div>
                 <div class="px-2 mb-2">
-                <input type="submit" class="mt-2 btn btn-primary" value="Verify" name='verify'/>
+                <input type="submit" class="mt-2 btn btn-primary btn-sm" value="Verify" name='verify'/>
                 </div>
           </form>
         </div>

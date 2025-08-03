@@ -56,6 +56,13 @@ if (!isset($_SESSION['userid'])) {
             }
         }
     </style>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 
 <body>
@@ -91,13 +98,31 @@ if (!isset($_SESSION['userid'])) {
                                 <?php if (isset($_GET['success'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Course Information Saved Successfully</p>
                                 <?php } ?>
-                                <form method='post' action='slices/addnewcourse.slice.php'>
+                                <?php if (isset($_GET['failed'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                        Failed to save coursename , please try again later
+                                    </p>
+                                <?php } ?>
+                                <?php if (isset($_GET['exists'])) { ?>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>
+                                    Sorry, a course with that name already exists.
+                                    </p>
+                                <?php } ?>
+
+                                <?php if(checkcourseamount($connection,$_SESSION['userid'],'free')){?>
+                                    <p class='alert alert-danger p-2' style='font-size:15px !important;'>Dear User, You have reached the maximum number of courses for your free plan. Please upgrade to a paid plan to create more courses.
+                                        in order to upgrade go to home and click on upgrade button.
+                                    </p>
+                                <?php } ?>
+                                    <form method='post' action='slices/addnewcourse.slice.php'>
                                     <div class="form-group">
                                         <label class='form-label'>Course name</label>
                                         <input type="text" name='coursename' class='form-control' placeholder="Enter Coursename" />
                                     </div>
-                                    <button class="btn btn-primary btn-sm mt-2 fw-bold  " name='submit'>Submit</button>
+                                    <button class="btn btn-primary btn-sm mt-2 fw-bold <?php echo checkcourseamount($connection,$_SESSION['userid'],'free') ? 'disabled' : ''?> " name='submit'>Submit</button>
                                 </form>
+                            
+                               
                             </div>
                         </div>
                     </div>

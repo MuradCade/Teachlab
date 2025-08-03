@@ -111,6 +111,13 @@ if(isset($_GET['delid'])){
             }
         }
     </style>
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 
 <body>
@@ -134,14 +141,14 @@ if(isset($_GET['delid'])){
                 </div>
                 
                 <div class="row">
-                    <div class="col-12 col-md-8 col-xl-5 mb-4">
+                    <div class="col-8 col-md-10 col-xl-5 col-sm-12 mb-4">
                         <div class="card p-2 rounded" style='border:none !important; background-color:#f8f9fa !important;'>
                             <h4 class="card-title px-3 fw-bold mt-2 mb-0" style='font-size:17px !important;'>
                             View Attendance Information
                             </h4>
                             <div class="card-body">
                                 <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before marking students attadence!</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>New coursename should be added in order to see specific course attandance</p>
                                 <?php } ?>
                                 <?php if (isset($_GET['attendanceupdatedsuccessfully'])) { ?>
                                     <p class='bg-success p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Attendance is updated successfully</p>
@@ -191,13 +198,28 @@ if(isset($_GET['delid'])){
 
                 <!-- More Content Here -->
                  <div class="row">
-                    <div class="col-lg-9 col-md-8 col-sm-12">
+                    <div class="col-lg-9 col-md-12 col-sm-12">
                           
 
                     <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
-                        
-                        <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-1' id='myInput' placeholder="Search by id" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
-                    <table class='table table-hover table-bordered table-responsiv' id='myTable'>
+                        <div class='d-lg-flex item-center justify-content-start gap-2 d-sm-block '>
+                        <input  style="width:400px !important;" type='text' class='form-control mt-2 mb-sm-1' id='myInput' placeholder="Search by id , studentname" onkeyup="searchTable()"  <?php echo coursenames($_SESSION['userid'],$connection) == false ? 'disabled':''?> <?php echo isset($_POST['coursename']) ? '' : 'readonly'?>/>                       
+                    <?php 
+                        if(isset($_POST['submit'])){
+                            $coursename = $_POST['coursename'];?>
+                                        <div class="mt-2">
+                                        <a href="slices/exportattendance.slice.php?coursename=<?=  $coursename?>" class="btn btn-secondary btn-sm fw-bold mt-1">Convert To Excel</a>
+
+                                        </div>
+                        <?php }else{?>
+                                <div class='mb-2 mt-2'>
+                                <a href="slices/exportattendance.slice.php" class="btn btn-secondary btn-sm fw-bold  disabled" >Convert To Excel</a>
+
+                                </div>
+                        <?php }
+                    ?>
+                    </div>
+                    <table class='table table-hover table-bordered table-responsiv mt-2' id='myTable'>
                     <tr>
                         <td>#</td>
                         <td>Student ID</td>
@@ -219,7 +241,7 @@ if(isset($_GET['delid'])){
                         $result = mysqli_query($connection,$sql);
                         $rowid = 1;
                         if(mysqli_num_rows($result) == 0){
-                            echo "<span style='font-size:15px;'>Sorry , There’s currently no data to show.</span>";
+                            echo "<span style='font-size:15px;' class='mb-1 mt-2'>Sorry , There’s currently no data to show.</span>";
                         }else{
                         while($row = mysqli_fetch_assoc($result)){?>
                         <tr>
@@ -239,9 +261,10 @@ if(isset($_GET['delid'])){
                      
                                    <!-- student update form -->
                                    <?php if(isset($_GET['display'])){
+                                            $teacherid = $_SESSION['userid'];
                                                 //get the student id to update its data
                                                 $studentid = $_GET['display'];
-                                                $sql2 = "select id, stdid,stdfullname,coursename,attendedmarks,date,present_column,absent_column,SUM(present_column) as totalpresent,SUM(absent_column) as totalabsent, sum(attendedmarks) as totalmarks from markattendence where stdid = '$studentid' group by id";
+                                                $sql2 = "select id, stdid,stdfullname,coursename,attendedmarks,date,present_column,absent_column,SUM(present_column) as totalpresent,SUM(absent_column) as totalabsent, sum(attendedmarks) as totalmarks from markattendence where stdid = '$studentid' and teacherid = '$teacherid' group by id";
                                                 $result2 = mysqli_query($connection,$sql2);
 
                                                 ?>

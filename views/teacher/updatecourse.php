@@ -15,9 +15,9 @@ if (!isset($_SESSION['userid'])) {
 // check is courseid is with url parameter and then update course information
 if (isset($_GET['courseid']) && !empty($_GET['courseid'])) {
     if (isset($_POST['submit'])) {
-        $courseid = $_GET['courseid'];
+        $courseid = base64_decode($_GET['courseid']);
         $teacherid = $_SESSION['userid'];
-        $coursename = $_POST['coursename'];
+        $coursename = mysqli_real_escape_string($connection ,$_POST['coursename']);
         if (empty($coursename)) {
             header('location:?emptycoursefield&courseid=' . $courseid);
             exit();
@@ -127,6 +127,7 @@ if (isset($_GET['courseid']) && !empty($_GET['courseid'])) {
                                         <input type="text" name='coursename' class='form-control' placeholder="Enter Coursename" value="<?php echo securecourseidinurl($_GET['courseid'],$_SESSION['userid'],$connection)?>" />
                                     </div>
                                     <button class="btn btn-primary btn-sm mt-2 fw-bold  <?php echo  securecourseidinurl($_GET['courseid'],$_SESSION['userid'],$connection) == 'sorry coursename not found' ? 'disabled ':' '?>" name='submit'>Submit</button>
+                                    <a href="viewcourse.php" class="btn btn-secondary fw-bold btn-sm  mt-2">Cancel</a>
                                 </form>
                             </div>
                         </div>

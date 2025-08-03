@@ -27,9 +27,9 @@ if(isset($_POST['submit'])){
                 $fullname = $row['fullname'];
                 $emailarray = ["subject"=>"Forget Your Password",
                         "body"=>"<p>Dear $fullname, Please Click The Link Below To Verify Your Password(Link can be used only once)</p>
-                        <p>please code this code : <strong>$generated_verification_code</strong> , and click the link below.</p>
+                        <p>please copy this code and click link below to change your password: <strong>$generated_verification_code</strong> , and click the link below.</p>
                         <a href='https://teachlabs.unaux.com/views/recoverpassword.php?userid=$userid'>Recover Password</a>"];
-               $sql2 = "select  * from forgetpwd";
+               $sql2 = "select  * from forgetpwd where userid = '$userid'";
                $result2 = mysqli_query($connection,$sql2);
                // if user already request new recover and request again we update database
                if(mysqli_num_rows($result2) > 0){
@@ -46,6 +46,7 @@ if(isset($_POST['submit'])){
                 if($result4){
                     sendemail($email,$row['fullname'],$emailarray['subject'],$emailarray['body']);
                    $response = 'success';
+                   
                 }
 
                         

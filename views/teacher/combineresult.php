@@ -62,6 +62,15 @@ $teacherid = $_SESSION['userid'] ?? null;
             }
         }
     </style>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-00CYL9RWEC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-00CYL9RWEC');
+</script>
 </head>
 
 <body>
@@ -92,7 +101,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                             </h4>
                             <div class="card-body">
                             <?php if (coursenames($_SESSION['userid'],$connection) == false) { ?>
-                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>Please add new course name before adding new student!</p>
+                                    <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>New course should be added in order to display comibined result of assignment , attandence and quiz</p>
                                 <?php } ?>
                             <?php if (isset($_GET['emptdb'])) { ?>
                                     <p class='bg-danger p-1 text-white fw-bold px-2' style='font-size:15px !important; '>There is no data to be converted , please choose proper coursename.</p>
@@ -127,10 +136,13 @@ $teacherid = $_SESSION['userid'] ?? null;
                 </div>
                 <?php if(isset($_POST['submit'])){
                     $coursename = $_POST['coursename'];
+                   
+                    // echo $coursename;
+                
                     ?>
                               <div class="row mt-2">
-                                <div class="col-12 col-md-8 col-xl-8 mb-4">
-                                <div style='display:flex !important; align-items:center; justify-content:start; gap:10px;'>
+                                <div class="col-lg-12 col-md-12 col-xl-12 mb-4">
+                                <div class=''>
                                 <div>
                                 <a href="slices/exportexcelcombined_data.slice.php?coursename=<?php echo $coursename;?>" class="btn btn-secondary">Convert To Excel</a>
                                 
@@ -140,7 +152,7 @@ $teacherid = $_SESSION['userid'] ?? null;
                             </div>
                             </div>
                                    
-                                <div class="card mt-2" style='border:none !important; background-color:#f8f9fa !important;'>
+                                <div class="card mt-2 table-responsive" style='border:none !important; background-color:#f8f9fa !important;'>
                                     <table class="table table-bordered table-hover" id="myTable">
                                         <tr>
                                             <td>#</td>
@@ -149,11 +161,67 @@ $teacherid = $_SESSION['userid'] ?? null;
                                             <td>Coursename</td>
                                             <td>Total_Attandence_Marks</td>
                                             <td>Total_Assignment_Marks</td>
+                                            <td>Total_Quiz_Marks</td>
+                                            <td>Total_Exam_Marks</td>
                                         </tr>
 
 
                                         <?php 
-                                            $sql2 = "SELECT markattendence.stdid, markattendence.stdfullname, markattendence.coursename, SUM(markattendence.attendedmarks) AS attandancemarks, COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks FROM markattendence LEFT JOIN ( SELECT stdid, SUM(marks) AS assignmentmarks FROM assignmententries GROUP BY stdid ) AS assignment_totals ON markattendence.stdid = assignment_totals.stdid where teacherid = '$teacherid' and coursename = '$coursename' GROUP BY markattendence.stdid, markattendence.stdfullname; ";
+                                  
+                                        //step1 get the formid of the quizform
+                                        $sqlmain = "select * from quizform where teacherid = '$teacherid' and coursename ='$coursename'";
+                                        $resultmain = mysqli_query($connection,$sqlmain);
+                                        $rows = mysqli_fetch_assoc($resultmain);
+                                        $formid =  $rows['quizformid']??'';
+                                        //step2 get the formid of the examform
+                                        $sqlmain = "select * from examform where teacherid = '$teacherid' and coursename ='$coursename'";   
+                                        $resultmain = mysqli_query($connection,$sqlmain);
+                                        $rows = mysqli_fetch_assoc($resultmain);
+                                        $examformid =  $rows['examformid']??'';
+
+                                        // echo "<pre>";
+                                        // var_dump($formid);
+                                        // die();
+                                        // echo "</pre>";
+                                        // die();
+                                            $sql2 = "SELECT 
+                                                            markattendence.stdid, 
+                                                            markattendence.stdfullname, 
+                                                            markattendence.coursename, 
+                                                            SUM(markattendence.attendedmarks) AS attandancemarks, 
+                                                            COALESCE(assignment_totals.assignmentmarks, 0) AS assignmentmarks,
+                                                            COALESCE(quiz_totals.quizmarks, 0) AS quizmarks,
+                                                            COALESCE(exam_totals.exammarks, 0) AS exammarks
+                                                        FROM 
+                                                            markattendence 
+                                                        LEFT JOIN 
+                                                            (SELECT stdid, formid, SUM(marks) AS assignmentmarks 
+                                                            FROM assignmententries 
+                                                            GROUP BY stdid) AS assignment_totals 
+                                                        ON markattendence.stdid = assignment_totals.stdid 
+                                                        LEFT JOIN 
+                                                            (SELECT stdid, quizmarks, quizformid  
+                                                            FROM studentquiz 
+                                                            WHERE quizformid = '$formid' 
+                                                            GROUP BY stdid) AS quiz_totals 
+                                                        ON markattendence.stdid = quiz_totals.stdid 
+                                                        LEFT JOIN 
+                                                            (SELECT stdid, exammarks, examformid 
+                                                            FROM studentexam 
+                                                            WHERE examformid = '$examformid' 
+                                                            GROUP BY stdid) AS exam_totals
+                                                        ON markattendence.stdid = exam_totals.stdid
+                                                        WHERE 
+                                                            teacherid = '$teacherid' 
+                                                            AND coursename = '$coursename'  
+                                                        GROUP BY 
+                                                            assignment_totals.formid, 
+                                                            markattendence.stdfullname, 
+                                                            markattendence.coursename 
+                                                        ORDER BY 
+                                                            markattendence.stdid;
+                                                    ";
+
 
                                             $result2 = mysqli_query($connection,$sql2);
                                             $rowsid =1;
@@ -169,6 +237,8 @@ $teacherid = $_SESSION['userid'] ?? null;
                                                         <td><?php echo $rows['coursename']?></td>
                                                         <td><?php echo $rows['attandancemarks']?></td>
                                                         <td><?php echo $rows['assignmentmarks']?></td>
+                                                        <td><?php echo $rows['quizmarks']?></td>
+                                                        <td><?php echo $rows['exammarks']?></td>
                                                     </tr>
                                                 
                                                 

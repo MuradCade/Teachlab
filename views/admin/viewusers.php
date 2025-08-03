@@ -12,75 +12,100 @@ if (!isset($_SESSION['userid'])) {
 }
 
 
-if(isset($_POST['update'])){
+if (isset($_POST['update'])) {
     $userid = $_POST['userid'];
-    $fullname = $_POST['fullname'];
-    $email = $_POST['email'];
-    $role = $_POST['role'];
-    $pwd = $_POST['role'];
-    $hashpwd = password_hash($pwd,PASSWORD_DEFAULT);
-    $subscription_status  =$_POST['subscription_status'];
-    $v_status = $_POST['v_status'];
-    if(empty($userid)){
+    $fullname = mysqli_escape_string($connection, $_POST['fullname']);
+    $email = mysqli_escape_string($connection, $_POST['email']);
+    $role = mysqli_escape_string($connection, $_POST['role']);
+    $vstatus = mysqli_escape_string($connection, $_POST['v_status']);
+    $v_statuschecked = strtolower($_POST['v_status']) == 'yes' ? '1' : '0';
+
+
+    if (empty($userid)) {
         header('location:viewusers.php?emptyuserid');
         exit();
-    }else if(empty($fullname)){
+    } else if (empty($fullname)) {
         header('location:viewusers.php?emptyfullname');
         exit();
-    }else if(empty($email)){
+    } else if (empty($email)) {
         header('location:viewusers.php?emptyemail');
         exit();
-    }else if(empty($role)){
+    } else if (empty($vstatus)) {
+        header('location:viewusers.php?vstatus');
+        exit();
+    } else if (empty($role)) {
         header('location:viewusers.php?emptyrole');
         exit();
-    }else if(empty($v_status)){
-        header('location:viewusers.php?emptyv_status');
-        exit();
-    }
-    else if(empty($subscription_status)){
-        header('location:viewusers.php?emptysubscription');
-        exit();
-    }
-    else{
-        if(empty($pwd)){
-            $sql = "update users set fullname = '$fullname', role = '$role' ,verified_status = '$v_status' , subscription_status = '$subscription_status' where userid = '$userid'";
-            $result = mysqli_query($connection,$sql);
-            if($result){
-                header('location:viewusers.php?q1updatesuccess');
-                exit();
-            }
-        }else{
-            $sql2 = "update users set fullname = '$fullname', role = '$role', pwd = '$hashpwd', verified_status = '$v_status' ,subscription_status = '$subscription_status' where userid = '$userid' ";
-            $result2 = mysqli_query($connection,$sql2);
-            if($result2){
-                header('location:viewusers.php?q2updatesuccess');
-                exit();
-            }
+    } else {
+
+        $sql = "update users set fullname = '$fullname', role = '$role' ,verified_status = '$v_statuschecked', email ='$email'  where userid = '$userid'";
+        $result = mysqli_query($connection, $sql);
+        if ($result) {
+            $_SESSION['fullname'] = $fullname;
+            header('location:viewusers.php?updatesuccess');
+            exit();
+        } else {
+            header('location:viewusers.php?updatefailed');
+            exit();
         }
     }
 }
 
 
+
 //delete
-if(isset($_GET['userid'])){
+if (isset($_GET['userid'])) {
     $userid = $_GET['userid'];
     $sql = "delete from users where userid = '$userid'";
-    $result = mysqli_query($connection,$sql);
-    if($result){
+    $result = mysqli_query($connection, $sql);
+    if ($result) {
         header('location:viewusers.php?delsuccess');
-                exit();
+        exit();
     }
 }
+
+// get subscription info of each user
+function getsubscriptioninfo($userid, $params, $connection)
+{
+    $sql = "select *  from subscription where userid = '$userid'";
+    $result = mysqli_query($connection, $sql);
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            return $row[$params];
+        }
+    }
+}
+
+// display single user details
+function singleuserdetails($userid, $connection)
+{
+    $sql = "select * from users where userid = '$userid'";
+    $result = mysqli_query($connection, $sql);
+    $data = [];
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+    }
+
+    return $data;
+}
+
+
+
+
+
 
 
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeachLab - Manage Users</title>
+    <title>TeachLab - View Users</title>
     <link rel="icon" type="image/x-icon" href="https://cdn.pixabay.com/photo/2012/04/24/12/46/letter-39873_640.png">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -95,22 +120,22 @@ if(isset($_GET['userid'])){
             transition: transform 0.3s ease-in-out;
             transform: translateX(-100%);
         }
-        
+
         #sidebar.show {
             transform: translateX(0);
         }
-        
+
         @media (min-width: 768px) {
             #sidebar {
                 transform: translateX(0);
                 position: fixed;
             }
         }
-        
+
         #closeSidebar {
             display: none;
         }
-        
+
         @media (max-width: 767.98px) {
             #closeSidebar {
                 display: block;
@@ -118,11 +143,12 @@ if(isset($_GET['userid'])){
         }
     </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
-         <!-- sidebar included -->
-        <?php  include('include/sidebar.php');?>
+            <!-- sidebar included -->
+            <?php include('include/sidebar.php'); ?>
 
 
             <!-- Main Content -->
@@ -139,48 +165,215 @@ if(isset($_GET['userid'])){
                 </div>
 
                 <div class="row">
-                    <div class="col-8 col-md-6 col-xl-8 mb-4">
-                        <table class="table table-bordered table-hover">
-                            <tr>
-                                <td>#</td>
-                                <td>userid</td>
-                                <td>fullname</td>
-                                <td>email</td>
-                                <td>role</td>
-                                <td>verified_status</td>
-                                <td>subscription_status</td>
-                                <td>update_password</td>
-                                <td>Action</td>
-                            </tr>
+                    <div class="col-lg-10 col-md-10 col-xl-12 px-2 col-smp-12 mb-4">
+                        <div class='table-responsvie'>
+                            <?php if (isset($_GET['emptyfullname'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Empty Fullname Field</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['vstatus'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Empty Verified Field</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['emptyrole'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Empty Role Field</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['emptyemail'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Empty Email Field</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['updatesuccess'])) { ?>
+                                <p class='bg-success p-2 text-white fw-bold'  style='font-size:14px;'>User Information Updated Successfully</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['updatefailed'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Faild To Update User Information</p>
+                            <?php } ?>
 
-                            <?php
-                                $sql = "select * from users";
-                                $result = mysqli_query($connection,$sql);
-                                if(mysqli_num_rows($result) == 0){
-                                    echo 'there is no data to be shown';
-                                }else{
-                                    $rowid = 1;
-                                    while($row = mysqli_fetch_assoc($result)){?>
-                                    <form method="post">
-                                        <tr>
-                                            <td><?php echo $rowid;?></td>
-                                            <td><input type='text' value="<?php echo $row['userid']?>" name='userid' readonly/></td>
-                                            <td><input type='text' value="<?php echo $row['fullname']?>" name='fullname'/></td>
-                                            <td><input type='text' value="<?php echo $row['email']?>" name='email' readonly/></td>
-                                            <td><input type='text' value="<?php echo $row['role']?>" name='role'/></td>
-                                            <td><input type='text' name='v_status' value="<?php echo $row['verified_status'];?>"/></td>
-                                            <td><input type='text' name='subscription_status' value="<?php echo $row['subscription_status'];?>"/></td>
-                                            <td><input type='text' name='pwd' placeholder="update password"/></td>
-                                            <td><button class='btn btn-primary btn-sm fw-bold' name='update'>Update</button>&numsp; <a href="viewusers.php?userid=<?php echo $row['userid']?>" class='btn btn-danger btn-sm fw-bold'>Delete</a></td>
-                                        </tr>
-                                    </form>
-                                    <?php $rowid++;}
-                                }
+
+                            <!-- changepassword respone-->
+                            <?php if (isset($_GET['emptyuserid'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'>Sorry , Changepassword operation not available try again later</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['emptychangepwdfield'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold' style='font-size:14px;'>Empty Changepassword Field</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['pwdchangedsuccess'])) { ?>
+                                <p class='bg-success p-2 text-white fw-bold'  style='font-size:14px;'>User Password Changed Successfully</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['pwdfailed'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Faild To Change User Password</p>
+                            <?php } ?>
                             
-                            ?>
-                        </table>
+                            
+                            <!-- Manage subscription alerts-->
+                            <?php if (isset($_GET['useridnotpassed'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Sorry , we failed to change user subscription status , no userid where passed</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['subscriptionsuccess'])) { ?>
+                                <p class='bg-success p-2 text-white fw-bold'  style='font-size:14px;'>Subscription Status Updated Successfully</p>
+                            <?php } ?>
+                            <?php if (isset($_GET['subscriptionfailed'])) { ?>
+                                <p class='bg-danger p-2 text-white fw-bold'  style='font-size:14px;'>Failed to update subscription status</p>
+                            <?php } ?>
+
+
+                            <table class="table table-bordered table-hover">
+                                <tr>
+                                    <td>#</td>
+                                    <!-- <td>userid</td> -->
+                                    <td>Fullname</td>
+                                    <td>Email</td>
+                                    <td>Role</td>
+                                    <td>Verified</td>
+                                    <td>Action</td>
+                                </tr>
+
+                                <?php
+                                $sql = "select * from users order by userid";
+                                $result = mysqli_query($connection, $sql);
+                                if (mysqli_num_rows($result) == 0) {
+                                    echo 'there is no data to be shown';
+                                } else {
+                                    $rowid = 1;
+                                    while ($row = mysqli_fetch_assoc($result)) { ?>
+                                        <form method="POST">
+                                            <tr>
+                                                <td><?php echo $rowid; ?></td>
+                                                <td><input type='text' value="<?php echo $row['fullname'] ?>" name='fullname' /></td>
+                                                <input type='hidden' value="<?php echo $row['userid'] ?>" name='userid' />
+                                                <td><input type='text' value="<?php echo $row['email'] ?>" name='email' /></td>
+                                                <td><input type='text' value="<?php echo $row['role'] ?>" name='role' /></td>
+                                                <td><input type='text' name='v_status' value="<?php echo $row['verified_status'] == '1' ? 'Yes' : 'No'; ?>" /> <?php echo getsubscriptioninfo($row['userid'], 'subplan', $connection) == "one-time-purches" ? "<i class='bi bi-check' style='font-size:18px;'></i>" :(getsubscriptioninfo($row['userid'], 'subplan', $connection) == "free" ? "<i class='bi bi-dash-square' style='font-size:18px;'></i>":"<i class='bi bi-send' style='font-size:18px;'></i>"); ?> </td>
+                                                <td><a href="viewusers.php?details=<?= base64_encode($row['userid']) ?>" class='btn btn-secondary btn-sm fw-bold  m-2'>Details</a><button class='btn btn-primary btn-sm fw-bold ' name='update'>Update Info</button>
+                                                    <a href="viewusers.php?changepwd=<?= base64_encode($row['userid']) ?>" class='btn btn-warning btn-sm text-black fw-bold'>Changepwd</a>
+                                                    <a href="viewusers.php?managesubscription=<?= base64_encode($row['userid']) ?>" class='btn btn-info btn-sm text-black fw-bold'>Manage_Sub</a>
+                                                    <a href="viewusers.php?userid=<?php echo $row['userid'] ?>" class='btn btn-danger btn-sm fw-bold m-2'>Delete</a>
+                                                </td>
+                                            </tr>
+                                        </form>
+                                <?php $rowid++;
+                                    }
+                                }
+                                ?>
+                                <!-- Singl User Details Form-->
+                                <?php if (isset($_GET['details'])) {
+                                    $userid = base64_decode($_GET['details']);
+                                ?>
+                                    <div class="modal" style="display:block;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title " id="exampleModalLabel" style='font-size:16px !important;'>Singl User Details</h1>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <?php $displaysingleuserdetails =  singleuserdetails($userid, $connection);
+
+                                                    foreach ($displaysingleuserdetails as $singleuserdata) { ?>
+
+                                                        <p>UserID : <?= $singleuserdata['userid'] ?></p>
+                                                        <p>Fullname : <?= $singleuserdata['fullname'] ?></p>
+                                                        <p>UserEmail: <?= $singleuserdata['email'] ?></p>
+                                                        <p>UserRole: <?= ucwords($singleuserdata['role']) ?></p>
+                                                        <p>User_Verified: <?= $singleuserdata['verified_status'] == '1' ? "<span class='text-success fw-bold'>Yes</span>" : "<span class='text-danger fw-bold'>No</span>" ?></p>
+                                                        <p>Subscription Status: <?= getsubscriptioninfo($userid, 'subsatus', $connection) == 'active' ? "<span class='text-success fw-bold'>Active</span>" :(getsubscriptioninfo($userid, 'subsatus', $connection) == 'expire' ?"<span class='text-danger fw-bold'>Expire</span>" :"<span class='text-primary fw-bold'>Pending</span>") ?></p>
+                                                        <p>Subscriptin_Started_Date: <?= date('M-j-Y ', strtotime(getsubscriptioninfo($userid, 'date', $connection))) ?></p>
+                                                        <p>Subscriptin_Expire_Date: <?= date('M-j-Y ', strtotime(getsubscriptioninfo($userid, 'expire_date', $connection))) ?></p>
+                                                        <p>Subscription_Days_Left : <?= getsubscriptioninfo($userid, 'subamount', $connection) . ' Days' ?></p>
+                                                        <p>Subscription_Plan : <?= getsubscriptioninfo($userid, 'subplan', $connection) ?></p>
+
+                                                    <?php } ?>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewusers.php'>Close</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php } ?>
+                                <!-- Singl User Details Form ends here-->
+
+
+                                <!-- Change User Password Form-->
+                                <?php if (isset($_GET['changepwd'])) {
+                                    $userid = $_GET['changepwd'];
+                                ?>
+                                    <div class='modal' style="display:block;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title " id="exampleModalLabel" style='font-size:16px !important;'>Change User Password</h1>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <form method="POST" action="slices/changeuserpwd.php">
+                                                        <div class="form-group">
+                                                            <label for="changepwd" class='form-label'>ChangePassword</label>
+                                                            <input type="password" class="form-control" id="changepwd" name='changepwd' placeholder='Enter Password'>
+                                                            <input type="hidden" class="form-control" name='userid' value="<?= $userid; ?>">
+                                                        </div>
+                                                        <div class='mt-2'>
+                                                            <button class='btn btn-primary btn-sm fw-bold' name='changepwdbtn'>Submit</button>
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewusers.php'>Close</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php } ?>
+
+                                <!-- Change User Password Form Ends Here-->
+
+
+                                <!-- Change Subscription Form : change pro user subscription status(expire) and subamount(0) -->
+                                <?php if (isset($_GET['managesubscription'])) {
+                                    $userid = $_GET['managesubscription'];
+                                ?>
+                                    <div class='modal' style="display:block;">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title " id="exampleModalLabel" style='font-size:16px !important;'>Manage Subscription</h1>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <form method="POST" action="slices/managesubscription.php">
+                                                        <div class="form-group">
+                                                            <label for="substatus" class='form-label'>Change Subscription Status</label>
+                                                            <select class="form-control" id="substatus" name='substatus'>
+                                                                <option value="expire">Expire</option>
+                                                                <option value="active">Active</option>
+                                                                <option value="one-time-purches">Life Time Access</option>
+                                                            </select>
+                                                            <input type="hidden" class="form-control" name='userid' value="<?= $userid; ?>">
+                                                        </div>
+                                                        <div class='mt-2'>
+                                                            <button class='btn btn-primary btn-sm fw-bold' name='submit'>Submit</button>
+                                                        </div>
+
+                                                    </form>
+
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a type="button" class="btn btn-secondary btn-sm fw-bold" href='viewusers.php'>Close</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                <?php } ?>
+
+                                <!-- Change Subscription Form-->
+
+
+
+                            </table>
+                        </div>
                     </div>
-                    
+
                 </div>
 
                 <!-- More Content Here -->
@@ -189,19 +382,20 @@ if(isset($_GET['userid'])){
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>    
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
 
     <script>
         // JavaScript to handle the sidebar close button functionality
         var closebtn = document.getElementById('closeSidebar');
-       
-       closebtn.addEventListener('click', function() {
+
+        closebtn.addEventListener('click', function() {
             var sidebar = new bootstrap.Collapse(document.getElementById('sidebar'), {
-                
+
                 toggle: true,
-            });  
+            });
         });
     </script>
 </body>
+
 </html>

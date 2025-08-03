@@ -16,11 +16,19 @@ if(isset($_GET['docname'])){
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" rel="stylesheet">
-   
+   <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3YW2V2C317"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3YW2V2C317');
+</script>
 </head>
 <body>
 
-<iframe src="http://localhost:4000/views/teacher/uploads/<?= $filename?>" width="100%" height="900"></iframe>
+<iframe src="https://teachlabs.unaux.com/views/teacher/uploads/<?= $filename?>" width="100%" height="900"></iframe>
 <!-- <embed src="" width="800px" height="2100px" /> -->
 </body>
 </html>

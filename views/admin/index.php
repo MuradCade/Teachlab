@@ -25,7 +25,7 @@ function totalusers($connection){
         
     } 
 }
-//total number of students
+//total Number of students
 function totalstudents($connection){
     $sql = "select * from students";
     $result = mysqli_query($connection,$sql);
@@ -52,6 +52,47 @@ function totalassignment($connection){
     } 
 }
 
+
+//totalaquiz
+function totalquiz($connection){
+    $sql = "select * from quizform";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+       $row = mysqli_num_rows($result);
+       
+
+            return $row;
+       
+        
+    } 
+}
+
+function totalexam($connection){
+    $sql = "select * from examform";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+       $row = mysqli_num_rows($result);
+       
+
+            return $row;
+       
+        
+    } 
+}
+
+
+function totalcourses($connection){
+    $sql = "select * from course";
+    $result = mysqli_query($connection,$sql);
+    if($result){
+       $row = mysqli_num_rows($result);
+       
+
+            return $row;
+       
+        
+    } 
+}
 ?>
 
 <!DOCTYPE html>
@@ -129,7 +170,15 @@ function totalassignment($connection){
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
                         <div class="card  text-white" style='background-color:#f8f9fa !important;'>
                         <div class="card-body text-black">
-                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total number of Students</h5>
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Number Courses</h5>
+                                <p class="card-text"><?php echo totalcourses($connection) ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <div class="card  text-white" style='background-color:#f8f9fa !important;'>
+                        <div class="card-body text-black">
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Number of Students</h5>
                                 <p class="card-text"><?php echo totalstudents($connection) ?></p>
                             </div>
                         </div>
@@ -137,8 +186,24 @@ function totalassignment($connection){
                     <div class="col-12 col-md-6 col-xl-3 mb-4">
                         <div class="card  text-dark" style='background-color:#f8f9fa !important;'>
                         <div class="card-body text-black">
-                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Number     Assignment Form</h5>
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Number Assignment Form</h5>
                                 <p class="card-text"><?php echo totalassignment($connection)?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <div class="card  text-dark" style='background-color:#f8f9fa !important;'>
+                        <div class="card-body text-black">
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Number Quiz Form</h5>
+                                <p class="card-text"><?php echo totalquiz($connection)?></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6 col-xl-3 mb-4">
+                        <div class="card  text-dark" style='background-color:#f8f9fa !important;'>
+                        <div class="card-body text-black">
+                                <h5 class="card-title fw-bold" style='font-size:15px;'>Total Number Exam Form</h5>
+                                <p class="card-text"><?php echo totalexam($connection)?></p>
                             </div>
                         </div>
                     </div>
