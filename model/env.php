@@ -9,7 +9,7 @@ define('HOSTNAME', 'localhost');
 define('USER_NAME', 'root');
 define('PASSWORD', '');
 define('DATABASE_NAME', 'teachlabs');
-define('EMAIL_GOGLE_APP_SECRET_KEY', 'patzicckblvhimbp');
+define('EMAIL_GOGLE_APP_SECRET_KEY', '');
 define('EMAIL', 'teachlabinc@gmail.com');
 // // software configuration
 // define('SOFTWARE_NAME', 'TeachLab');
