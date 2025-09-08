@@ -1,0 +1,15 @@
+#RewriteEngine On
+
+# If the request is for an existing file or directory, serve it directly
+#RewriteCond %{REQUEST_FILENAME} -f [OR]
+#RewriteCond %{REQUEST_FILENAME} -d
+#RewriteRule ^ - [L]
+
+# Otherwise, route it to index.php
+#RewriteRule ^ index.php [QSA,L]
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
+
+

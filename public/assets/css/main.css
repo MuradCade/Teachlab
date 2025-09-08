@@ -1,0 +1,29 @@
+body {
+    font-family: "Inter", sans-serif !important;
+    font-optical-sizing: auto;
+    background-color: #f8f9fa !important;
+}
+.input-text-sm{
+    font-size: 14.1px !important;
+}
+
+.label-text-sm{
+    font-size: 14px !important;
+}
+
+.links{
+  color: #578ecf !important;
+    text-decoration:none !important;
+    font-size:12.5px;
+    font-weight: 500 !important;
+}
+.links2{
+    color: #578ecf !important;
+    text-decoration:none !important;
+    font-size:12.5px;
+    font-weight: 600 !important;
+}
+
+.font-bold{
+    font-weight: 700;
+}

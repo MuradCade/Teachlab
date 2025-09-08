@@ -1,0 +1,5 @@
+{
+    "editor.renderLineHighlight": "none",
+    "editor.renderLineHighlightOnlyWhenFocus": false,
+    "workbench.editor.decorations.colors": true
+}

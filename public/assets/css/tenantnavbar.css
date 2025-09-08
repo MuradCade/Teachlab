@@ -1,0 +1,62 @@
+
+
+        #mainNavbar{
+            background-color: #f8f9fa !important;
+            box-shadow: none !important;
+           
+
+        }
+        #mainNavbar.navbar-scrolled {
+            background-color: #fff !important;
+            /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; */
+        }
+
+        .navbar-brand span {
+            line-height: 1;
+        }
+
+        .nav-link.active{
+                        color:#5b8dca !important;
+
+        }
+        .nav-link {
+            color: #0f0000 !important;
+            font-weight: 560 !important;
+            font-size: 14.8px !important;
+            gap:0px;    
+
+        }
+
+        /* .nav-item  > a{
+                 font-size:14.6px !important;
+                 font-weight: 500 !important;
+
+
+
+        } */
+        .nav-link:hover{
+            color:#5b8dca !important;
+        }
+        #right-section a{
+                        box-shadow: none !important;
+                        border: none !important;
+
+        }
+
+        .btn-navbar{
+            background-color: #578ecf !important;
+            text-decoration: capitalize !important;
+        }
+
+        .form-btn{
+              background-color: #578ecf !important;
+            text-transform: capitalize !important;
+        }
+
+
+        /* bage =  is the number with the cart */
+    .badge-notification{
+        background-color: #e4e4e7 !important;
+        color: #535354 !important;
+    }
+        /*  */
