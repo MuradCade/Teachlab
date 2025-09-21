@@ -20,7 +20,7 @@ class UserSubscription extends Model
         'sub_status',
         'sub_start_date',
         'sub_expire_date',
-        'is_used',
+        'is_used'
     ];
 
     // Relationships

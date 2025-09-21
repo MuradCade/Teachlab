@@ -6,5 +6,6 @@ class RoleEnum
 {
     public const admin = 'admin';
     public const teacher = 'teacher';
-    public const student = 'student';
+    // public const student = 'student';
+    public const university = 'university';
 }

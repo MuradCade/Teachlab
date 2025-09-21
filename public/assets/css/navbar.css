@@ -16,12 +16,13 @@
         }
 
         .nav-link.active{
-                        color:#5b8dca !important;
+                        color:#10b981 !important;
+                        font-weight: 600 !important;
 
         }
         .nav-link {
             color: #0f0000 !important;
-            gap:0px;
+            gap:1px;
 
         }
 
@@ -34,28 +35,22 @@
 
         }
         .nav-link:hover{
-            color:#5b8dca !important;
+            color:#10b981 !important;
         }
         #right-section a{
                         box-shadow: none !important;
                         border: none !important;
 
         }
-
+/* 
         .btn-navbar{
             background-color: #578ecf !important;
             text-decoration: capitalize !important;
+        } */
+
+        
+        .btn-login{
+            background-color: #10b981 !important;
+            font-size: 15px !important;
         }
 
-        .form-btn{
-              background-color: #578ecf !important;
-            text-transform: capitalize !important;
-        }
-
-
-        /* bage =  is the number with the cart */
-    .badge-notification{
-        background-color: #e4e4e7 !important;
-        color: #535354 !important;
-    }
-        /*  */

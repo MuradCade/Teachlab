@@ -1,0 +1,20 @@
+body {
+    padding-top: 70px;
+    font-family: "Inter", sans-serif !important;
+    font-optical-sizing: auto;
+    background-color: #f8f9fa !important;
+}
+.font-medium{
+    font-size: 16px !important;
+    font-weight: 500;
+}
+.lable-style{
+    font-size:15px !important;
+    color:black !important;
+}
+.place-holder{
+    font-size:15px !important;
+}
+.btn-text{
+    font-size:14px !important;
+}

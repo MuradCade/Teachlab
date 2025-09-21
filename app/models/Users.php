@@ -14,12 +14,13 @@ class Users extends Model
 
 
     protected $fillable = [
+        'userid',
         'fullname',
         'email',
         'password',
         'role',
         'rememberme_token',
-        'is_verfied',
+        'is_verfied'
     ];
 
     // Relationships

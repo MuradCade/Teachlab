@@ -15,8 +15,8 @@ class UserLog extends Model
 
     protected $fillable = [
         'userid',
-        'activity_type',
-        'date',
+        'activity_type'
+        // 'date', this is timestamp
     ];
 
     // Relationships

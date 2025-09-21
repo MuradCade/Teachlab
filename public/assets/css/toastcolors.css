@@ -1,0 +1,34 @@
+/* Toasts Colors */
+
+
+/* Success (light green) */
+.bg-success-light {
+  background-color: #d4edda !important; /* light green */
+  color: #155724 !important;  
+  font-size:14.5px !important;
+  font-weight: 600 !important;          /* dark green text */
+}
+
+/* Danger (light red) */
+.bg-danger-light {
+  background-color: #f8d7da !important; /* light red */
+  color: #721c24 !important; 
+  font-size:14.5px !important;
+  font-weight: 600 !important;           /* dark red text */
+}
+
+/* Info (light blue) */
+.bg-info-light {
+  background-color: #d1ecf1 !important; /* light blue */
+  color: #0c5460 !important;  
+  font-size:14.5px !important;
+  font-weight: 600 !important;          /* dark blue text */
+}
+
+/* Warning (light yellow) */
+.bg-warning-lights {
+  background-color: #fff3cd !important; /* light yellow */
+  color: #856404 !important; 
+  font-size:14.5px !important;
+  font-weight: 600 !important;           /* dark yellow text */
+}

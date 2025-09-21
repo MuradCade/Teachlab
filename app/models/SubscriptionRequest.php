@@ -21,7 +21,7 @@ class SubscriptionRequest extends Model
         'payment_method',
         'sub_amount',
         'started_date',
-        'sub_status',
+        'sub_status'
     ];
 
     // Relationships
