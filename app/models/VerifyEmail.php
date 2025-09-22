@@ -10,14 +10,14 @@ class VerifyEmail extends Model
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $keyType = 'int';
-    public $timestamps = false;
+    public $timestamps = true;
 
 
     protected $fillable = [
-        'token',
         'userid',
+        'token',
         'is_used',
-        'date',
+        // 'date', this attribute is automatically managed by database (its timestamp)
     ];
 
     // Relationships

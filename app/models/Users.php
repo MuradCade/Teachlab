@@ -8,9 +8,9 @@ class Users extends Model
 {
     protected $table = 'users';
     protected $primaryKey = 'userid';
-    public $incrementing = true;
+    public $incrementing = false;
     protected $keyType = 'int';
-    public $timestamps = false;
+    public $timestamps = true;
 
 
     protected $fillable = [

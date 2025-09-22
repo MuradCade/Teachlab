@@ -41,24 +41,40 @@
                         <p class='small text-capitalize'>
                             welcome to teachlab,teachlab helps educator to handle everything related to student
                         </p>
-                        
-                        {{ toast.warningToast('Something went wrong!')|raw }}
-              
+                        {%if errors %}
 
-                        <form>
+                      {% if errors['csrf_token']%}
+                            {{ toast.dangerToast(errors['csrf_token'])|raw }}
+                        {%endif%}
+
+                      {% if errors['fullname']%}
+                            {{ toast.dangerToast(errors['fullname'])|raw }}
+                        {%endif%}
+
+                        {% if errors['email']%}
+                            {{ toast.dangerToast(errors['email'])|raw }}
+                        {%endif%}
+
+                        {% if errors['password']%}
+                            {{ toast.dangerToast(errors['password'])|raw}}
+                        {%endif%}
+                        {%endif%}
+                        
+                        <form action="{{url_for('page.hanldeaccountcreation')}}"method='POST'>
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <div class="form-group">
-                                <label class='form-label lable-style'>Fullname</label>
-                                <input type="text" class='form-control place-holder' placeholder='Enter Fullname'>
+                                <label class='form-label lable-style' for='fullname'>Fullname</label>
+                                <input type="text" class='form-control place-holder' id='fullname' name='fullname' placeholder='Enter Fullname' value="{{ old.fullname ?? '' }}"">
                             </div>
                             <div class="form-group mt-2">
-                                <label class='form-label lable-style'>Email</label>
-                                <input type="email" class='form-control place-holder' placeholder='Enter Email'>
+                                <label class='form-label lable-style' for='email'>Email</label>
+                                <input type="email" class='form-control place-holder' id='email' name='email' placeholder='Enter Email' value="{{ old.email ?? '' }}">
                             </div>
                             <div class="form-group mt-2">
-                                <label class='form-label lable-style'>Password</label>
-                                <input type="email" class='form-control place-holder' placeholder='Enter Password'>
+                                <label class='form-label lable-style' for='password'>Password</label>
+                                <input type="password" class='form-control place-holder' id='password' name='password' placeholder='Enter Password'>
                             </div>
-                            <button class='btn btn-primary btn-sm fw-bold text-white shadow-0 text-capitalize mt-2 btn-text'>Submit</button>
+                            <button class='btn btn-primary btn-sm fw-bold text-white shadow-0 text-capitalize mt-3 btn-text'>Submit</button>
                         </form>
                     </div>
                 </div>

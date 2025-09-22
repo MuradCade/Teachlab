@@ -12,7 +12,7 @@ class Toast
       “You have 3 login attempts remaining.”
       “Your password will expire soon.”
     */
-    public function warningToast(string $feedback): string
+    public function warningToast(?string $feedback): array|string
     {
         return "<p class='bg-warning-lights p-2 mt-2 mb-2 w-100'>{$feedback}</p>";
     }
@@ -24,7 +24,7 @@ class Toast
         “Login successful. Redirecting…”
         “Password reset email sent successfully.”
     */
-    public function successToast(string $feedback): string
+    public function successToast(?string $feedback): array|string
     {
         return "<p class='bg-success-light p-2 mt-2 mb-2 w-100'>{$feedback}</p>";
     }
@@ -38,7 +38,7 @@ class Toast
         “Your account has been disabled.”
     */
 
-    public function dangerToast(string $feedback): string
+    public function dangerToast(?string $feedback): array|string
     {
         return "<p class='bg-danger-light p-2 mt-2 mb-2 w-100'>{$feedback}</p>";
     }
@@ -50,7 +50,7 @@ class Toast
         “Your session will expire in 10 minutes.”
         “Please verify your email to continue.”
     */
-    public function infoToast(string $feedback): string
+    public function infoToast(?string $feedback): array|string
     {
         return "<p class='bg-info-light p-2 mt-2 mb-2 w-100'>{$feedback}</p>";
     }

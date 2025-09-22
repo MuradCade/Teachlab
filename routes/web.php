@@ -5,12 +5,18 @@ use Psr\Http\Message\ResponseInterface as Response;
 // use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 // use Slim\Views\Twig;
+use App\Middlewares\MaintainanceMode;
+
 
 use Slim\App;
 
 
 
 return function (App $app) {
+
+    // adding undermaintainance middleware globally
+    $app->add(MaintainanceMode::class);
+
 
     $app->get('/', [\App\Controllers\PageController::class, 'indexHome'])
         ->setName('pages.home')->setName('page.index');
@@ -20,4 +26,9 @@ return function (App $app) {
 
     $app->get('/login', [\App\Controllers\PageController::class, 'indexLogin'])
         ->setName('pages.login');
+
+    $app->post('/create_account', [\App\Controllers\PageController::class, 'handleAccountCreation'])
+        ->setName('page.hanldeaccountcreation');
+    $app->get('/congratulations', [\App\Controllers\PageController::class, 'indexcongratspage'])
+        ->setName('page.hanldeaccountcreation');
 };

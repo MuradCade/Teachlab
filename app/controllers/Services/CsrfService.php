@@ -19,17 +19,26 @@ class CsrfService
 
     public function getToken(): string
     {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
         return $_SESSION[$this->tokenKey];
     }
 
     public function generateToken(): string
     {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
         $_SESSION[$this->tokenKey] = bin2hex(random_bytes(32));
         return $_SESSION[$this->tokenKey];
     }
 
     public function verify(?string $token): bool
     {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
         return hash_equals($_SESSION[$this->tokenKey] ?? '', $token ?? '');
     }
 

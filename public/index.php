@@ -30,7 +30,8 @@ $builder = new ContainerBuilder();
 $builder->addDefinitions([
     // load env variables
     'config' => $config,
-    // registering middleware 
+    // registering middleware
+    \App\Middlewares\MaintainanceMode::class => \DI\autowire(\App\Middlewares\MaintainanceMode::class),
     // \App\Middlewares\Tenant\TenantMiddlewareHelper::class => \DI\autowire(\App\Middlewares\Tenant\TenantMiddlewareHelper::class),
     // \App\Middlewares\Tenant\AuthMiddleware::class => \DI\autowire(\App\Middlewares\Tenant\AuthMiddleware::class),
     // \App\Middlewares\Tenant\GuestMiddleware::class => \DI\autowire(\App\Middlewares\Tenant\GuestMiddleware::class),
@@ -56,9 +57,13 @@ $app = AppFactory::create();
 //register session
 $app->add(
     new \Slim\Middleware\Session([
-        'name' => 'multi_tenant',
+        'name' => 'teachlabs',
         'autorefresh' => true,
         'lifetime' => '1 hour',
+        // 'secure' => true,      // only send cookie over HTTPS
+        'httponly' => true,    // prevent JS access
+        'path' => '/',
+        'samesite' => 'Lax'
     ])
 );
 
