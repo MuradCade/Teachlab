@@ -7,6 +7,7 @@ Capsule::schema()->create('mail_queueu', function ($table) {
     $table->text('subject');
     $table->text('body');
     $table->string('username', 255)->nullable();
+    $table->string('useremail', 255)->nullable();
     $table->integer('userid');
     $table->enum('mail_type', ['signup', 'recover_account']);
     $table->enum('mail_status', ['pending', 'processing', 'sent', 'error'])->default('pending');

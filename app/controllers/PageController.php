@@ -151,6 +151,7 @@ class PageController
                 'subject' => 'Email Confrimation',
                 'body' => $mailtemplate,
                 'username' => $fullname,
+                'useremail' => $email,
                 'userid' => $usermodel->userid,
                 'mail_type' => 'signup',
                 'mail_status' => 'pending'

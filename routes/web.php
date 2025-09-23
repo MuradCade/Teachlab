@@ -6,8 +6,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 // use Slim\Views\Twig;
 use App\Middlewares\MaintainanceMode;
-
-
+use App\Config\Logger;
+use App\Controllers\Services\PHPMAILService;
 use Slim\App;
 
 
@@ -31,4 +31,21 @@ return function (App $app) {
         ->setName('page.hanldeaccountcreation');
     $app->get('/congratulations', [\App\Controllers\PageController::class, 'indexcongratspage'])
         ->setName('page.hanldeaccountcreation');
+
+
+    // test mailer
+    // $app->get('/test-mailer', [\App\Controllers\MailSender::class, 'sendTestEmail']);
+    $app->get('/send-mailinqueue', function ($request, $response) use ($app) {
+        $container = $app->getContainer();
+        $logger = new Logger();
+        $email = new PHPMAILService($container, $logger);
+
+        $results = $email->sendmail();
+
+        $response->getBody()->write(json_encode([
+            'status' => 'email job processed',
+            // 'results' => $results
+        ]));
+        return $response->withHeader('Content-Type', 'application/json');
+    });
 };

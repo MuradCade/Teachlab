@@ -19,7 +19,9 @@
         "illuminate/database": "^12.20",
         "phpmailer/phpmailer": "^6.10",
         "bryanjhv/slim-session": "~4.0",
-          "illuminate/pagination": "^12.24"
+          "illuminate/pagination": "^12.24",
+          "symfony/mailer": "^7.3",
+          "symfony/mime": "^7.3"
     },
      "autoload": {
         "psr-4": {

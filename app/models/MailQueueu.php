@@ -17,10 +17,11 @@ class MailQueueu extends Model
         'subject',
         'body',
         'username',
+        'useremail',
         'userid',
         'mail_type',
         'mail_status',
-        'mail_error',
+        'mail_error'
     ];
 
     // Relationships

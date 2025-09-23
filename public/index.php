@@ -12,6 +12,12 @@ use Twig\Extension\DebugExtension;
 use Slim\Psr7\Response;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Slim\Psr7\Factory\ResponseFactory;
+// mailtrap namespaces
+use Symfony\Component\Mailer\Mailer;
+use Symfony\Component\Mailer\Transport;
+use App\Controllers\Services\MailerService;
+use Symfony\Component\Mailer\MailerInterface;
+
 //laravel debugger
 use function Symfony\Component\VarDumper\dump;
 
@@ -41,9 +47,34 @@ $builder->addDefinitions([
     ResponseFactoryInterface::class => autowire(ResponseFactory::class),
 
 
+
+
+    // Mailtrap Mailer binding
+    MailerInterface::class => function ($c) {
+        $mailtrap = $c->get('config')['MAIL']['MAILTRAP'];
+
+        $dsn = sprintf(
+            'smtp://%s:%s@%s:%s',
+            $mailtrap['USERNAME'],
+            $mailtrap['PASSWORD'],
+            $mailtrap['HOST'],
+            $mailtrap['PORT']
+        );
+
+        // Fully qualified class
+        return new \Symfony\Component\Mailer\Mailer(
+            \Symfony\Component\Mailer\Transport::fromDsn($dsn)
+        );
+    },
+
+    // Your service autowire
+    MailerService::class => \DI\autowire(MailerService::class),
+
+
 ]);
 
 $container = $builder->build();
+
 
 // Register elequent orm
 Eloquent::setup($container->get('config'));
