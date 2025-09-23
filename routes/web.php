@@ -35,17 +35,21 @@ return function (App $app) {
 
     // test mailer
     // $app->get('/test-mailer', [\App\Controllers\MailSender::class, 'sendTestEmail']);
+
     $app->get('/send-mailinqueue', function ($request, $response) use ($app) {
         $container = $app->getContainer();
         $logger = new Logger();
         $email = new PHPMAILService($container, $logger);
 
-        $results = $email->sendmail();
+        $email->sendmail();
 
         $response->getBody()->write(json_encode([
-            'status' => 'email job processed',
-            // 'results' => $results
+            'status' => 'email job processed'
         ]));
         return $response->withHeader('Content-Type', 'application/json');
     });
+
+
+
+    $app->get('/emal_confirmation', [\App\Controllers\PageController::class, 'Verifyemail']);
 };

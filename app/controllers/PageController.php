@@ -14,7 +14,7 @@ use App\Models\Users;
 use App\Controllers\Services\RoleEnum;
 use App\Controllers\Services\GenerateUuid;
 use App\Controllers\Services\Mailtemplate;
-use App\Models\MailQueueu;
+use App\Models\VerifyEmail;
 
 class PageController
 {
@@ -170,5 +170,49 @@ class PageController
     public function indexcongratspage(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         return $this->view->render($response, 'pages/congrats.twig');
+    }
+
+    // email confirmation 
+    public function Verifyemail(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        $queryParams = $request->getQueryParams();
+        $emailToken = $queryParams['email_token'] ?? null;
+
+        // No token provided
+        if (!$emailToken) {
+            return $this->view->render($response->withStatus(400), 'pages/verifyemail.twig', [
+                'error' => 'Email token is missing.'
+            ]);
+        }
+
+        // Find token that is not used
+        $token_exist = VerifyEmail::where('token', $emailToken)
+            ->where('is_used', 0)
+            ->first();
+
+        // Token not found or already used
+        if (!$token_exist) {
+            return $this->view->render($response, 'pages/verifyemail.twig', [
+                'error' => 'Token is invalid or already used.'
+            ]);
+        }
+
+        // Mark token as used
+        $token_exist->token = null; // get rid of the token when email confirmation is completed
+        $token_exist->is_used = 1;
+        $token_exist->save();
+
+        // Update the user who owns this token
+        $user = $token_exist->user(); // belongsTo relationship
+        if ($user) {
+            $user->update([
+                'is_verified' => 1
+            ]);
+        }
+
+        // Success response
+        return $this->view->render($response, 'pages/verifyemail.twig', [
+            'success' => 'Your email has been successfully confirmed. You may now log in.'
+        ]);
     }
 }

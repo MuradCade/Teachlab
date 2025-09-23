@@ -9,6 +9,6 @@ Capsule::schema()->create('users', function ($table) {
     $table->text('password');
     $table->enum('role', ['teacher', 'university', 'admin']);
     $table->text('rememberme_token')->nullable();
-    $table->smallInteger('is_verfied')->default(0);
+    $table->smallInteger('is_verified')->default(0);
     $table->timestamps();
 });
