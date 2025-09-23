@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/assets/css/main.css">
     <link rel="stylesheet" href="/assets/css/allmin.css">
     <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="shortcut icon" href="/assets/img/favicon.jpg" type="image/x-icon">
 
     
     <!-- Chart.js -->
@@ -18,51 +19,13 @@
       </style>
 </head>
 <body>
+
     <!-- Added sidebar overlay for mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="p-3">
-            <h4 class="navbar-brand">
-                <img src="/assets/img/logo.png" alt="teachlab logo" width='140' >
-            </h4>
-        </div>
-        
-        <nav class="nav flex-column gap-0">
-            <a class="nav-link font-md active" href="#">
-                <i class="fas fa-th-large me-2"></i> Dashboard
-            </a>
-            <a class="nav-link font-md" href="#">
-                <i class="fas fa-book me-2"></i> Courses
-            </a>
-            <a class="nav-link font-md" href="#">
-                <i class="fas fa-users me-2"></i> Students
-            </a>
-            <a class="nav-link font-md" href="#">
-                <i class="fas fa-calendar-check me-2"></i> Attendance
-            </a>
-            <a class="nav-link font-md" href="#">
-                <i class="fas fa-tasks me-2"></i> Assignments
-            </a>
-            <a class="nav-link font-md" href="#">
-                <i class="fas fa-question-circle me-2"></i> Quizzes
-            </a>
-            <a class="nav-link font-md" href="#">
-                <i class="fas fa-file-alt me-2"></i> Exams
-            </a>
-        </nav>
-        
-        <!-- Upgrade Card -->
-        <div class="upgrade-card p-3  mt-2" style='position:relative; right:2px;'>
-            <div class="d-flex align-items-center mb-2">
-                <i class="fas fa-crown me-2"></i>
-                <strong>Upgrade to Pro</strong>
-            </div>
-            <p class="small mb-3">Unlock advanced features and analytics</p>
-            <button class="btn btn-light btn-sm w-100">Upgrade Now</button>
-        </div>
-    </div>
+   {%include 'teacher/templates/sidebar.twig'%}
+
 
     <!-- Main Content -->
     <div class="main-content">
@@ -73,82 +36,8 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <div class="d-flex align-items-center ms-auto">
-                    <!-- Added notification dropdown -->
-                    <div class="dropdown me-3">
-                        <button class="btn btn-link position-relative p-0" type="button" id="notificationDropdown" data-mdb-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-bell text-muted" style="font-size: 20px;"></i>
-                            <span class="notification-badge">3</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 300px;">
-                            <li><h6 class="dropdown-header">Notifications</h6></li>
-                            <li><a class="dropdown-item" href="#">
-                                <div class="d-flex align-items-start">
-                                    <div class="me-3">
-                                        <i class="fas fa-user-plus text-success"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-bold">New Student Enrolled</div>
-                                        <small class="text-muted">John Doe joined Computer Science 101</small>
-                                        <div class="text-muted small">2 minutes ago</div>
-                                    </div>
-                                </div>
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">
-                                <div class="d-flex align-items-start">
-                                    <div class="me-3">
-                                        <i class="fas fa-tasks text-warning"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-bold">Assignment Due Soon</div>
-                                        <small class="text-muted">Math Assignment due in 2 hours</small>
-                                        <div class="text-muted small">1 hour ago</div>
-                                    </div>
-                                </div>
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">
-                                <div class="d-flex align-items-start">
-                                    <div class="me-3">
-                                        <i class="fas fa-chart-line text-info"></i>
-                                    </div>
-                                    <div>
-                                        <div class="fw-bold">Weekly Report Ready</div>
-                                        <small class="text-muted">Your attendance report is available</small>
-                                        <div class="text-muted small">3 hours ago</div>
-                                    </div>
-                                </div>
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-center" href="#">View All Notifications</a></li>
-                        </ul>
-                    </div>
-                    
-                    <!-- Added user profile dropdown -->
-                    <div class="dropdown">
-                        <button class="btn btn-link d-flex align-items-center p-0 text-decoration-none" type="button" id="userDropdown" data-mdb-toggle="dropdown" aria-expanded="false">
-                            <div class="profile-avatar me-2">DS</div>
-                            <div class="text-start">
-                                <div class="fw-bold text-dark">Dr. Smith</div>
-                                <small class="text-muted">Computer Science</small>
-                            </div>
-                            <i class="fas fa-chevron-down ms-2 text-muted"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><h6 class="dropdown-header">Dr. Smith</h6></li>
-                            <li><a class="dropdown-item" href="#">
-                                <i class="fas fa-user me-2"></i>Profile
-                            </a></li>
-                            <li><a class="dropdown-item" href="#">
-                                <i class="fas fa-cog me-2"></i>Settings
-                            </a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#">
-                                <i class="fas fa-sign-out-alt me-2"></i>Sign Out
-                            </a></li>
-                        </ul>
-                    </div>
+                      {%include 'teacher/templates/topbar.twig'%}
+
                 </div>
             </div>
         </nav>
@@ -322,7 +211,7 @@
     </div>
 
     <!-- MDB Bootstrap JS -->
-    <script src="/assets/js/mdb.js"></script>
+    <script src="/assets/js/mdb.min.js"></script>
     
     <script>
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');

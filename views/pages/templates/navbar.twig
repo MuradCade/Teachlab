@@ -24,7 +24,7 @@
       <!-- Center nav links -->
       <ul class="navbar-nav mb-2 mb-lg-0 mx-auto ">
         <li class="nav-item">
-          <a class="nav-link px-1 {{currentpage == 'home'? 'active':''}}" href="{{url_for('page.index')}}">Home</a>
+          <a class="nav-link px-1 {{currentpage == 'home'? 'active':''}}" href="{{url_for('home.index')}}">Home</a>
         </li>
         <li class="nav-item px-1">
           <a class="nav-link " href="#">Features</a>
@@ -36,14 +36,14 @@
           <a class="nav-link" href="#">Demo</a>
         </li>
         <li class="nav-item px-1">
-          <a class="nav-link {{currentpage == 'login'? 'active':''}}" href="{{url_for('pages.login')}}">Login</a>
+          <a class="nav-link {{currentpage == 'login'? 'active':''}}" href="{{url_for('auth.login')}}">Login</a>
         </li>
       </ul>
       
 
       <!-- Cart + Login -->
     <div class="d-flex align-items-center mt-2 mb-lg-0 mb-2 mt-lg-0" id="right-section">
-        <a href="{{url_for('pages.createaccount')}}" class="btn btn-primary  btn-login fw-bold text-capitalize shadow-0 btn-navbar">Create Account</a>
+        <a href="{{url_for('auth.register')}}" class="btn btn-primary  btn-login fw-bold text-capitalize shadow-0 btn-navbar">Create Account</a>
       </div> 
     </div>
   </div>

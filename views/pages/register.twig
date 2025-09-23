@@ -60,7 +60,7 @@
                         {%endif%}
                         {%endif%}
                         
-                        <form action="{{url_for('page.hanldeaccountcreation')}}"method='POST'>
+                        <form action="{{url_for('auth.register.submit')}}"method='POST'>
                             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
                             <div class="form-group">
                                 <label class='form-label lable-style' for='fullname'>Fullname</label>

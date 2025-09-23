@@ -15,19 +15,25 @@ use App\Controllers\Services\RoleEnum;
 use App\Controllers\Services\GenerateUuid;
 use App\Controllers\Services\Mailtemplate;
 use App\Models\VerifyEmail;
+use App\Controllers\Services\SessionHandler;
+use App\Config\Rememberme;
 
 class PageController
 {
     protected Twig $view;
     protected CsrfService $csrf;
     protected ContainerInterface $container;
+    protected SessionHandler $sessionhandler;
+    protected Rememberme $rememberme;
 
 
-    public function __construct(CsrfService $csrf, Twig $view, ContainerInterface $container)
+    public function __construct(CsrfService $csrf, Twig $view, ContainerInterface $container, SessionHandler $sessionhandler, Rememberme $rememberme)
     {
         $this->csrf = $csrf;
         $this->view = $view;
         $this->container = $container;
+        $this->sessionhandler = $sessionhandler;
+        $this->rememberme = $rememberme;
     }
 
     // homepage
@@ -49,8 +55,11 @@ class PageController
     // login page
     public function indexLogin(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
+
+        $toast = new Toast();
+        $token = $this->csrf->generateToken();
         $current_page = 'login';
-        return $this->view->render($response, 'pages/login.twig', ['currentpage' => $current_page]);
+        return $this->view->render($response, 'pages/login.twig', ['currentpage' => $current_page, 'toast' => $toast, 'csrf_token' => $token]);
     }
 
 
@@ -78,9 +87,9 @@ class PageController
         if (!$this->csrf->verify($csrf_token)) {
             $errors['csrf_token'] = 'Invalid CSRF token. Please try again.';
         } else if (empty($fullname)) {
-            $errors['fullname'] = 'Fullname Feild is required';
+            $errors['fullname'] = 'Fullname Field is required';
         } else if (empty($email)) {
-            $errors['email'] = 'Email Feild is required';
+            $errors['email'] = 'Email Field is required';
         }
         //check if email already exists in database
         else if ($email_exist) {
@@ -88,7 +97,7 @@ class PageController
         } else if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             $errors['email'] = 'Please enter a valid email address';
         } else if (empty($password)) {
-            $errors['password'] = 'Password Feild is required';
+            $errors['password'] = 'Password Field is required';
         }
         // check if password is is less then 6 character and it should containt uppercase, lowercase, number, and symbol
         else if (
@@ -172,7 +181,7 @@ class PageController
         return $this->view->render($response, 'pages/congrats.twig');
     }
 
-    // email confirmation 
+    // this method handles email verification 
     public function Verifyemail(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
@@ -214,5 +223,57 @@ class PageController
         return $this->view->render($response, 'pages/verifyemail.twig', [
             'success' => 'Your email has been successfully confirmed. You may now log in.'
         ]);
+    }
+
+    // handle users authentication
+    public function handleLogin(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        $current_page = 'login';
+        $errors = [];
+        $toast = new Toast();
+        $data = $request->getParsedBody();
+        $remembermeinput = isset($data['rememberme']);
+        $csrf_token = trim($data['csrf_token']);
+        $email = trim($data['email']);
+        $password = trim($data['password']);
+
+        $useremail_exist = Users::where('email', $email)->first();
+
+        // validate input fields
+        if (!$this->csrf->verify($csrf_token)) {
+            $errors['csrf_token'] = 'Invalid CSRF token. Please try again.';
+        } else if (empty($email)) {
+            $errors['email'] = 'Email Field is required';
+        } else if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+            $errors['email'] = 'Please enter a valid email address';
+        } else if (empty($useremail_exist)) {
+            $errors['email'] = 'Specified Email not found';
+        } else if (empty($password)) {
+            $errors['email'] = 'Password Field is required';
+        }
+
+        if (!empty($errors)) {
+            $token = $this->csrf->getToken();
+
+            return $this->view->render($response, 'pages/login.twig', ['currentpage' => $current_page, 'toast' => $toast, 'errors' => $errors, 'old' => $data, 'csrf_token' => $token]);
+        }
+
+        if (empty($errors)) {
+            $token = $this->csrf->getToken();
+
+            // authentication user
+            if ($useremail_exist['email'] == $email && password_verify($password, $useremail_exist['password'])) {
+
+                $this->sessionhandler->setUserSession($useremail_exist, 'user');
+                if ($remembermeinput) {
+                    $this->rememberme->generateRemembermeToken($useremail_exist['userid']);
+                }
+                return Redirector::redirect_to('/teacher/dashboard');
+            } else {
+                $errors['autherror'] = 'Wrong Email or Password';
+                return $this->view->render($response, 'pages/login.twig', ['currentpage' => $current_page, 'toast' => $toast, 'errors' => $errors, 'old' => $data, 'csrf_token' => $token]);
+            }
+        }
+        return $this->view->render($response, 'pages/login.twig', ['currentpage' => $current_page]);
     }
 }

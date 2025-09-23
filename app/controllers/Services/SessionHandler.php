@@ -19,10 +19,10 @@ class SessionHandler
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
-        $this->session->set("{$rolePrefix}_id", $user->id);
-        $this->session->set("{$rolePrefix}_username", $user->username);
-        $this->session->set("{$rolePrefix}_email", $user->email);
-        $this->session->set("{$rolePrefix}_role", $user->role);
+        $this->session->set("{$rolePrefix}id", $user->userid);
+        $this->session->set("{$rolePrefix}name", $user->fullname);
+        $this->session->set("{$rolePrefix}email", $user->email);
+        $this->session->set("{$rolePrefix}role", $user->role);
     }
 
     // public function addflash($flash, $message)

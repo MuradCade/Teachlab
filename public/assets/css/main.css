@@ -80,6 +80,7 @@ body {
             color: #6c757d !important;
             padding: 12px 20px !important;
             border-radius: 0 !important;
+            font-weight: 500 !important;
         }
         
         .nav-link.active {
@@ -89,7 +90,9 @@ body {
         }
         
         .nav-link:hover {
-            background-color: #f5f5f5 !important;
+        background-color: #e3f2fd !important;
+            color: #1976d2 !important;            /* background-color: #f5f5f5 !important; */
+
         }
         
         .metric-card {
@@ -129,7 +132,7 @@ body {
         }
         
         .upgrade-card {
-            background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+            background: linear-gradient(135deg, #1363e2 0%, #10b981 100%);
             border-radius: 12px;
             color: white;
             margin: 10px;
