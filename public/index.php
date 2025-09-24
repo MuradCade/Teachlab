@@ -179,17 +179,24 @@ $customErrorHandler = function (
     $view = $app->getContainer()->get(Twig::class);
 
     if ($exception instanceof \Slim\Exception\HttpNotFoundException) {
-        $response->getBody()->write('404 - Page Not Found');
+        $response->getBody()->write(
+            $view->fetch('pages/404.twig')
+        );
         return $response->withStatus(404);
     }
 
     if ($exception instanceof \Slim\Exception\HttpMethodNotAllowedException) {
-        $response->getBody()->write('405 - Method Not Allowed');
+        $response->getBody()->write(
+            $view->fetch('pages/405.twig')
+        );
         return $response->withStatus(405);
     }
 
     // Fallback for all other errors
-    $response->getBody()->write('500 - Internal Server Error: ' . $exception->getMessage());
+    $response->getBody()->write(
+        $view->fetch('pages/500.twig', ['error' => $exception->getMessage()])
+    );
+    // $response->getBody()->write('500 - Internal Server Error: ' . );
     return $response->withStatus(500);
 };
 
