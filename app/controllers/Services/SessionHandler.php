@@ -19,6 +19,7 @@ class SessionHandler
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
+        session_regenerate_id(true);
         $this->session->set("{$rolePrefix}id", $user->userid);
         $this->session->set("{$rolePrefix}name", $user->fullname);
         $this->session->set("{$rolePrefix}email", $user->email);
