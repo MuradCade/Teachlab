@@ -76,6 +76,30 @@ return function (App $app) {
         // teacher logout
         $group->get('/logout', [\App\Controllers\Teacher\TeacherController::class, 'logout'])
             ->setName('teacher.logout');
+
+
+        // Course Routes Starts Here.
+
+        $group->get('/course', [\App\Controllers\Teacher\CourseController::class, 'index'])
+            ->setName('teacher.course.index');
+
+        $group->get('/course/createcourse', [\App\Controllers\Teacher\CourseController::class, 'indexcreatecourse'])
+            ->setName('teacher.course.createcourse.index');
+
+        $group->post('/course/createcourse', [\App\Controllers\Teacher\CourseController::class, 'storeCourse'])
+            ->setName('teacher.course.createcourse.submit');
+
+        $group->get('/course/createcourse/edit/{courseid}', [\App\Controllers\Teacher\CourseController::class, 'editCourse'])
+            ->setName('teacher.course.createcourse.course_edit.index');
+
+        $group->post('/course/createcourse/edit/{courseid}/update', [\App\Controllers\Teacher\CourseController::class, 'updateCourse'])
+            ->setName('teacher.course.createcourse.course_edit.update.submit');
+
+
+        $group->get('/course/createcourse/edit/{courseid}/delete', [\App\Controllers\Teacher\CourseController::class, 'deleteCourse'])
+            ->setName('teacher.course.createcourse.course_edit.delete');
+
+        // Course Routes Ends Here.
     })
         ->add(RemembermeMiddleware::class)
         ->add(AuthMiddleware::class);

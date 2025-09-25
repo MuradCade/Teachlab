@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachLab | Teacher - Course Information</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/allmin.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+
+    
+    <!-- Chart.js -->
+    <script src="/assets/js/chart.js"></script>
+      <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+      </style>
+</head>
+<body>
+
+    <!-- Added sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Sidebar -->
+   {%include 'teacher/templates/sidebar.twig'%}
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Made header fixed and added mobile menu toggle -->
+        <nav class="navbar fixed-top-navbar px-4 shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-outline-secondary mobile-menu-toggle me-3" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="d-flex align-items-center ms-auto">
+                      {%include 'teacher/templates/topbar.twig'%}
+
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="container-fluid p-4">
+            <!-- Header Section -->
+            <!-- Metrics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-8 col-md-8 col-sm-12 mb-3 ">
+                    <div class="card metric-card h-80 shadow-sm">
+                        <h4 class='card-header fw-bold' style='font-size:15px !important;color:black!important;'>Course Informations</h4>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4 mb-2">
+                            <a href="{{url_for('teacher.course.createcourse.index')}}" type="button" class="btn btn-secondary btn-sm shadow-0 text-capitalize fw-bold" style="font-size:14px;">
+                            Add New Course
+                            </a>
+                            </div>
+
+                                <div class="col-lg-6 d-flex align-items-center gap-2 mb-3 ms-auto">
+                                    <input type="text" class="form-control" id="courseSearch"  placeholder="Search Course By Name" style='font-size:14px !important;'>
+                        </div>
+                        </div>
+                          {%if errors['success']%}
+                            {{ toast.successToast(errors['success'])|raw }}
+                            {%endif%}
+                           <table class='table table-bordered table-hover table-sm' id='courseTable'>
+                             <thead>
+                            <tr>
+                                <td>#</td>
+                                <td>Coursename</td>
+                                <td>Created_at</td>
+                                <td>Actions</td>
+                            </tr>
+                             </thead>
+                              <tbody>
+                            {% for course in coursemodel %}
+                                <tr>
+                                    <td>{{(coursemodel.currentPage() - 1) * coursemodel.perPage() + loop.index}}</td>
+                                    <td>{{course.coursename}}</td>
+                                        <td>{{ course.created_at|date("F j, Y")}}  
+                                        <td><div class="dropdown" style='background-color:white !important;'>
+                                        <button
+                                            class="shadow-0"
+                                            type="button"
+                                            id="dropdownMenuButton"
+                                            data-mdb-toggle="dropdown"
+                                            aria-expanded="false"
+                                            style='border:none !important;color:balck !important'
+                                        >
+                                        
+                                            <i class="fa-solid fa-ellipsis-vertical" style='font-size:24px !important;'></i><!-- Corrected hamburger icon -->
+                                        </button>
+
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <li><a class="dropdown-item border-bottom" href="{{url_for('teacher.course.createcourse.course_edit.index',{courseid:course.id|base64_encode})}}" style='font-size:14px !important;'>Update</a></li>
+                                            <li><a class="dropdown-item" href="{{url_for('teacher.course.createcourse.course_edit.delete',{courseid:course.id|base64_encode})}}" style='font-size:14px !important;'>Delete</a></li>
+                                        </ul>
+                                        </div></td>                              
+                                        </tr>
+                                        {% else %}
+                                        <tr><td colspan="4">There is nothing to be shown.</td></tr>
+                            {% endfor %}
+                              <!-- Hidden row for search not found -->
+                                <tr class="no-search" style="display:none;">
+                                    <td colspan="4" class="text-center">No courses found.</td>
+                                </tr>
+                             </tbody>
+                           </table>
+                          
+                       {% if coursemodel.lastPage() > 1 %}
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <span>Page {{ coursemodel.currentPage() }} of {{ coursemodel.lastPage() }}</span>
+
+                                <nav aria-label="Courses Pagination">
+                                    <ul class="pagination justify-content-center gap-2">
+
+                                        {% set queryParams = queryParams|default({}) %}
+
+                                        {# Previous Button #}
+                                        {% set prevParams = queryParams|merge({'page': coursemodel.currentPage() - 1}) %}
+                                        <li class="page-item {% if coursemodel.currentPage() == 1 %}disabled{% endif %}">
+                                            <a class="page-link" href="?{{ prevParams|url_encode }}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+
+                                        {# Page Numbers #}
+                                        {% for page in 1..coursemodel.lastPage() %}
+                                            {% set pageParams = queryParams|merge({'page': page}) %}
+                                            <li class="page-item {% if page == coursemodel.currentPage() %}active{% endif %}">
+                                                <a class="page-link" href="?{{ pageParams|url_encode }}">{{ page }}</a>
+                                            </li>
+                                        {% endfor %}
+
+                                        {# Next Button #}
+                                        {% set nextParams = queryParams|merge({'page': coursemodel.currentPage() + 1}) %}
+                                        <li class="page-item {% if coursemodel.currentPage() == coursemodel.lastPage() %}disabled{% endif %}">
+                                            <a class="page-link" href="?{{ nextParams|url_encode }}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+
+                                    </ul>
+                                </nav>
+                            </div>
+                        {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+
+            
+        </div>
+    </div>
+
+    <!-- MDB Bootstrap JS -->
+    <script src="/assets/js/mdb.min.js"></script>
+    <script>
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+        
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+    </script>
+    <script>
+           document.getElementById('courseSearch').addEventListener('keyup', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#courseTable tbody tr:not(.no-search)');
+                let found = false;
+
+                rows.forEach(row => {
+                    const courseName = row.cells[1].textContent.toLowerCase();
+                    if (courseName.includes(filter)) {
+                        row.style.display = '';
+                        found = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide the "no courses found" row
+                const noSearchRow = document.querySelector('#courseTable tbody .no-search');
+                noSearchRow.style.display = found ? 'none' : '';
+            });
+
+    </script>
+
+</body>
+</html>

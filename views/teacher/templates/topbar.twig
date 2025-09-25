@@ -30,8 +30,8 @@
                         <button class="btn btn-link d-flex align-items-center p-0 text-decoration-none" type="button" id="userDropdown" data-mdb-toggle="dropdown" aria-expanded="false">
                             <div class="profile-avatar me-2">{{session.username|slice(0, 2)}}</div>
                             <div class="text-start">
-                                <div class="fw-bold text-dark">{{session.username}}</div>
-                                <small class="text-muted">{{session.userrole}}</small>
+                                <div class="fw-bold text-dark  text-capitalize"style='font-size:14px !important;'>{{session.username}}</div>
+                                <small class="text-muted text-capitalize" style='font-size:12px !important;'>{{session.userrole}}</small>
                             </div>
                             <i class="fas fa-chevron-down ms-2 text-muted"></i>
                         </button>
@@ -45,7 +45,7 @@
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="{{url_for('teacher.logout')}}">
+                            <li><a class="dropdown-item text-danger" href="{{url_for('teacher.logout')}}" style='font-weight:600 !important;'>
                                 <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                             </a></li>
                         </ul>

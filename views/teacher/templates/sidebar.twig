@@ -6,10 +6,10 @@
         </div>
         
         <nav class="nav flex-column gap-0">
-            <a class="nav-link font-md active" href="#">
+            <a class="nav-link font-md {{current_page == 'dashboard.home'?'active':''}}" href="{{url_for('teacher.dashboard.home')}}">
                 <i class="fas fa-th-large me-2"></i> Dashboard
             </a>
-            <a class="nav-link font-md" href="#">
+            <a class="nav-link font-md {{current_page == 'dashboard.course'?'active':''}}" href="{{url_for('teacher.course.index')}}">
                 <i class="fas fa-book me-2"></i> Courses
             </a>
             <a class="nav-link font-md" href="#">

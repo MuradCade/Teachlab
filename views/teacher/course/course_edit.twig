@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachLab | Teacher - Update Course</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/allmin.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+
+    
+    <!-- Chart.js -->
+    <script src="/assets/js/chart.js"></script>
+      <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+      </style>
+</head>
+<body>
+
+    <!-- Added sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Sidebar -->
+   {%include 'teacher/templates/sidebar.twig'%}
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Made header fixed and added mobile menu toggle -->
+        <nav class="navbar fixed-top-navbar px-4 shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-outline-secondary mobile-menu-toggle me-3" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="d-flex align-items-center ms-auto">
+                      {%include 'teacher/templates/topbar.twig'%}
+
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="container-fluid p-4">
+            <!-- Metrics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-6 col-md-8 col-sm-12 mb-3 ">
+                    <div class="card metric-card h-80 shadow-sm">
+                        <h4 class='card-header fw-bold' style='font-size:15px !important;color:black!important;'>Update Single Course Information</h4>
+                        <div class="card-body ">
+                            
+                            {% if errors is defined%}
+                            {%if errors['coursename']%}
+                            {{ toast.dangerToast(errors['coursename'])|raw }}
+                            {% endif%}
+
+                            {%if errors['csrf_token']%}
+                            {{ toast.dangerToast(errors['csrf_token'])|raw }}
+                            {% endif%}
+                            {% endif%}
+
+                           
+                            <form action="{{url_for('teacher.course.createcourse.course_edit.update.submit',{courseid:coursemodel.id|base64_encode})}}" method='POST'>
+                                <div class="form-group">
+                                    <input type="hidden" name='csrf_token' value="{{csrf_token}}">
+                                    <label class='form-label'style='font-size:15px !important;color:black!important;'>Coursename</label>
+                                    <input type="text" class='form-control' id='coursename' name='coursename' placeholder='Enter Coursename...'style='font-size:15px !important;' value="{{coursemodel.coursename}}">
+                                </div>
+                                <button class='btn btn-primary btn-sm shadow-0 text-capitalize fw-bold mt-3' style='font-size:14px;'>Submit</button>
+                                <a href="{{url_for('teacher.course.index')}}" class='btn btn-secondary btn-sm shadow-0 text-capitalize fw-bold mt-3' style='font-size:14px;'>go back</a>
+                            </form>
+                          
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+
+            
+        </div>
+    </div>
+
+    <!-- MDB Bootstrap JS -->
+    <script src="/assets/js/mdb.min.js"></script>
+     <script>
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+        
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+    </script>
+
+</body>
+</html>

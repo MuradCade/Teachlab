@@ -16,7 +16,7 @@ class Course extends Model
     protected $fillable = [
         'coursename',
         'userid',
-        'created_at',
+        // 'created_at', // this attribute has  timestamp 
     ];
 
     // Relationships

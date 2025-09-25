@@ -5,6 +5,7 @@ use Twig\Loader\FilesystemLoader;
 use Twig\Loader\LoaderInterface;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
+use Twig\TwigFilter;
 use DI\ContainerBuilder;
 use App\Config\Eloquent;
 use Slim\Factory\AppFactory;
@@ -92,12 +93,12 @@ $app = AppFactory::create();
 $app->add(
     new \Slim\Middleware\Session([
         'name' => 'teachlabs',
-        'autorefresh' => true,
+        'autorefresh' => false,
         'lifetime' => '1 hour',
         // 'secure' => true,      // only send cookie over HTTPS
         'httponly' => true,    // prevent JS access
         'path' => '/',
-        'samesite' => 'Lax'
+        'samesite' => 'Strict'
     ])
 );
 
@@ -116,6 +117,11 @@ $container->set(Twig::class, function ($c) use ($app) {
     $twig->addExtension(new DebugExtension());
     // enables us to get assets of css and js from inside the public folder with dynamic base path
     $twig->getEnvironment()->addGlobal('base_path', $app->getBasePath());
+
+    // Add base64 filter
+    $twig->getEnvironment()->addFilter(new TwigFilter('base64_encode', function ($string) {
+        return base64_encode($string);
+    }));
 
     return $twig;
 });
