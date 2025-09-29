@@ -65,7 +65,17 @@ class CourseController
         $current_page = 'dashboard.course';
         $success_msg = $this->session->get('success_msg'); // this session variables holds the success message on post request when course is save to db
         $this->session->delete('success_msg');
-        return $this->view->render($response, 'teacher/course/createcourse.twig', ['session' => $this->session, 'current_page' => $current_page, 'toast' => $toast, 'csrf_token' => $token, 'errors' => $success_msg]);
+        return $this->view->render(
+            $response,
+            'teacher/course/createcourse.twig',
+            [
+                'session' => $this->session,
+                'current_page' => $current_page,
+                'toast' => $toast,
+                'csrf_token' => $token,
+                'errors' => $success_msg
+            ]
+        );
     }
     public function storeCourse(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {

@@ -63,7 +63,7 @@
                             {% endif%}
 
                            
-                            <form action="{{url_for('teacher.course.createcourse.course_edit.update.submit',{courseid:coursemodel.id|base64_encode})}}" method='POST'>
+                            <form action="{{url_for('teacher.course.course_edit.update.submit',{courseid:coursemodel.id|base64_encode})}}" method='POST'>
                                 <div class="form-group">
                                     <input type="hidden" name='csrf_token' value="{{csrf_token}}">
                                     <label class='form-label'style='font-size:15px !important;color:black!important;'>Coursename</label>
