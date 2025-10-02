@@ -7,7 +7,7 @@ Capsule::schema()->create('student', function ($table) {
     $table->text('studentname');
     $table->integer('courseid');
     $table->integer('userid');
-    // $table->timestamps();
+    $table->timestamps();
 
     $table->foreign('courseid')->references('id')->on('course')->onDelete('cascade');
     $table->foreign('userid')->references('userid')->on('users')->onDelete('cascade');
