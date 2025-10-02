@@ -25,18 +25,13 @@ class GuestMiddleware
     {
 
 
-        if (!empty($this->session->get('userid'))) {
+        if (!empty($this->session->get('userid')) && isset($_COOKIE['rememberme_token'])) {
 
             if ($this->session->get('userrole') == RoleEnum::teacher) {
                 $response = $this->responsefactory->createResponse(302)
                     ->withHeader('Location', 'http://teachlabs.test/teacher/dashboard');
                 return $response;
             }
-            // else if ($this->session->get('student_role') == RoleEnum::STUDENT) {
-            //     $response = $this->responsefactory->createResponse(302)
-            //         ->withHeader('Location', 'http://lmslite.test/' . $subdomain . '/student/dashboard');
-            //     return $response;
-            // }
         }
 
 
