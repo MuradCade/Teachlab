@@ -47,7 +47,7 @@ class TeacherController
         $this->session->delete('userrole');
         $this->session->destroy();
         // Regenerate session ID to avoid session fixation
-        session_regenerate_id(true);
+        // session_regenerate_id(true);
 
         // Expire the SlimSession cookie
         $params = session_get_cookie_params();
@@ -55,6 +55,6 @@ class TeacherController
 
 
 
-        return Redirector::redirect_to("/teacher/dashboard");
+        return Redirector::redirect_to("/login");
     }
 }
