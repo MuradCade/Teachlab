@@ -38,7 +38,7 @@ class PHPMAILService
         foreach ($emails as $email) {
             if ($email->mail_status === "pending") {
 
-                $this->logger->info("email sending is began: {$email->useremail} and {$email->mail_status}");
+                $this->logger->info("email sending is began: {$email->userid} and {$email->mail_status}");
                 $email->mail_status = "processing";
                 $email->save();
 
@@ -68,7 +68,7 @@ class PHPMAILService
                         'recipient' => $email->useremail,
                         'status' => 'sent'
                     ];
-                    $this->logger->info("email is now sent: {$email->useremail}");
+                    $this->logger->info("email is now sent: {$email->userid}");
                 } catch (Exception $e) {
                     $email->mail_status = 'error';
                     $email->mail_error  = $mail->ErrorInfo ?? $e->getMessage();
@@ -78,7 +78,7 @@ class PHPMAILService
                         'status' => 'error',
                         'error' => $email->mail_error
                     ];
-                    $this->logger->error("email is failed: {$email->useremail}, reason: {$email->mail_error}");
+                    $this->logger->error("email is failed: {$email->userid}, reason: {$email->mail_error}");
                 } finally {
                     $email->save(); // always save status, whether success or failure
                 }
