@@ -41,6 +41,7 @@ $builder->addDefinitions([
     \App\Middlewares\MaintainanceMode::class => \DI\autowire(\App\Middlewares\MaintainanceMode::class),
     \App\Middlewares\AuthMiddleware::class => \DI\autowire(\App\Middlewares\AuthMiddleware::class),
     \App\Middlewares\GuestMiddleware::class => \DI\autowire(\App\Middlewares\GuestMiddleware::class),
+    \App\Middlewares\RolebasedMiddleware::class => \DI\autowire(\App\Middlewares\RolebasedMiddleware::class),
     \App\Middlewares\RemembermeMiddleware::class => \DI\autowire(\App\Middlewares\RemembermeMiddleware::class),
     // \App\Middlewares\Tenant\TenantMiddlewareHelper::class => \DI\autowire(\App\Middlewares\Tenant\TenantMiddlewareHelper::class),
     // \App\Middlewares\Tenant\AuthMiddleware::class => \DI\autowire(\App\Middlewares\Tenant\AuthMiddleware::class),
