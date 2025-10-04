@@ -90,10 +90,6 @@ class PageController
             $errors['fullname'] = 'Fullname Field is required';
         } else if (empty($email)) {
             $errors['email'] = 'Email Field is required';
-        }
-        //check if email already exists in database
-        else if ($email_exist) {
-            $errors['email'] = 'Email already exists. Please use a different email.';
         } else if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             $errors['email'] = 'Please enter a valid email address';
         } else if (empty($password)) {
@@ -106,6 +102,9 @@ class PageController
             !preg_match('/[\W_]/', $password)
         ) {
             $errors['password'] = 'Password must be at least 6 characters, Password must contain uppercase letter, lowercase letter,number, and symbol.';
+        } //check if email already exists in database
+        else if ($email_exist) {
+            $errors['email'] = 'Email already exists. Please use a different email.';
         }
 
         // If there are validation errors, re-render the form with error messages
@@ -246,10 +245,10 @@ class PageController
             $errors['email'] = 'Email Field is required';
         } else if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
             $errors['email'] = 'Please enter a valid email address';
-        } else if (empty($useremail_exist)) {
-            $errors['email'] = 'Specified Email not found';
         } else if (empty($password)) {
             $errors['email'] = 'Password Field is required';
+        } else if (empty($useremail_exist)) {
+            $errors['email'] = 'Specified Email not found';
         }
 
         if (!empty($errors)) {
@@ -268,7 +267,7 @@ class PageController
                 if ($remembermeinput) {
                     $this->rememberme->generateRemembermeToken($useremail_exist['userid']);
                 }
-                return Redirector::redirect_to('/teacher/dashboard');
+                return Redirector::redirect_to('/dashboard');
             } else {
                 $errors['autherror'] = 'Wrong Email or Password';
                 return $this->view->render($response, 'pages/login.twig', ['currentpage' => $current_page, 'toast' => $toast, 'errors' => $errors, 'old' => $data, 'csrf_token' => $token]);
