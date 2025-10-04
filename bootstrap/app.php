@@ -212,9 +212,6 @@ $errorMiddleware->setDefaultErrorHandler($customErrorHandler);
 // Load route definitions
 (require __DIR__ . '/../routes/web.php')($app);
 
-// ----------------- Run App (only for HTTP) -----------------
-if (php_sapi_name() !== 'cli') {
-    $app->run();
-}
+
 
 return $app;
