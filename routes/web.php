@@ -1,15 +1,16 @@
 <?php
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use App\Middlewares\MaintainanceMode;
-use App\Config\Logger;
-use App\Controllers\Services\PHPMAILService;
 use Slim\App;
-use App\Controllers\Services\Redirector;
+use App\Config\Logger;
 use App\Middlewares\AuthMiddleware;
 use App\Middlewares\GuestMiddleware;
+use App\Middlewares\MaintainanceMode;
+use App\Controllers\Services\Redirector;
+use App\Middlewares\RolebasedMiddleware;
 use App\Middlewares\RemembermeMiddleware;
+use App\Controllers\Services\PHPMAILService;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 
 return function (App $app) {
@@ -59,7 +60,11 @@ return function (App $app) {
     })->setName('jobs.mail.process');
 
 
-
+    /*
+    this route : /dashboard
+    is responsible to check user and redirect them to their proper dashboard
+    */
+    $app->get('/dashboard', [])->add(RolebasedMiddleware::class);
 
     // Teacher dashboard
     $app->group('/teacher', function (\Slim\Routing\RouteCollectorProxy $group) {
@@ -89,17 +94,31 @@ return function (App $app) {
         $group->post('/course/createcourse', [\App\Controllers\Teacher\CourseController::class, 'storeCourse'])
             ->setName('teacher.course.createcourse.submit');
 
-        $group->get('/course/createcourse/edit/{courseid}', [\App\Controllers\Teacher\CourseController::class, 'editCourse'])
-            ->setName('teacher.course.createcourse.course_edit.index');
+        $group->get('/course/edit/{courseid}', [\App\Controllers\Teacher\CourseController::class, 'editCourse'])
+            ->setName('teacher.course.course_edit.index');
 
-        $group->post('/course/createcourse/edit/{courseid}/update', [\App\Controllers\Teacher\CourseController::class, 'updateCourse'])
-            ->setName('teacher.course.createcourse.course_edit.update.submit');
+        $group->post('/course/edit/{courseid}/update', [\App\Controllers\Teacher\CourseController::class, 'updateCourse'])
+            ->setName('teacher.course.course_edit.update.submit');
 
 
         $group->get('/course/createcourse/edit/{courseid}/delete', [\App\Controllers\Teacher\CourseController::class, 'deleteCourse'])
-            ->setName('teacher.course.createcourse.course_edit.delete');
+            ->setName('teacher.course.course_edit.delete');
 
         // Course Routes Ends Here.
+
+
+        // student routes starts here
+        $group->get('/student', [\App\Controllers\Teacher\StudentController::class, 'index'])
+            ->setName('teacher.student.index');
+
+        $group->get('/student/addnewstudent', [\App\Controllers\Teacher\StudentController::class, 'indexAddnewstudent'])
+            ->setName('teacher.student.addnewstudent.index');
+
+        $group->post('/student/addnewstudent', [\App\Controllers\Teacher\StudentController::class, 'storenewStudentData'])
+            ->setName('teacher.student.addnewstudent.submit');
+        // student routes ends here
+
+
     })
         ->add(RemembermeMiddleware::class)
         ->add(AuthMiddleware::class);
