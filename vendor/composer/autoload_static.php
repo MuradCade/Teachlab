@@ -501,6 +501,7 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         'App\\Middlewares\\GuestMiddleware' => __DIR__ . '/../..' . '/app/middlewares/GuestMiddleware.php',
         'App\\Middlewares\\MaintainanceMode' => __DIR__ . '/../..' . '/app/middlewares/MaintainanceMode.php',
         'App\\Middlewares\\RemembermeMiddleware' => __DIR__ . '/../..' . '/app/middlewares/RemembermeMiddleware.php',
+        'App\\Middlewares\\RolebasedMiddleware' => __DIR__ . '/../..' . '/app/middlewares/RolebasedMiddleware.php',
         'App\\Models\\Assignmententries' => __DIR__ . '/../..' . '/app/models/Assignmententries.php',
         'App\\Models\\Assignmentform' => __DIR__ . '/../..' . '/app/models/Assignmentform.php',
         'App\\Models\\Attandence' => __DIR__ . '/../..' . '/app/models/Attandence.php',

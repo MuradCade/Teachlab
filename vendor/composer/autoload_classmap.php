@@ -29,6 +29,7 @@ return array(
     'App\\Middlewares\\GuestMiddleware' => $baseDir . '/app/middlewares/GuestMiddleware.php',
     'App\\Middlewares\\MaintainanceMode' => $baseDir . '/app/middlewares/MaintainanceMode.php',
     'App\\Middlewares\\RemembermeMiddleware' => $baseDir . '/app/middlewares/RemembermeMiddleware.php',
+    'App\\Middlewares\\RolebasedMiddleware' => $baseDir . '/app/middlewares/RolebasedMiddleware.php',
     'App\\Models\\Assignmententries' => $baseDir . '/app/models/Assignmententries.php',
     'App\\Models\\Assignmentform' => $baseDir . '/app/models/Assignmentform.php',
     'App\\Models\\Attandence' => $baseDir . '/app/models/Attandence.php',
