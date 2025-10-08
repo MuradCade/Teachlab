@@ -31,7 +31,8 @@ if (PHP_SAPI === 'cli' && isset($argv[1])) {
             --drop-file filename_suffix
                 Delete migration files ending with the specified filename suffix (extension optional)
                 and remove their migration records.
-
+            --empty-all
+                Truncate all tables content at once.
             Examples:
 
             php migration.php --drop users
@@ -39,6 +40,7 @@ if (PHP_SAPI === 'cli' && isset($argv[1])) {
             php migration.php --make create_users_table
             php migration.php --drop-file users.php
             php migration.php --drop-file users
+            php migration.php --truncate-all
 
             EOD;
         exit(0);
@@ -88,6 +90,7 @@ if (PHP_SAPI === 'cli' && isset($argv[1])) {
         try {
             Capsule::statement('SET FOREIGN_KEY_CHECKS=0');
 
+
             // Truncate the migrations table explicitly to empty it
             if (Capsule::schema()->hasTable('migrations')) {
                 Capsule::table('migrations')->truncate();
@@ -102,6 +105,7 @@ if (PHP_SAPI === 'cli' && isset($argv[1])) {
             foreach ($tables as $row) {
                 $table = $row->$tableKey;
 
+
                 if ($table === 'migrations') {
                     continue; // skip migrations table since already truncated
                 }
@@ -109,7 +113,6 @@ if (PHP_SAPI === 'cli' && isset($argv[1])) {
                 if (Capsule::schema()->hasTable($table)) {
                     // Empty the table (truncate)
                     Capsule::table($table)->truncate();
-
                     // Drop the table
                     Capsule::schema()->drop($table);
 
@@ -121,6 +124,7 @@ if (PHP_SAPI === 'cli' && isset($argv[1])) {
         } finally {
             Capsule::statement('SET FOREIGN_KEY_CHECKS=1');
         }
+
 
         exit;
     }
@@ -227,6 +231,28 @@ if (PHP_SAPI === 'cli' && isset($argv[1])) {
         exit;
     }
 
+    // truncate all tables content
+    if ($argv[1] === '--truncate-all') {
+        try {
+            Capsule::statement('SET FOREIGN_KEY_CHECKS=0');
+
+            $tables = Capsule::select('SHOW TABLES');
+            $dbName = Capsule::getDatabaseName();
+            $tableKey = "Tables_in_{$dbName}";
+
+            foreach ($tables as $row) {
+                $table = $row->$tableKey;
+                if ($table === 'migrations') continue;
+                Capsule::table($table)->truncate();
+                echo "✅ Truncated table: {$table}\n";
+            }
+        } catch (Exception $e) {
+            echo "❌ Failed to truncate tables: {$e->getMessage()}\n";
+        } finally {
+            Capsule::statement('SET FOREIGN_KEY_CHECKS=1');
+        }
+        exit;
+    }
 
     echo "❌ Unknown command.\n";
     exit(1);
@@ -248,7 +274,6 @@ $files = glob(__DIR__ . '/../migrations/*.php');
 
 // Get previously run migrations
 $runMigrations = Capsule::table('migrations')->pluck('migration')->toArray();
-
 foreach ($files as $file) {
     $migrationName = basename($file);
 
@@ -265,3 +290,10 @@ foreach ($files as $file) {
         echo "⏭️ Skipped (already run): {$migrationName}\n";
     }
 }
+
+// Display total migration files once
+echo "=======================================================" . PHP_EOL;
+echo "📦 Total migration files: " . count($files) . PHP_EOL;
+echo "✅ Already executed: " . count($runMigrations) . PHP_EOL;
+echo "🆕 Pending: " . (count($files) - count($runMigrations)) . PHP_EOL;
+echo str_repeat("-", 40) . PHP_EOL;
