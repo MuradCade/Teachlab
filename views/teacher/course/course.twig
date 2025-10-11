@@ -71,6 +71,7 @@
                             <tr>
                                 <td>#</td>
                                 <td>Coursename</td>
+                                <td>Total_Student</td>
                                 <td>Created_at</td>
                                 <td>Actions</td>
                             </tr>
@@ -80,6 +81,7 @@
                                 <tr>
                                     <td>{{(coursemodel.currentPage() - 1) * coursemodel.perPage() + loop.index}}</td>
                                     <td>{{course.coursename}}</td>
+                                    <td>{{course.students.count()}}</td>
                                         <td>{{ course.created_at|date("F j, Y")}}  
                                         <td><div class="dropdown" style='background-color:white !important;'>
                                         <button
