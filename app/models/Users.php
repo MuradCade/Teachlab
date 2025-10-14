@@ -23,6 +23,7 @@ class Users extends Model
         'is_verfied'
     ];
 
+
     // Relationships
     public function subscriptionRequests()
     {

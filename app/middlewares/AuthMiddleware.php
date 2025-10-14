@@ -23,7 +23,6 @@ class AuthMiddleware
     {
         $userid = $this->session->get('userid');
         $rememberme = $_COOKIE['rememberme_token'] ?? null;
-
         // If no active session and no valid remember-me cookie → redirect to login
         if (!$userid && !$rememberme) {
             return $this->responsefactory->createResponse(302)

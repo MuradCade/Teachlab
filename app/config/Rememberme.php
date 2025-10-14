@@ -56,18 +56,30 @@ class Rememberme
         $token = $_COOKIE['rememberme_token'];
 
         // Find user by remember_token hash
-        $user = $this->usermodel->whereNotNull('rememberme_token')->first();
-        if ($user && password_verify($token, $user['rememberme_token'])) {
-            // Rotate token (prevent replay attacks)
-            $this->generateRemembermeToken($user->userid);
-
-            // Establish session
-
-            $this->session->setUserSession($user, 'user');
+        $user = $this->usermodel->whereNotNull('rememberme_token')->get();
+        foreach ($user as $users) {
+            if ($users && password_verify($token, $users['rememberme_token'])) {
+                // Rotate token (prevent replay attacks)
+                $this->generateRemembermeToken($users->userid);
 
 
-            return $user;
+                // Establish session
+                $this->session->setUserSession($users, 'user');
+
+
+                return $users;
+            }
         }
+
+        // No match → invalidate cookie
+        setcookie('rememberme_token', '', [
+            'expires'  => time() - 3600,
+            'path'     => '/',
+            'secure'   => false,
+            'httponly' => true,
+            'samesite' => 'Strict'
+        ]);
+        unset($_COOKIE['rememberme_token']);
 
         return null;
     }

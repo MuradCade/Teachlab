@@ -20,14 +20,9 @@ class GuestMiddleware
     public function __invoke(Request $request, RequestHandlerInterface $handler): Response
     {
 
-
         if (!empty($this->session->get('userid')) || isset($_COOKIE['rememberme_token'])) {
             return Redirector::redirect_to('/dashboard');
         }
-
-
-
-
         return $handler->handle($request);
     }
 }

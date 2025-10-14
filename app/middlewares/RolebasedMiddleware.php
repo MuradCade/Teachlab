@@ -8,6 +8,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use SlimSession\Helper as Session;
 use Slim\Psr7\Factory\ResponseFactory;
+use App\Config\Rememberme;
 
 // rolebased middleware that helps to redirect user to thier proper dashboard
 class RolebasedMiddleware
@@ -27,6 +28,12 @@ class RolebasedMiddleware
         // Role-based dashboard redirect (only when hitting /dashboard)
         $uri = $request->getUri()->getPath();
         $role = $this->session->get('userrole');
+
+        // check if userrole not found , also check if cookie is found
+        if (!$role && isset($_COOKIE['rememberme_token'])) {
+            $rememberme = new Rememberme();
+            $rememberme->authenticate(); // generate new cookie and set new session
+        }
 
         if ($uri === '/dashboard') {
             switch ($role) {
