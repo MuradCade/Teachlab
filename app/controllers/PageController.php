@@ -262,7 +262,6 @@ class PageController
 
             // authentication user
             if ($useremail_exist['email'] == $email && password_verify($password, $useremail_exist['password'])) {
-
                 $this->sessionhandler->setUserSession($useremail_exist, 'user');
                 if ($remembermeinput) {
                     $this->rememberme->generateRemembermeToken($useremail_exist['userid']);

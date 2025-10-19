@@ -14,7 +14,7 @@ class Toast
     */
     public function warningToast(?string $feedback): array|string
     {
-        return "<p class='bg-warning-lights p-2 mt-2 mb-2 w-100'>{$feedback}</p>";
+        return "<p class='bg-warning-lights p-2 mt-1 mb-1 w-100'>{$feedback}</p>";
     }
 
     /*
@@ -26,7 +26,7 @@ class Toast
     */
     public function successToast(?string $feedback): array|string
     {
-        return "<p class='bg-success-light p-2 mt-2 mb-2 w-100'>{$feedback}</p>";
+        return "<p class='bg-success-light p-2 mt-1 mb-1 w-100'>{$feedback}</p>";
     }
 
     /*
@@ -40,7 +40,7 @@ class Toast
 
     public function dangerToast(?string $feedback): array|string
     {
-        return "<p class='bg-danger-light p-2 mt-2 mb-2 w-100'>{$feedback}</p>";
+        return "<p class='bg-danger-light p-2 mt-1 mb-1 w-100'>{$feedback}</p>";
     }
 
     /*
@@ -52,6 +52,6 @@ class Toast
     */
     public function infoToast(?string $feedback): array|string
     {
-        return "<p class='bg-info-light p-2 mt-2 mb-2 w-100'>{$feedback}</p>";
+        return "<p class='bg-info-light p-2 mt-1 mb-1 w-100'>{$feedback}</p>";
     }
 }

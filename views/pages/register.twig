@@ -34,11 +34,11 @@
                     <!--<a href="#" class='text-decoration-underline mx-4 small'>
                         <li class='fa fa-arrow-left me-1'></li>go back
                     </a>-->
-                    <h4 class="card-header font-medium">
+                    <h4 class="card-header font-medium px-4">
                         Create Account
                     </h4>
-                    <div class="card-body">
-                        <p class='small text-capitalize'>
+                    <div class="card-body" >
+                        <p class='small text-capitalize ' style='margin:unset !important; padding:unset !important'>
                             Your All-in-One Platform for Modern Teaching.                     
                             </p>
                         {%if errors %}
@@ -62,7 +62,7 @@
                         
                         <form action="{{url_for('auth.register.submit')}}"method='POST'>
                             <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-                            <div class="form-group">
+                            <div class="form-group mt-2">
                                 <label class='form-label lable-style' for='fullname'>Fullname</label>
                                 <input type="text" class='form-control place-holder' id='fullname' name='fullname' placeholder='Enter Fullname' value="{{ old.fullname ?? '' }}"">
                             </div>

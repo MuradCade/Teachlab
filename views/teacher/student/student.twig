@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachLab | Teacher - Student Information</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/allmin.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+
+    
+    <!-- Chart.js -->
+    <script src="/assets/js/chart.js"></script>
+      <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+      </style>
+</head>
+<body>
+
+    <!-- Added sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Sidebar -->
+   {%include 'teacher/templates/sidebar.twig'%}
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Made header fixed and added mobile menu toggle -->
+        <nav class="navbar fixed-top-navbar px-4 shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-outline-secondary mobile-menu-toggle me-3" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="d-flex align-items-center ms-auto">
+                      {%include 'teacher/templates/topbar.twig'%}
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid p-4">
+            <div class="row mb-4">
+
+                <!-- this below form enables to display all student information related to specific course-->
+                <div class='col-lg-8 col-md-12 col-sm-12 mb-3'>
+                    
+                <div class='card metric-card  shadow-sm'>
+                    <h4 class='card-header fw-bold' style='font-size:15px !important;color:black!important;'>Course Selection</h4>
+                    <div class='card-body'>
+                       
+                       {% if errors['coursename']%}
+                            {{ toast.dangerToast(errors['coursename'])|raw }}
+                       {%endif%}
+                       
+                        <form action="{{url_for('teacher.student.submit')}}" method='POST'>
+                            <input type="hidden" name='csrf_token' value="{{csrf_token}}">
+                            <div class='form-group'>
+                                <label for="coursename" class='form-label' style='font-size:14px !important;color:black!important;'>Select Specific Course</label>
+                                <select name="coursename" id="coursename" class='form-select' style='font-size:14px !important;'>
+                                  
+                                 {% if coursemodel %}
+                                    {% for course in coursemodel %}
+                                        <option value="{{ course.coursename }}" {{course.id == studentmodel[0].courseid ?"selected":''}}>{{ course.coursename }}</option>
+                                    {% else %}
+                                        <option value="">There are no courses , please create new course so u can easily see associated students</option>
+                                    {% endfor %}
+                                {% endif %}
+                                  
+                                </select>
+                            </div>
+
+                            <!-- disabling the submit button if user doesn't have any courses-->
+                            {%if coursemodel.count < 1%}
+                            <button class='btn btn-primary btn-sm small text-capitalize fw-bold shadow-0 mt-3' disabled>Submit</button>
+                            {%else%}
+                            <button class='btn btn-primary btn-sm small text-capitalize fw-bold shadow-0 mt-3'>Submit</button>
+                            {%endif%}
+                            <p class='small mt-4' style='font-size:14px !important;color:grey;'><strong>Important:</strong> when u select specific course ,you will see  <br> information of the students associated with that course.</p>
+                        </form>
+                    </div>
+                </div>
+                </div>
+
+
+
+                <!-- student table-->
+                <div class="col-lg-8 col-md-12 col-sm-12 mb-3 mt-3">
+                    <div class="card metric-card  shadow-sm">
+                        <h4 class='card-header fw-bold' style='font-size:15px !important;color:black!important;'>Student Information</h4>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-4 mb-2">
+                                 <!--dropdown starts here -->
+                            <div class="dropdown">
+                                <button
+                                    class="btn btn-secondary dropdown-toggle shadow-0 text-capitalize fw-bold"
+                                    type="button"
+                                    id="dropdownMenuButton"
+                                    data-mdb-toggle="dropdown"
+                                    aria-expanded="false"
+                                    style='font-size:14px !important;'
+                                >
+                                   Actions
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item border-bottom" href="{{url_for('teacher.student.addnewstudent.index')}}">Add New Student</a></li>
+                                    <li><a class="dropdown-item" href="#" >Import From Excel</a></li>
+                                   <!-- <li><a class="dropdown-item" href="#">Something else</a></li> -->
+                                </ul>
+                                </div>
+                                 <!-- dropdown ends here-->
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center gap-4 mb-1 ms-auto">
+                        <input type="text" class="form-control" id="studentSearch"  placeholder="Search Student By ID" style='font-size:13px !important;'>
+                        </div>
+                        
+                        </div>
+                          
+                        <div class='table-responsive'>
+                            {% if errors%}
+                            {% if errors['success']%}
+                            {{ toast.successToast(errors['success'])|raw }}
+                            {% endif %}
+                            {%endif%}
+                             <table class='table table-bordered table-hover table-sm mt-1' id='studentTable'>
+                                <thead>
+                                <tr style='font-size:14px;'>
+                                    <td>#</td>
+                                    <td>Student_ID</td>
+                                    <td>Student_Fullname</td>
+                                    <td>Student_Coursename</td>
+                                    <td>Actions</td>
+                                </tr>
+                                </thead>
+                             {% if studentmodel %}                            
+                            {%for studentdata in studentmodel%}
+                            
+
+                            <tbody>
+                                
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td>{{studentdata.id}}</td>
+                                <td>{{studentdata.studentname}}</td>
+                                <td>{{studentdata.course.coursename}}</td>
+                                <td>
+                                    <a href="{{url_for('teacher.student.student_edit.index',{studentid:studentdata.id|base64_encode})}}" class='btn btn-primary btn-sm shadow-0 text-capitalize fw-bold'>Update</a>
+                                    <a href="{{url_for('teacher.student.delete',{studentid:studentdata.id|base64_encode})}}" class='btn btn-danger btn-sm shadow-0 text-capitalize fw-bold'>Delete</a>
+                                    </td>
+                            </tr>
+                            </tbody>
+
+
+                        {%else%}
+                           <tr><td colspan="4">There is nothing to be shown.</td></tr>
+                            {%endfor%}
+
+                              <tr class="no-search" style="display:none;">
+                                  <td colspan="4" class="text-center">No student found.</td>
+                            </tr>
+
+                            {%else%}
+                            <tr><td colspan="4">There is nothing to be shown.</td></tr>
+                            
+                        {% endif %}
+
+                           </table>
+                        </div>
+                          
+                        
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end of student table-->
+               
+            </div>
+
+            
+        </div>
+    </div>
+
+    <!-- MDB Bootstrap JS -->
+    <script src="/assets/js/mdb.min.js"></script>
+    <script>
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+        
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+    </script>
+    <script>
+           document.getElementById('studentSearch').addEventListener('keyup', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#studentTable tbody tr:not(.no-search)');
+                let found = false;
+
+                rows.forEach(row => {
+                    const courseName = row.cells[1].textContent.toLowerCase();
+                    if (courseName.includes(filter)) {
+                        row.style.display = '';
+                        found = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide the "no courses found" row
+                const noSearchRow = document.querySelector('#studentTable tbody .no-search');
+                noSearchRow.style.display = found ? 'none' : '';
+            });
+
+    </script>
+
+</body>
+</html>

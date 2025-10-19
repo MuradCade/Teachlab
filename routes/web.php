@@ -26,16 +26,20 @@ return function (App $app) {
 
     // Authentication
     $app->get('/create_account', [\App\Controllers\PageController::class, 'indexCreateAccount'])
-        ->setName('auth.register')->add(GuestMiddleware::class);
+        ->setName('auth.register')
+        ->add(GuestMiddleware::class);
 
     $app->post('/create_account', [\App\Controllers\PageController::class, 'handleAccountCreation'])
-        ->setName('auth.register.submit')->add(GuestMiddleware::class);
+        ->setName('auth.register.submit')
+        ->add(GuestMiddleware::class);
 
     $app->get('/login', [\App\Controllers\PageController::class, 'indexLogin'])
-        ->setName('auth.login')->add(GuestMiddleware::class);
+        ->setName('auth.login')
+        ->add(GuestMiddleware::class);
 
     $app->post('/login', [\App\Controllers\PageController::class, 'handleLogin'])
-        ->setName('auth.login.submit')->add(GuestMiddleware::class);
+        ->setName('auth.login.submit')
+        ->add(GuestMiddleware::class);
 
     // After account creation success page
     $app->get('/congratulations', [\App\Controllers\PageController::class, 'indexCongratsPage'])
@@ -64,7 +68,8 @@ return function (App $app) {
     this route : /dashboard
     is responsible to check user and redirect them to their proper dashboard
     */
-    $app->get('/dashboard', [])->add(RolebasedMiddleware::class);
+    $app->get('/dashboard', [])
+        ->add(RolebasedMiddleware::class);
 
     // Teacher dashboard
     $app->group('/teacher', function (\Slim\Routing\RouteCollectorProxy $group) {
@@ -111,11 +116,29 @@ return function (App $app) {
         $group->get('/student', [\App\Controllers\Teacher\StudentController::class, 'index'])
             ->setName('teacher.student.index');
 
+        $group->post('/student', [\App\Controllers\Teacher\StudentController::class, 'fetchstudentAssociatedwithspecific_course'])
+            ->setName('teacher.student.submit');
+
         $group->get('/student/addnewstudent', [\App\Controllers\Teacher\StudentController::class, 'indexAddnewstudent'])
             ->setName('teacher.student.addnewstudent.index');
 
         $group->post('/student/addnewstudent', [\App\Controllers\Teacher\StudentController::class, 'storenewStudentData'])
             ->setName('teacher.student.addnewstudent.submit');
+
+
+        $group->get('/student/edit/{studentid}', [\App\Controllers\Teacher\StudentController::class, 'indexEditStudent'])
+            ->setName('teacher.student.student_edit.index');
+
+        $group->post('/student/edit/{studentid}/update', [\App\Controllers\Teacher\StudentController::class, 'UpdateStudent'])
+            ->setName('teacher.student.student_edit.index.submit');
+
+        $group->get('/student/edit/{studentid}/delete', [\App\Controllers\Teacher\StudentController::class, 'DeleteStudent'])
+            ->setName('teacher.student.delete');
+
+
+
+
+
         // student routes ends here
 
 
