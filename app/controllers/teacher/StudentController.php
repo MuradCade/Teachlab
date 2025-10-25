@@ -222,6 +222,7 @@ class StudentController
             $response,
             'teacher/student/editstudent.twig',
             [
+                'session' => $this->session,
                 'current_page' => $current_page,
                 'csrf_token' => $this->csrf->generateToken(),
                 'toast' => $toast,
@@ -277,6 +278,7 @@ class StudentController
                     'studentdata' => $studentmodel,
                     'coursemodel' => $coursemodel,
                     'errors' => $errors,
+                    'session' => $this->session,
 
                 ]
             );
