@@ -9,6 +9,7 @@ use App\Controllers\Services\Redirector;
 use App\Middlewares\RolebasedMiddleware;
 use App\Middlewares\RemembermeMiddleware;
 use App\Controllers\Services\PHPMAILService;
+use App\Controllers\Teacher\GenerateExcelTemplateController;
 use App\Controllers\Teacher\ImportExcelstudentController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -142,6 +143,11 @@ return function (App $app) {
 
         $group->post('/student/importfromexcel', [ImportExcelstudentController::class, 'store'])
             ->setName('teacher.student.importfromexcel.submit');
+        # import student data from excel sheet ends here
+
+        # generate dummy excel sheet
+        $group->get('/student/generate-excel-template', GenerateExcelTemplateController::class)
+            ->setName('teacher.student.generate-excel-template');
 
 
 
