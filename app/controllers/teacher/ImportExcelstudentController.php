@@ -103,7 +103,7 @@ class ImportExcelstudentController
 
         // Save uploaded file
         $createfilename = uniqid() . '_' . preg_replace('/[^a-zA-Z0-9\.\-_]/', '_', $filename);
-        $targetpath = storage_path('excelfolder/' . $createfilename);
+        $targetpath = storage_path('importexcelfile/' . $createfilename);
         $excelfile->moveTo($targetpath);
 
         $spreadfile = IOFactory::load($targetpath);
