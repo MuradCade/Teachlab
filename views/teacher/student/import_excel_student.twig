@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachLab | Teacher - Import Student Data From Excel</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/allmin.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+
+    
+    <!-- Chart.js -->
+    <script src="/assets/js/chart.js"></script>
+      <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+      </style>
+</head>
+<body>
+
+    <!-- Added sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Sidebar -->
+   {%include 'teacher/templates/sidebar.twig'%}
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Made header fixed and added mobile menu toggle -->
+        <nav class="navbar fixed-top-navbar px-4 shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-outline-secondary mobile-menu-toggle me-3" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="d-flex align-items-center ms-auto">
+                      {%include 'teacher/templates/topbar.twig'%}
+
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard Content -->
+        <div class="container-fluid p-4">
+            <!-- Metrics Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-6 col-md-8 col-sm-12 mb-3 ">
+                    <div class="card metric-card h-80 shadow-sm">
+                        <h4 class='card-header fw-bold' style='font-size:15px !important;color:black!important;'>Import Student Data From Excel Sheet File</h4>
+                        <div class="card-body ">
+                           
+                            {%if errors%}
+
+                            {% if errors['csrf_token']%}
+                            {{ toast.dangerToast(errors['csrf_token'])|raw }}
+                            {%endif%}
+                            
+                            {% if errors['excelfile']%}
+                            {{ toast.dangerToast(errors['excelfile'])|raw }}
+                            {%endif%}
+
+                            {% if errors['filetypenotsupported']%}
+                            {{ toast.dangerToast(errors['filetypenotsupported'])|raw }}
+                            {%endif%}
+                            {%endif%}
+
+                            <!--  Session flash messages-->
+                            {% if errors.excel_error%}
+                            {{ toast.dangerToast(errors.excel_error)|raw }}
+                            {%endif%}
+
+                            {% if errors.coursename_error%}
+                            {{ toast.dangerToast(errors.coursename_error)|raw }}
+                            {%endif%}
+
+                            {% if errors.success%}
+                            {{ toast.successToast(errors.success)|raw }}
+                            {%endif%}
+                               
+                            
+                           
+                            
+                            <form action="{{url_for('teacher.student.importfromexcel.submit')}}" method='POST' enctype="multipart/form-data">
+                                <input type="hidden" name='csrf_token' value="{{csrf_token}}">
+                              <div class="form-group mb-2">
+                                    <label class='form-label' for='studentid' style='font-size:14px !important;color:black!important;'>Choose Excel File</label>
+                                    <input type="file" class='form-control' id='excelfile' name='excelfile' style='font-size:14px !important;' '>
+                                </div>
+                                <p class='small' style='font-size:13px !important;'><strong>Important:</strong> only upload excel files with this extensions : [ .xlsx , .xlsm ] </p>
+                                <button class='btn btn-primary btn-sm text-white fw-bold text-capitalize shadow-0'>Submit</button>
+                                <a href="{{url_for('teacher.student.index')}}" class='btn btn-secondary btn-sm shadow-0 text-capitalize fw-bold mt-3' style='font-size:14px;'>go back</a>
+
+                                   <!-- preventing user to add new student if they didn't created coursename already )-->
+                            </form>
+                          
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+
+            
+        </div>
+    </div>
+
+    <!-- MDB Bootstrap JS -->
+    <script src="/assets/js/mdb.min.js"></script>
+     <script>
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+        
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+    </script>
+
+</body>
+</html>

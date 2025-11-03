@@ -9,6 +9,7 @@ use App\Controllers\Services\Redirector;
 use App\Middlewares\RolebasedMiddleware;
 use App\Middlewares\RemembermeMiddleware;
 use App\Controllers\Services\PHPMAILService;
+use App\Controllers\Teacher\ImportExcelstudentController;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 
@@ -134,6 +135,13 @@ return function (App $app) {
 
         $group->get('/student/edit/{studentid}/delete', [\App\Controllers\Teacher\StudentController::class, 'DeleteStudent'])
             ->setName('teacher.student.delete');
+
+        # import student data from excel sheet
+        $group->get('/student/importfromexcel', [ImportExcelstudentController::class, 'index'])
+            ->setName('teacher.student.importfromexcel.index');
+
+        $group->post('/student/importfromexcel', [ImportExcelstudentController::class, 'store'])
+            ->setName('teacher.student.importfromexcel.submit');
 
 
 

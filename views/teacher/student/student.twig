@@ -53,6 +53,7 @@
                     <h4 class='card-header fw-bold' style='font-size:15px !important;color:black!important;'>Course Selection</h4>
                     <div class='card-body'>
                        
+                    
                        {% if errors['coursename']%}
                             {{ toast.dangerToast(errors['coursename'])|raw }}
                        {%endif%}
