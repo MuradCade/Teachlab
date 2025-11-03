@@ -140,28 +140,32 @@ $app->setBasePath('');
 // is global function that handles accessing storage folder in the public directory
 // storage_path function  is used to save file/image in storage folder in the public directory
 // storage_url is used to display image from the folder it stored in 
-if (!function_exists('storage_url')) {
-    function storage_url(string $path = ''): string
-    {
-        global $app;
-        $base = $app->getBasePath();
-
-        // URL path (public storage folder)
-        $storage = rtrim($base, '/') . '/storage';
-
-        return $path
-            ? $storage . '/' . ltrim($path, '/')
-            : $storage;
-    }
-}
-
 if (!function_exists('storage_path')) {
     function storage_path(string $path = ''): string
     {
-        // Absolute filesystem path
-        return __DIR__ . '/storage' . ($path ? '/' . ltrim($path, '/') : '');
+        // Move storage to public/storage instead of bootstrap/storage
+        $base = dirname(__DIR__); // project root
+        $storageDir = $base . '/public/storage';
+
+        return $path
+            ? $storageDir . '/' . ltrim($path, '/')
+            : $storageDir;
     }
 }
+
+if (!function_exists('storage_url')) {
+    function storage_url(string $path = ''): string
+    {
+        // Publicly accessible URL for files in /public/storage
+        $baseUrl = rtrim($_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'], '/');
+        $storageUrl = $baseUrl . '/storage';
+
+        return $path
+            ? $storageUrl . '/' . ltrim($path, '/')
+            : $storageUrl;
+    }
+}
+
 // storage ends here 
 
 
