@@ -158,7 +158,7 @@ if (!function_exists('storage_url')) {
     {
         // Publicly accessible URL for files in /public/storage
         $baseUrl = rtrim($_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'], '/');
-        $storageUrl = $baseUrl . '/storage';
+        $storageUrl = $baseUrl . '/public/storage';
 
         return $path
             ? $storageUrl . '/' . ltrim($path, '/')
