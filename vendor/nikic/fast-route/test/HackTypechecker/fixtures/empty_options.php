@@ -1,4 +1,4 @@
-<?hh
+<?
 
 namespace FastRoute\TestFixtures;
 

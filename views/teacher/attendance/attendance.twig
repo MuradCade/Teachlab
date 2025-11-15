@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachLab | Teacher - Mark Student Attendance</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/allmin.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    
+    <!-- Chart.js -->
+    <script src="/assets/js/chart.js"></script>
+      <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+      </style>
+</head>
+<body>
+
+   
+
+    <!-- Added sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Sidebar -->
+   {%include 'teacher/templates/sidebar.twig'%}
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Made header fixed and added mobile menu toggle -->
+        <nav class="navbar fixed-top-navbar px-4 shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-outline-secondary mobile-menu-toggle me-3" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="d-flex align-items-center ms-auto">
+                      {%include 'teacher/templates/topbar.twig'%}
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid p-4">
+            <div class="row mb-4">
+                     <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="card metric-card  shadow-sm">
+                            <h4 class="card-header" style='font-size:15px !important'>
+                                Course Selection
+                            </h4>
+                            <div class="card-body">
+                                 {% if errors%}
+                            {% if errors['csrf_token']%}
+                            {{ toast. dangerToast(errors['csrf_token'])|raw }}
+                            {% endif %}
+
+                            {% if errors['coursename']%}
+                            {{ toast. dangerToast(errors['coursename'])|raw }}
+                            {% endif %}
+
+                            {%endif%}
+
+                                <form action="{{url_for('teacher.attendance.submit')}}" method='POST'>
+                                    <input type="hidden" name="csrf_token"value="{{csrf_token}}">
+                                  <label for="coursename" class='form-label' style='font-size:14px !important;color:black!important;'>Select Specific Course</label>
+                                <select name="coursename" id="coursename" class='form-select' style='font-size:14px !important;'>
+                                  
+                                 {% if coursemodel %}
+                                    {% for course in coursemodel %}
+                                        <option value="{{ course.id }}" {{course.id == studentmodel[0].courseid ?"selected":''}}>{{ course.coursename }}</option>
+                                    {% else %}
+                                        <option value="">There are no courses , please create new course so u can easily see associated students</option>
+                                    {% endfor %}
+                                {% endif %}
+                                </select>
+<!-- disabling the submit button if user doesn't have any courses-->
+                            {%if coursemodel.count < 1%}
+                            <button class='btn btn-primary btn-sm small text-capitalize fw-bold shadow-0 mt-3' disabled>Submit</button>
+                            <button class='btn btn-secondary btn-sm small text-capitalize fw-bold shadow-0 mt-3' disabled>Mark Student Attendance</button>
+                            {%else%}
+                            <button class='btn btn-primary btn-sm small text-capitalize fw-bold shadow-0 mt-3'>Submit</button>
+                            <button id ='marstudentattadencebtn'class="btn btn-secondary btn-sm small text-capitalize fw-bold shadow-0 mt-3" data-mdb-toggle="modal" data-mdb-target="#markstudentattendance">Mark Student Attdence</button>
+                            {%endif%}
+                            <p class='small mt-4' style='font-size:14px !important;color:grey;'><strong>Important:</strong> By selecting a specific course name, you’re seeing  attendance information of students related that exact course.</p>                 
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+
+
+                  <!-- viewing student attendance data -->
+                     <div class="col-lg-8 col-md-12 col-sm-12 mb-3 mt-3">
+                    <div class="card metric-card  shadow-sm">
+                        <h4 class='card-header fw-bold' style='font-size:15px !important;color:black!important;'>Student Attendance Information</h4>
+                        <div class="card-body">
+                            <div class="row">
+                        <div class="col-lg-4 mb-2"></div>
+                        <div class="col-lg-6 d-flex align-items-center gap-4 mb-1 ms-auto">
+                        <input type="text" class="form-control" id="studentSearch"  placeholder="Search Student By ID" style='font-size:13px !important;'>
+                        </div>
+                        
+                        </div>
+                          
+                        <div class='table-responsive'>
+                           
+                             <table class='table table-bordered table-hover table-sm mt-1' id='studentTable'>
+                                <thead>
+                                <tr style='font-size:14px;'>
+                                    <td>#</td>
+                                    <td>Student_ID</td>
+                                    <td>Student_Fullname</td>
+                                    <td>Coursename</td>
+                                    <td>Total Student Attandence Marks</td>
+                                </tr>
+                                </thead>
+                          
+                          {% if attendancemodel %}                            
+                            {%for attendancedata in attendancemodel%}
+                            
+
+                            <tbody>
+                                
+                            <tr>
+                                <td>{{loop.index}}</td>
+                                <td>{{attendancedata.id}}</td>
+                                <td>{{attendancedata.studentname}}</td>
+                                <td>{{attendancedata.course.coursename}}</td>
+                                <td>
+                                   
+                                </td>
+                            </tr>
+                            </tbody>
+
+
+                        {%else%}
+                           <tr><td colspan="4">There is nothing to be shown.</td></tr>
+                            {%endfor%}
+
+                              <tr class="no-search" style="display:none;">
+                                  <td colspan="4" class="text-center">No student found.</td>
+                            </tr>
+
+                            {%else%}
+                            <tr><td colspan="4">There is nothing to be shown.</td></tr>
+                            
+                        {% endif %}
+
+                           </table>
+                        </div>
+                          
+                        
+
+                        </div>
+                    </div>
+                </div>
+                  <!-- viewing student attendance data -->
+
+                  <!-- mark attendance model start here-->
+                  <div class="modal fade" id="markstudentattendance" tabindex="-1" aria-labelledby="markstudentattendanceLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                        
+                        <!-- Modal header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="markstudentattendanceLabel" style='font-size:14px !important;color:black !important;'>Marking Student Attendance</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                           <div class="col-lg-4 col-md-4 col-sm-12">
+                             <form>
+                                <div class='form-group'>
+                                    <label class='form-label'  style='font-size:14px !important;color:black !important;'>Attendance Intended Marks</label>
+                                    <input type="number" id='attendancemarks' class='form-control' placeholder='Enter Attendance Marks'>
+                                </div>
+                            </form>
+                           </div>
+                            <table class='table table-bordered table-sm mt-3'>
+                                <tr>
+                                    <td>#</td>
+                                    <td>Student_ID</td>
+                                    <td>Student_Fullname</td>
+                                    <td>Coursename</td>
+                                    <td>Attendance_Marks</td>
+                                    <td>Actions</td>
+                                </tr>
+
+                                <tbody id='studentattendance_data'>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Modal footer -->
+                     <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary shadow-0 fw-bold" data-mdb-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary shadow-0 fw-bold">Save Attendance</button>
+                        </div>
+
+                        </div>
+                    </div>
+                    </div>
+                  <!-- mark attendance model end  here-->
+            </div>
+        </div>
+    </div>
+
+    <!-- MDB Bootstrap JS -->
+    <script src="/assets/js/mdb.min.js"></script>
+    <script>
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+        
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+    </script>
+    <script>
+           document.getElementById('studentSearch').addEventListener('keyup', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#studentTable tbody tr:not(.no-search)');
+                let found = false;
+
+                rows.forEach(row => {
+                    const courseName = row.cells[1].textContent.toLowerCase();
+                    if (courseName.includes(filter)) {
+                        row.style.display = '';
+                        found = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide the "no courses found" row
+                const noSearchRow = document.querySelector('#studentTable tbody .no-search');
+                noSearchRow.style.display = found ? 'none' : '';
+            });
+
+    </script>
+
+    <script>
+            let attendancemarks = document.getElementById('attendancemarks');
+
+            attendancemarks.addEventListener('input', function () {
+                let value = attendancemarks.value;
+
+                // Update all attendance inputs inside the table
+                $('.attendance-input').val(value);
+            });
+            
+            $('#marstudentattadencebtn').click(function(event){
+                $('#studentattendance_data').html('loading...');
+               event.preventDefault();                
+              let courseid= document.getElementById('coursename')
+               $.ajax({
+                url:"http://teachlabs.test/teacher/attendance/mark_student_attendance",
+                method:"GET",
+                dataType:'json',
+                data:{courseid:courseid.value},
+                success:function(response){
+
+                    $('#studentattendance_data').html('')
+
+                    response.forEach((studentdata,index) => {
+                        $('#studentattendance_data').append(
+                            `<tr>
+                                <td>${index +1}</td>
+                                <td>${studentdata.id}</td>
+                                <td>${studentdata.studentname}</td>
+                                <td>${studentdata.course.coursename}</td>
+                                <td><input type='number'  class='attendance-input'  readonly/></td>
+                                <td>
+                                <select class='form-select' style='font-size:14px !important;'>
+                                <option value='present'>Present</option>
+                                <option value='absent'>Absent</option>
+                                <option value='sick'>Sick</option>
+                                <option value='excused'>Excused</option>
+                                </select>
+                                </td>
+                            </tr>`
+                        )
+                            
+                    });
+                },
+                error:function(xhr,status,error){
+                    console.log(error);
+                }
+               })
+            })
+    </script>
+
+</body>
+</html>

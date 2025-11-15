@@ -15,7 +15,7 @@
             <a class="nav-link font-md border-bottom {{current_page == 'dashboard.student'?'active':''}}" href="{{url_for('teacher.student.index')}}">
                 <i class="fas fa-users me-2"></i> Students
             </a>
-            <a class="nav-link font-md border-bottom" href="#">
+            <a class="nav-link font-md border-bottom {{current_page == 'dashboard.attendance'?'active':''}}" href="{{url_for('teacher.attendance.index')}}">
                 <i class="fas fa-calendar-check me-2"></i> Attendance
             </a>
             <a class="nav-link font-md border-bottom" href="#">

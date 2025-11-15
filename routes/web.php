@@ -5,14 +5,16 @@ use App\Config\Logger;
 use App\Middlewares\AuthMiddleware;
 use App\Middlewares\GuestMiddleware;
 use App\Middlewares\MaintainanceMode;
+use Slim\Routing\RouteCollectorProxy;
 use App\Controllers\Services\Redirector;
 use App\Middlewares\RolebasedMiddleware;
 use App\Middlewares\RemembermeMiddleware;
 use App\Controllers\Services\PHPMAILService;
-use App\Controllers\Teacher\GenerateExcelTemplateController;
-use App\Controllers\Teacher\ImportExcelstudentController;
+use App\Controllers\Teacher\Attendancecontroller;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Controllers\Teacher\ImportExcelstudentController;
+use App\Controllers\Teacher\GenerateExcelTemplateController;
 
 
 return function (App $app) {
@@ -74,7 +76,7 @@ return function (App $app) {
         ->add(RolebasedMiddleware::class);
 
     // Teacher dashboard
-    $app->group('/teacher', function (\Slim\Routing\RouteCollectorProxy $group) {
+    $app->group('/teacher', function (RouteCollectorProxy $group) {
 
         // redirect /teacher → /teacher/dashboard
         $group->get('/', function () {
@@ -90,7 +92,7 @@ return function (App $app) {
             ->setName('teacher.logout');
 
 
-        // Course Routes Starts Here.
+        //======= Course Routes Starts Here.
 
         $group->get('/course', [\App\Controllers\Teacher\CourseController::class, 'index'])
             ->setName('teacher.course.index');
@@ -111,10 +113,10 @@ return function (App $app) {
         $group->get('/course/createcourse/edit/{courseid}/delete', [\App\Controllers\Teacher\CourseController::class, 'deleteCourse'])
             ->setName('teacher.course.course_edit.delete');
 
-        // Course Routes Ends Here.
+        //=========== Course Routes Ends Here. ===================
 
 
-        // student routes starts here
+        //  ============= student routes starts here
         $group->get('/student', [\App\Controllers\Teacher\StudentController::class, 'index'])
             ->setName('teacher.student.index');
 
@@ -137,23 +139,33 @@ return function (App $app) {
         $group->get('/student/edit/{studentid}/delete', [\App\Controllers\Teacher\StudentController::class, 'DeleteStudent'])
             ->setName('teacher.student.delete');
 
-        # import student data from excel sheet
+        // import student data from excel sheet
         $group->get('/student/importfromexcel', [ImportExcelstudentController::class, 'index'])
             ->setName('teacher.student.importfromexcel.index');
 
         $group->post('/student/importfromexcel', [ImportExcelstudentController::class, 'store'])
             ->setName('teacher.student.importfromexcel.submit');
-        # import student data from excel sheet ends here
+        // import student data from excel sheet ends here
 
-        # generate dummy excel sheet
+        // generate dummy excel sheet
         $group->get('/student/generate-excel-template', GenerateExcelTemplateController::class)
             ->setName('teacher.student.generate-excel-template');
+        // ======== student routes ends here =========================
 
 
+        //============ attendance routes starts here
+        // show attendance data for specific course login start here
+        $group->get('/attendance', [Attendancecontroller::class, 'index'])
+            ->setName('teacher.attendance.index');
+        $group->post('/attendance', [Attendancecontroller::class, 'showallattendance'])
+            ->setName('teacher.attendance.submit');
+        // show attendance data for specific course login ends here
+
+        $group->get('/attendance/mark_student_attendance', [Attendancecontroller::class, 'showstudentdata_forspecific_course_for_marking_attendance'])
+            ->setName('teacher.attendance.markstudent_attendance');
+        //============ attendance routes end here ==================================
 
 
-
-        // student routes ends here
 
 
     })

@@ -1,10 +1,10 @@
-<?hh
+<?
 
 namespace FastRoute\TestFixtures;
 
 function all_options_simple(): \FastRoute\Dispatcher {
     return \FastRoute\simpleDispatcher(
-      $collector ==> {},
+      $collector => {},
       shape(
         'routeParser' => \FastRoute\RouteParser\Std::class,
         'dataGenerator' => \FastRoute\DataGenerator\GroupCountBased::class,
