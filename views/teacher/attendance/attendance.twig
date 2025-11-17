@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/assets/css/allmin.css">
     <link rel="stylesheet" href="/assets/css/fontawesome.css">
     <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    <link rel="stylesheet" href="/assets/toastr/build/toastr.min.css">
     <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     
@@ -53,6 +54,14 @@
                                 Course Selection
                             </h4>
                             <div class="card-body">
+                            {%if error%}
+                            {{ toast. dangerToast(error)|raw }}
+                            {%endif%}
+
+                            {%if success%}
+                            {{ toast.successToast(success)|raw }}
+                            {%endif%}
+
                                  {% if errors%}
                             {% if errors['csrf_token']%}
                             {{ toast. dangerToast(errors['csrf_token'])|raw }}
@@ -63,7 +72,7 @@
                             {% endif %}
 
                             {%endif%}
-
+                                   
                                 <form action="{{url_for('teacher.attendance.submit')}}" method='POST'>
                                     <input type="hidden" name="csrf_token"value="{{csrf_token}}">
                                   <label for="coursename" class='form-label' style='font-size:14px !important;color:black!important;'>Select Specific Course</label>
@@ -71,7 +80,7 @@
                                   
                                  {% if coursemodel %}
                                     {% for course in coursemodel %}
-                                        <option value="{{ course.id }}" {{course.id == studentmodel[0].courseid ?"selected":''}}>{{ course.coursename }}</option>
+                                        <option value="{{ course.id }}" {{course.id == attendancemodel[0].courseid ?"selected":''}}>{{ course.coursename }}</option>
                                     {% else %}
                                         <option value="">There are no courses , please create new course so u can easily see associated students</option>
                                     {% endfor %}
@@ -98,7 +107,13 @@
                         <h4 class='card-header fw-bold' style='font-size:15px !important;color:black!important;'>Student Attendance Information</h4>
                         <div class="card-body">
                             <div class="row">
-                        <div class="col-lg-4 mb-2"></div>
+                        <div class="col-lg-6 mb-2">
+                            {%if attendancemodel.count >0%}
+                            <div>
+                                <a href="{{url_for('teacher.attendance.export_allAttendancedata',{courseid:attendancemodel[0].course.id})}}" class='btn btn-secondary fw-bold text-capitalize'>Export All Attendance Data</a>
+                            </div>
+                            {% endif%}
+                        </div>
                         <div class="col-lg-6 d-flex align-items-center gap-4 mb-1 ms-auto">
                         <input type="text" class="form-control" id="studentSearch"  placeholder="Search Student By ID" style='font-size:13px !important;'>
                         </div>
@@ -114,7 +129,8 @@
                                     <td>Student_ID</td>
                                     <td>Student_Fullname</td>
                                     <td>Coursename</td>
-                                    <td>Total Student Attandence Marks</td>
+                                    <td>Total Attandence Marks</td>
+                                    <td>Action</td>
                                 </tr>
                                 </thead>
                           
@@ -126,11 +142,14 @@
                                 
                             <tr>
                                 <td>{{loop.index}}</td>
-                                <td>{{attendancedata.id}}</td>
-                                <td>{{attendancedata.studentname}}</td>
+                                <td><a class='text-decoration-underline attendance_details' data-id='{{attendancedata.student.id}},{{attendancedata.course.id}}'  data-mdb-toggle="modal" data-mdb-target="#Singlestudent_attendance" style='cursor:pointer;'>{{attendancedata.student.id}}</a></td>
+                                <td>{{attendancedata.student.studentname}}</td>
                                 <td>{{attendancedata.course.coursename}}</td>
                                 <td>
-                                   
+                                   {{attendancedata.totalAttendancemarks}}
+                                </td>
+                                <td>
+                                    <a href="{{url_for('teacher.attendance.deleteall_attendance_forsingle_student',{attendanceid:attendancedata.student.id})}}" class='btn btn-danger btn-sm fw-bold text-white shadow-0 text-capitalize'>Delete</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -171,15 +190,15 @@
                         </div>
                         
                         <!-- Modal body -->
-                        <div class="modal-body">
+                        <div class="modal-body table-responsive">
+
                            <div class="col-lg-4 col-md-4 col-sm-12">
-                             <form>
                                 <div class='form-group'>
                                     <label class='form-label'  style='font-size:14px !important;color:black !important;'>Attendance Intended Marks</label>
-                                    <input type="number" id='attendancemarks' class='form-control' placeholder='Enter Attendance Marks'>
+                                    <input type="number" id='attendancemarks' class='form-control' placeholder='Enter Attendance Marks' style='font-size:14px !important;'>
                                 </div>
-                            </form>
                            </div>
+                            <form id="save_student_attendance" method="POST">
                             <table class='table table-bordered table-sm mt-3'>
                                 <tr>
                                     <td>#</td>
@@ -189,29 +208,79 @@
                                     <td>Attendance_Marks</td>
                                     <td>Actions</td>
                                 </tr>
-
                                 <tbody id='studentattendance_data'>
-
                                 </tbody>
                             </table>
+                              <!-- show save button for market attendance if the course contains students-->
+                              
+                              <button id='save_attendance_student'  type="submit" class="btn btn-primary shadow-0 fw-bold text-capitalize">Save Attendance</button>
+                                </form>
                         </div>
                         
                         <!-- Modal footer -->
-                     <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary shadow-0 fw-bold" data-mdb-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary shadow-0 fw-bold">Save Attendance</button>
+                     <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary shadow-0 fw-bold text-capitalize" data-mdb-dismiss="modal">Close</button>
                         </div>
 
                         </div>
                     </div>
                     </div>
                   <!-- mark attendance model end  here-->
+
+                  <!-- show single student attendance information modal , modal start here -->
+                   <div class="modal fade" id="Singlestudent_attendance" tabindex="-1" aria-labelledby="Singlestudent_attendanceLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                        
+                        <!-- Modal header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="Singlestudent_attendanceLabel" style='font-size:14px !important;color:black !important;'>Single Student Attendance Information</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        
+                        <!-- Modal body -->
+                        <div class="modal-body table-responsive">
+                            <!--Generate Single Student Attendance Report button -->
+                             <div id='single_student_attendancereport'></div>
+                             <!-- -->
+                            <table class='table table-bordered table-sm mt-3'>
+                                <tr>
+                                    <td>#</td>
+                                    <td>Student_ID</td>
+                                    <td>Student_Fullname</td>
+                                    <td>Coursename</td>
+                                    <td>Present</td>
+                                    <td>Absent</td>
+                                    <td>Attendance_Marks</td>
+                                    <td>Actions</td>
+                                </tr>
+                                <tbody id='single_student_attendance'>
+                                </tbody>
+                                
+                            </table>
+                              <!-- show save button for market attendance if the course contains students-->
+                              
+                              
+                        </div>
+                        
+                        <!-- Modal footer -->
+                     <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary shadow-0 fw-bold text-capitalize" data-mdb-dismiss="modal">Close</button>
+                        </div>
+
+                        </div>
+                    </div>
+                    </div>
+                  <!-- show single student attendance information modal, modal end here -->
             </div>
         </div>
     </div>
 
     <!-- MDB Bootstrap JS -->
     <script src="/assets/js/mdb.min.js"></script>
+    <script src="/assets/toastr/build/toastr.min.js"></script>
+    <script src="/assets/js/toastr.js"></script>
+
     <script>
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const sidebar = document.getElementById('sidebar');
@@ -251,8 +320,10 @@
     </script>
 
     <script>
-            let attendancemarks = document.getElementById('attendancemarks');
 
+        let url ='http://teachlabs.test/teacher/';
+        // get attendance marks
+            let attendancemarks = document.getElementById('attendancemarks');
             attendancemarks.addEventListener('input', function () {
                 let value = attendancemarks.value;
 
@@ -260,45 +331,283 @@
                 $('.attendance-input').val(value);
             });
             
+            // show course related student info for attendance
             $('#marstudentattadencebtn').click(function(event){
                 $('#studentattendance_data').html('loading...');
                event.preventDefault();                
               let courseid= document.getElementById('coursename')
                $.ajax({
-                url:"http://teachlabs.test/teacher/attendance/mark_student_attendance",
+                url: url+"attendance/show_student_to_mark_attendance",
                 method:"GET",
                 dataType:'json',
                 data:{courseid:courseid.value},
                 success:function(response){
 
                     $('#studentattendance_data').html('')
-
-                    response.forEach((studentdata,index) => {
+                        
+                   if(response.length > 0){
+                      // Show save button
+                $('#save_attendance_student').show();
+                     response.forEach((studentdata,index) => {
                         $('#studentattendance_data').append(
-                            `<tr>
+                            ` <tr>
                                 <td>${index +1}</td>
-                                <td>${studentdata.id}</td>
-                                <td>${studentdata.studentname}</td>
-                                <td>${studentdata.course.coursename}</td>
-                                <td><input type='number'  class='attendance-input'  readonly/></td>
+                                <td><input type='number' name='studentid[]' value='${studentdata.id}' readonly style='width:80px'/></td>
+                                <td><input type='text' value='${studentdata.studentname}' readonly/></td>
+                                <td><input type='text' name='coursename[]' value='${studentdata.course.coursename}' readonly style='width:90px'/> <input type='hidden' name='courseid[]' value='${studentdata.course.id}' readonly style='width:90px'/></td>
+                                <td><input type='number' name='attendance_marks[]' class='attendance-input' style='width:80px'/></td>
                                 <td>
-                                <select class='form-select' style='font-size:14px !important;'>
+                                <select class='form-select'name='attendance_status[]' style='font-size:14px !important;'>
                                 <option value='present'>Present</option>
                                 <option value='absent'>Absent</option>
                                 <option value='sick'>Sick</option>
                                 <option value='excused'>Excused</option>
                                 </select>
                                 </td>
-                            </tr>`
+                            </tr>
+                      `
                         )
                             
                     });
+                   } else {
+                // No students: hide save button
+                $('#save_attendance_student').hide();
+                $('#studentattendance_data').append(`
+                    <tr>
+                        <td colspan="6" class="text-center">No students found for this course.</td>
+                    </tr>
+                `);
+            }
                 },
                 error:function(xhr,status,error){
                     console.log(error);
                 }
                })
             })
+
+
+
+// save attendance data after attendance is finish
+            $('#save_student_attendance').submit(function(event){
+                event.preventDefault();
+
+                $.ajax({
+                    url:url+'attendance/mark_student_attendance',
+                    method:'POST',
+                    dataType:'json',
+                    data:$(this).serialize(),
+                    success:function(response){
+                        if(response.errors.length > 0){
+                            response.errors.forEach(errors => {
+                                
+                        if(errors == 'emptystudentid'){
+                            toastr.error('Studentid is required in order to mark attendance')
+                        }
+                        else if(errors == 'emptycoursename'){
+                            toastr.error('Coursename is required in order to mark attendance')
+                        }
+                        else if(errors == 'emptyattendance_marks'){
+                            toastr.error('Attendance Marks are required in order to mark attendance')
+                        }
+                        else if(errors == 'emptyattendance_status'){
+                            toastr.error('Attendance Status is required in order to mark attendance')
+                        }
+                            });
+                        }else if(response.saved.length > 0){
+                            
+                            if(response.saved[0] == 'success'){
+                            toastr.success('Attendance is saved successfully')
+                            $('#markstudentattendance').modal('hide'); // hide the model
+                        }
+
+                        }else{
+                            console.log(response);
+                            
+                        }
+                        
+                    },
+                    error:function(xhr,status,error){
+                        console.log(error);
+                        
+                    }
+                })
+                
+            })
+
+
+    // single student attendance (show attendance information related to specific student)
+        let currentStudentId = null;
+        let currentCourseId = null;
+
+    $('.attendance_details').on('click',function(){
+        let data = $(this).data('id');
+        let split =  data.split(",");
+        currentStudentId = split[0];     
+        currentCourseId = split[1]; 
+
+        
+        Displaysinglestudentattendance(currentStudentId,currentCourseId);
+       
+            
+    })
+    // When modal closes, remove the export single student attendance report (this prevent button from duplication)
+        $('#attendance_details').on('hidden.bs.modal', function () {
+            $('#attendance_details .export-button-container').empty();
+        });
+
+    function Displaysinglestudentattendance(studentid,courseid){
+                $('#single_student_attendance').html('loading...')
+        $.ajax({
+            url:url+'attendance/display_singlestudent_attendanceinformation',
+            method:'GET',
+            data:{studentid:studentid,courseid:courseid},
+            dataType:'json',
+            success:function(response){
+
+            $('#single_student_attendance').html('')
+
+                if(response.length > 0){
+                    $('#single_student_attendancereport').show().html(`<button  class='single_student_attendancereport btn btn-primary btn-sm fw-bold text-white shadow-0' data-id='${response[0].studentid},${response[0].courseid}'>Export Single Student Attendance Report</button>`)  //=> append the generate single student report button
+                    
+                        
+                    console.log();
+                    
+                    response.forEach((single_studentattendance,index) => {
+                        // store student data inside the single student attendance report button
+                        
+                        $('#single_student_attendance').append(`
+             
+                        <tr>
+                        <td>${index+1}</td>
+                        <td>${single_studentattendance.studentid}</td>
+                        <td>${single_studentattendance.student.studentname}</td>
+                        <td>${single_studentattendance.course.coursename}</td>
+                        <td>
+                        <select class='present form-select'>
+                        <option value='1' ${single_studentattendance.present == 1 ? 'selected' :''}>yes</option>
+                        <option value='0' ${single_studentattendance.present == 0 ? 'selected' :''}>no</option>
+                        </select>
+                        </td>
+                        <td>
+                        <select class='absent form-select'>
+                        <option value='1' ${single_studentattendance.absent == 1 ? 'selected' :''}>yes</option>
+                        <option value='0' ${single_studentattendance.absent == 0 ? 'selected' :''}>no</option>
+                        </select>
+                        </td>
+                        <td><input type='number' value='${single_studentattendance.attandence_marks}' class='form-control' id='attendance_marks'/></td>
+                        <td>
+                        <button class='updatebtn btn btn-primary btn-sm text-white fw-bold me-2 shadow-0 text-capitalize' data-id='${single_studentattendance.id}'>Update</button>
+                        <button class='deletebtn btn btn-danger btn-sm text-white fw-bold shadow-0 text-capitalize'
+                        data-id='${single_studentattendance.id}'>Delete</button>
+                        </td>
+                        </tr>                        
+                        `)
+                    });
+                    
+
+                }else{
+                   $('#single_student_attendancereport').hide() // button used to generate single student attendance report
+                    $('#single_student_attendance').append(`
+                    <tr>
+                        <td colspan="6" class="text-center">No Attendance information found for this student.</td>
+                    </tr>                   
+                `);
+                }
+            },
+            error:function(xhr,status,error){
+                console.log(error)
+            }
+        })
+    }
+
+
+    // update single student attendance information
+    $(document).on('click','.updatebtn',function(){
+            let row = $(this).closest('tr'); // the current row
+            let attendanceid = $(this).data('id');
+            let present = row.find('.present').val();
+            let absent = row.find('.absent').val();
+            let attendance_marks = row.find('#attendance_marks').val();
+            
+            $.ajax({
+                url:url+"attendance/update_singlestudent_attendanceinformation",
+                method:'GET',
+                data:{attendanceid:attendanceid,present:present,absent:absent,attendance_marks:attendance_marks},
+                dataType:'json',
+                success:function(response){
+                   
+                   if(response.length > 0){
+
+                        if(response[0] == 'emptyattendancemarks'){
+                            toastr.error('Please provide attendance marks to properly update attendance.')
+                        }
+                        else if(response[0] == 'emptyattendanceid'){
+                            toastr.error('Update failed due to attendance id not found, please refresh the page and try again later.')
+
+                        }
+                        else if(response[0] == 'success'){
+                        toastr.success('attendance data updated successfully')
+                        $('#Singlestudent_attendance').modal('hide')
+                        }
+                   }else{
+                    console.log(response);
+                   }
+                    
+                    
+                    
+                },
+                error:function(xhr,status,error){
+                    console.log(error)
+                }
+            })
+    })
+
+    // delete single student attendance information
+    $(document).on('click','.deletebtn',function(){
+        let attendanceid = $(this).data('id');
+        
+        $.ajax({
+            url:url+"attendance/delete_singlestudent_attendanceinformation",
+            method:"GET",
+            data:{attendanceid:attendanceid},
+            dataType:'json',
+            success:function(response){
+                
+                if(response.length > 0){
+                    if(response[0] == 'emptyattendanceid'){
+                        toastr.error('attendance id not found , please refresh page and try again later')
+                    }
+                    else if(response[0] == 'failed'){
+                    toastr.error('failed to delete attendance data,please refresh page and try again later')
+                    }
+                    else if(response[0] == 'success'){
+                        toastr.success('attendance data deleted successfully')
+                        
+                        Displaysinglestudentattendance(currentStudentId,currentCourseId)
+
+                    }
+                }else{
+                    console.log(response);
+                    
+                }
+                    
+            },
+            error:function(xhr,status,error){
+                console.log(error);
+            }
+        })
+    })
+
+    // export single student attendance information
+    $(document).on('click', '.single_student_attendancereport', function() {
+    let data = $(this).data('id');
+    let split =  data.split(",");
+    let studentid = split[0];     
+    let courseid = split[1]; 
+
+    // Trigger download by navigating to the URL
+    window.location.href = url+"attendance/export_singlestudent_Attendancedata?studentid=" + studentid+'&courseid='+courseid;
+        });
     </script>
 
 </body>

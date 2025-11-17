@@ -15,6 +15,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Controllers\Teacher\ImportExcelstudentController;
 use App\Controllers\Teacher\GenerateExcelTemplateController;
+use App\Controllers\Teacher\Exportall_attendancedata;
+use App\Controllers\Teacher\Export_singlestudent_attendancereport;
 
 
 return function (App $app) {
@@ -161,8 +163,30 @@ return function (App $app) {
             ->setName('teacher.attendance.submit');
         // show attendance data for specific course login ends here
 
-        $group->get('/attendance/mark_student_attendance', [Attendancecontroller::class, 'showstudentdata_forspecific_course_for_marking_attendance'])
-            ->setName('teacher.attendance.markstudent_attendance');
+        $group->get('/attendance/show_student_to_mark_attendance', [Attendancecontroller::class, 'showstudentdata_forspecific_course_for_marking_attendance'])
+            ->setName('teacher.attendance.showstudent_tomark_attendance');
+
+        $group->post('/attendance/mark_student_attendance', [Attendancecontroller::class, 'store_markedattendance'])
+            ->setName('teacher.attendance.mark_student_attendance');
+
+        $group->get('/attendance/display_singlestudent_attendanceinformation', [Attendancecontroller::class, 'display_single_student_attendance_information'])
+            ->setName('teacher.attendance.display_singlestudent_attendanceinformation');
+
+        $group->get('/attendance/update_singlestudent_attendanceinformation', [Attendancecontroller::class, 'update_singlestudent_attendancedata'])
+            ->setName('teacher.attendance.update_singlestudent_attendanceinformation');
+
+        $group->get('/attendance/delete_singlestudent_attendanceinformation', [Attendancecontroller::class, 'delete_singlestudent_attendance_information'])
+            ->setName('teacher.attendance.delete_singlestudent_attendanceinformation');
+
+        $group->get('/attendance/deleteall_attendance_forsingle_student/{attendanceid}', [Attendancecontroller::class, 'deleteall_attendance_for_single_student'])
+            ->setName('teacher.attendance.deleteall_attendance_forsingle_student');
+
+        // export attendance data for all students (without ajax)
+        $group->get('/attendance/export_allAttendancedata/{courseid}', Exportall_attendancedata::class)
+            ->setName('teacher.attendance.export_allAttendancedata');
+        // export single student attendance data (using ajax)
+        $group->get('/attendance/export_singlestudent_Attendancedata', Export_singlestudent_attendancereport::class)
+            ->setName('teacher.attendance.export_singlestudent_Attendancedata');
         //============ attendance routes end here ==================================
 
 
