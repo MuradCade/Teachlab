@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TeachLab | Teacher - Mark Student Attendance</title>
+    <title>TeachLab | Teacher - Attendance Information</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/assets/css/mdb.min.css">
     <link rel="stylesheet" href="/assets/css/main.css">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/assets/css/toastcolors.css">
     <link rel="stylesheet" href="/assets/toastr/build/toastr.min.css">
     <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
-    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+ <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
     
     <!-- Chart.js -->
     <script src="/assets/js/chart.js"></script>
@@ -115,14 +115,14 @@
                             {% endif%}
                         </div>
                         <div class="col-lg-6 d-flex align-items-center gap-4 mb-1 ms-auto">
-                        <input type="text" class="form-control" id="studentSearch"  placeholder="Search Student By ID" style='font-size:13px !important;'>
+                        <input type="text" class="form-control" id="AttendanceSearch"  placeholder="Search Student By ID" style='font-size:13px !important;'>
                         </div>
                         
                         </div>
                           
                         <div class='table-responsive'>
                            
-                             <table class='table table-bordered table-hover table-sm mt-1' id='studentTable'>
+                             <table class='table table-bordered table-hover table-sm mt-1' id='AttendanceTable'>
                                 <thead>
                                 <tr style='font-size:14px;'>
                                     <td>#</td>
@@ -297,9 +297,9 @@
         });
     </script>
     <script>
-           document.getElementById('studentSearch').addEventListener('keyup', function() {
+           document.getElementById('AttendanceSearch').addEventListener('keyup', function() {
                 const filter = this.value.toLowerCase();
-                const rows = document.querySelectorAll('#studentTable tbody tr:not(.no-search)');
+                const rows = document.querySelectorAll('#AttendanceTable tbody tr:not(.no-search)');
                 let found = false;
 
                 rows.forEach(row => {
@@ -313,7 +313,7 @@
                 });
 
                 // Show/hide the "no courses found" row
-                const noSearchRow = document.querySelector('#studentTable tbody .no-search');
+                const noSearchRow = document.querySelector('#AttendanceTable tbody .no-search');
                 noSearchRow.style.display = found ? 'none' : '';
             });
 
