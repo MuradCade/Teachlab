@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/assets/css/toastcolors.css">
     <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
 
-    
+
     <!-- Chart.js -->
     <script src="/assets/js/chart.js"></script>
       <style>
@@ -23,7 +23,7 @@
 
     <!-- Added sidebar overlay for mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    
+
     <!-- Sidebar -->
    {%include 'teacher/templates/sidebar.twig'%}
 
@@ -82,7 +82,7 @@
                                     <td>{{(coursemodel.currentPage() - 1) * coursemodel.perPage() + loop.index}}</td>
                                     <td>{{course.coursename}}</td>
                                     <td>{{course.students.count()}}</td>
-                                        <td>{{ course.created_at|date("F j, Y")}}  
+                                        <td>{{ course.created_at|date("F j, Y")}}
                                         <td><div class="dropdown" style='background-color:white !important;'>
                                         <button
                                             class="shadow-0 p-2 btn btn-primary fw-bold text-capitalize me-2"
@@ -99,7 +99,7 @@
                                             <li><a class="dropdown-item border-bottom" href="{{url_for('teacher.course.course_edit.index',{courseid:course.id|base64_encode})}}" style='font-size:14px !important;'>Update</a></li>
                                             <li><a class="dropdown-item" href="{{url_for('teacher.course.course_edit.delete',{courseid:course.id|base64_encode})}}" style='font-size:14px !important;'>Delete</a></li>
                                         </ul>
-                                        </div></td>                              
+                                        </div></td>
                                         </tr>
                                         {% else %}
                                         <tr><td colspan="4">There is nothing to be shown.</td></tr>
@@ -110,7 +110,7 @@
                                 </tr>
                              </tbody>
                            </table>
-                          
+                           <!-- Pagination -->
                        {% if coursemodel.lastPage() > 1 %}
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <span>Page {{ coursemodel.currentPage() }} of {{ coursemodel.lastPage() }}</span>
@@ -152,10 +152,10 @@
                         </div>
                     </div>
                 </div>
-               
+
             </div>
 
-            
+
         </div>
     </div>
 
@@ -165,12 +165,12 @@
         const mobileMenuToggle = document.getElementById('mobileMenuToggle');
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
-        
+
         mobileMenuToggle.addEventListener('click', function() {
             sidebar.classList.toggle('show');
             sidebarOverlay.classList.toggle('show');
         });
-        
+
         sidebarOverlay.addEventListener('click', function() {
             sidebar.classList.remove('show');
             sidebarOverlay.classList.remove('show');
