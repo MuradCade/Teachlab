@@ -151,8 +151,8 @@
                                 <td>{{studentdata.studentname}}</td>
                                 <td>{{studentdata.course.coursename}}</td>
                                 <td>
-                                    <a href="{{url_for('teacher.student.student_edit.index',{studentid:studentdata.id|base64_encode})}}" class='btn btn-primary btn-sm shadow-0 text-capitalize fw-bold'>Update</a>
-                                    <a href="{{url_for('teacher.student.delete',{studentid:studentdata.id|base64_encode})}}" class='btn btn-danger btn-sm shadow-0 text-capitalize fw-bold'>Delete</a>
+                                    <a href="{{url_for('teacher.student.student_edit.index',{studentid:studentdata.id})}}" class='btn btn-primary btn-sm shadow-0 text-capitalize fw-bold'>Update</a>
+                                    <a href="{{url_for('teacher.student.delete',{studentid:studentdata.id})}}" class='btn btn-danger btn-sm shadow-0 text-capitalize fw-bold'>Delete</a>
                                     </td>
                             </tr>
                             </tbody>

@@ -76,7 +76,7 @@
                             {% endif %}
 
                             {%endif%}
-                            <form action="{{url_for('teacher.student.student_edit.index.submit',{studentid:studentdata.id|base64_encode})}}" method='POST'>
+                            <form action="{{url_for('teacher.student.student_edit.index.submit',{studentid:studentdata.id})}}" method='POST'>
                             <input type="hidden" name='csrf_token' value="{{csrf_token}}">
                                 <div class="form-group">
                                     <label for="studentid" class='form-label' style='font-size:14px;color:black!important;'>Student ID</label>
