@@ -96,8 +96,8 @@
                                             <li class='fas fa-chevron-down mt-1'></li>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <li><a class="dropdown-item border-bottom" href="{{url_for('teacher.course.course_edit.index',{courseid:course.id|base64_encode})}}" style='font-size:14px !important;'>Update</a></li>
-                                            <li><a class="dropdown-item" href="{{url_for('teacher.course.course_edit.delete',{courseid:course.id|base64_encode})}}" style='font-size:14px !important;'>Delete</a></li>
+                                            <li><a class="dropdown-item border-bottom" href="{{url_for('teacher.course.course_edit.index',{courseid:course.id})}}" style='font-size:14px !important;'>Update</a></li>
+                                            <li><a class="dropdown-item" href="{{url_for('teacher.course.course_edit.delete',{courseid:course.id})}}" style='font-size:14px !important;'>Delete</a></li>
                                         </ul>
                                         </div></td>
                                         </tr>
