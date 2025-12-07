@@ -18,7 +18,7 @@
             <a class="nav-link font-md border-bottom {{current_page == 'dashboard.attendance'?'active':''}}" href="{{url_for('teacher.attendance.index')}}">
                 <i class="fas fa-calendar-check me-2"></i> Attendance
             </a>
-            <a class="nav-link font-md border-bottom" href="#">
+            <a class="nav-link font-md border-bottom {{current_page == 'dashboard.assignment'?'active':''}}" href="{{url_for('teacher.assignmnt.index')}}">
                 <i class="fas fa-tasks me-2"></i> Assignments
             </a>
             <a class="nav-link font-md border-bottom" href="#">
@@ -34,12 +34,12 @@
         </nav>
         
         <!-- Upgrade Card -->
-        <div class="upgrade-card p-2  mt-1 small" style='position:relative; right:0px;'>
+        <!-- <div class="upgrade-card p-2  mt-1 small" style='position:relative; right:0px;'>
             <div class="d-flex align-items-center mb-1">
                 <i class="fas fa-crown me-2"></i>
                 <strong>Upgrade to Pro</strong>
             </div>
             <p class="small mb-2">Gain Full Access to Advanced Features & Analytics</p>
             <button class="btn btn-light btn-sm w-100 fw-bold">Upgrade Now</button>
-        </div>
+        </div>-->
     </div>

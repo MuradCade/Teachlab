@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachLab | Teacher - Create Assignment</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/allmin.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    <link rel="stylesheet" href="/assets/toastr/build/toastr.min.css">
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <!-- Chart.js -->
+    <script src="/assets/js/chart.js"></script>
+      <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+      </style>
+</head>
+<body>
+
+
+
+    <!-- Added sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+   {%include 'teacher/templates/sidebar.twig'%}
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Made header fixed and added mobile menu toggle -->
+        <nav class="navbar fixed-top-navbar px-4 shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-outline-secondary mobile-menu-toggle me-3" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="d-flex align-items-center ms-auto">
+                      {%include 'teacher/templates/topbar.twig'%}
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid p-4">
+            <div class="row mb-4">
+                     <div class="col-lg-8 col-md-8 col-sm-12">
+
+                    <div class="card metric-card  shadow-sm">
+                        <h4 class="card-header" style='font-size:14px !important;color:black !important;'>
+                           Create New Assignment
+                        </h4>
+                        <div class="card-body">
+                            {% if errors %}
+
+                            {% if errors['csrf_token']%}
+                             {{ toast.dangerToast(errors['csrf_token'])|raw }}
+                            {%endif%}
+
+                            {% if errors['assignment_title']%}
+                             {{ toast.dangerToast(errors['assignment_title'])|raw }}
+                            {%endif%}
+
+                            {% if errors['assignment_content']%}
+                             {{ toast.dangerToast(errors['assignment_content'])|raw }}
+                            {%endif%}
+
+                            {% if errors['assignment_coursename']%}
+                             {{ toast.dangerToast(errors['assignment_coursename'])|raw }}
+                            {%endif%}
+
+                            {% if errors['assignment_filetype']%}
+                             {{ toast.dangerToast(errors['assignment_filetype'])|raw }}
+                            {%endif%}
+
+                            {% if errors['assignment_marks']%}
+                             {{ toast.dangerToast(errors['assignment_marks'])|raw }}
+                            {%endif%}
+
+                            {% if errors['assignment_status']%}
+                             {{ toast.dangerToast(errors['assignment_status'])|raw }}
+                            {%endif%}
+
+                            {% endif %}
+
+                            <!-- displaying session flash messages -->
+                            {% if sessions %}
+                            {% if sessions['success'] %}
+                            {{ toast.successToast(sessions['success'])|raw }}
+                            {% endif %}
+
+                            {% if sessions['failed'] %}
+                            {{ toast.dangerToast(sessions['failed'])|raw }}
+                            {% endif %}
+
+                            {% endif %}
+
+                            <form action="{{url_for('teacher.assignmnt.createassignment.submit')}}" method='POST'>
+                                <input type="hidden" name="csrf_token" value="{{csrf_token}}">
+                                <div class="form-group">
+                                <label class="form-label"style='font-size:15px !important;color:black !important;'>Assignment Title</label>
+                                <input type="text" class='form-control' name='assignment_title' placeholder='Enter Assignment Title' style='font-size:15px !important;color:black !important;' value="{{old['assignment_title']}}">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="form-label"style='font-size:15px !important;color:black !important;'>Assignment Content</label>
+                                <textarea rows='4' cols='4' name="assignment_content" class='form-control' placeholder='Enter Assignment Content' style='font-size:15px !important;color:black !important;'>{{old['assignment_content']}}</textarea>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="form-label"style='font-size:15px !important;color:black !important;'>Select Coursename</label>
+                                <select name="assignment_coursename" class='form-select' tyle='font-size:15px !important;color:black !important;'>
+                                    {% if coursemodel %}
+                                       {% for course in coursemodel %}
+                                           <option value="{{ course.id }}" {{course.id == studentmodel[0].courseid ?"selected":''}}>{{ course.coursename }}</option>
+                                       {% else %}
+                                           <option value="">There are no courses , please create new course so u can easily see associated students</option>
+                                       {% endfor %}
+                                   {% endif %}
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="form-label"style='font-size:15px !important;color:black !important;'>Select Allowed File Types for the Assignment</label>
+                                <select name="assignment_filetype" class='form-select' tyle='font-size:15px !important;color:black !important;'>
+                                    <option value="word_document">Microsoft Word</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="form-label"style='font-size:15px !important;color:black !important;'>Assignment Marks</label>
+                                <input type="number" name="assignment_marks" class='form-control' placeholder='Enter Assignment Marks' value="{{old['assignment_marks']}}">
+                            </div>
+
+                            <div class="form-group mt-3">
+                                <label class="form-label"style='font-size:15px !important;color:black !important;'>Assignment Deadline (optional)</label>
+                                <input type="date" name="assignment_deadline" class='form-control' value="{{old['assignment_deadline']}}"/>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label class="form-label"style='font-size:15px !important;color:black !important;'>Select Assignment Status</label>
+                                <select name="assignment_status" class='form-select' style='font-size:15px !important;color:black !important;'>
+                                    <option value="published">Published</option>
+                                    <option value="disabled">Disabled</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                            </div>
+                            <div class='mt-3'>
+                               <button class="btn btn-primary btn-sm fw-bold text-white text-capitalize shadow-0 mt-2 me-2 "{{coursemodel.count >0 ? '' : 'disabled'}}>Submit</button>
+                            <a href="{{url_for('teacher.assignmnt.index')}}"class='btn btn-secondary btn-sm fw-bold  text-capitalize shadow-0'>Go Back</a>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MDB Bootstrap JS -->
+    <script src="/assets/js/mdb.min.js"></script>
+    <!-- <script src="/assets/toastr/build/toastr.min.js"></script> -->
+    <!-- <script src="/assets/js/toastr.js"></script> -->
+
+    <script>
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+    </script>
+    
+
+
+</body>
+</html>

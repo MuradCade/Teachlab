@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<script src="https://cdn.tailwindcss.com"></script>-->
+    <!--<script src='/assets/js/tailwind.js'></script>-->
+    <link rel="stylesheet" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/mdb-uikit.css">
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <!-- <link rel="stylesheet" href="/assets/css/navbar.css"> -->
+    <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    
+    <style>
+        body {
+    padding-top: 20px;
+    font-family: "Inter", sans-serif !important;
+    font-optical-sizing: auto;
+    background-color: #f8f9fa !important;
+    }
+        .font-medium{
+            font-size: 16px !important;
+            font-weight: 500;
+        }
+        .lable-style{
+            font-size:15px !important;
+            color:black !important;
+        }
+        .place-holder{
+            font-size:15px !important;
+        }
+        .btn-text{
+            font-size:14px !important;
+        }
+
+    </style>
+
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    </style>
+    <title>TeachLab | Student Assignment Submission</title>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            
+{% if assignmentmodel %}
+
+   <div class="col-lg-8 col-md-8 col-sm-12 mx-auto mb-5">
+                <div class="card shadow-sm">
+                    <div class="border-bottom" style='padding-top:25px !important;padding-left:25px !important;padding-right:20px !important; line-height:1.5em !important;'>
+                        <h4 style='font-size:19px !important;'class='fw-bold'>{{assignmentmodel.title}}</h4>
+                        <div class='d-flex flex-column flex-md-row align-items-md-center'>
+                        <span class='p-2 rounded  mt-2 me-4 bg-warning-lights' style='font-size:14px !important;'>Course: {{assignmentmodel.course.coursename}}</span>
+                        <!-- check if assignment has deadline -->
+                        {%if assignmentmodel.deadline_date !='0000-00-00 00:00:00'%}
+                        <span class='text-danger mt-2 fw-bold' style='font-size:15px !important;'>DeadLine Date: {{assignmentmodel.deadline_date|date("j - F - Y")}}</span>
+                        {%endif%}
+                        </div>
+                        <p style='font-size:14px !important;' class='text-break mt-3'>{{assignmentmodel.content}}</p>
+                        
+                    </div>
+                    <div class="card-body">
+                        <!-- show assignment form if the assigment status is published-->
+                        {% if assignmentmodel.status == 'published'%}
+                        <p id='msg'></p>
+                        <form method='POST' id='submit-assignment' enctype="multipart/form-data">
+                        <input type="hidden" name='courseid' value="{{assignmentmodel.courseid}}">
+                        <input type="hidden" name='assignmentformid' value="{{assignmentmodel.assignmentformid}}">
+                        <input type="hidden" name='assignment_allowed_filetype' value="{{assignmentmodel.allowed_filetype}}">
+                        <input type="hidden" name='assignment_marks' value="{{assignmentmodel.marks}}">
+                        <div class='form-group'>
+                        <label class="form-label" style='font-size:14px !important;color:black !important;'>Student ID</label>
+                        <input type="number" name='studentid' class='form-control' placeholder='Enter Student ID' style='font-size:15px !important;'>
+                        </div>
+
+                         <div class='form-group mt-2'>
+                        <label class="form-label" style='font-size:14px !important;color:black !important;'>Student Fullname</label>
+                        <input type="text" name='studentfullname' class='form-control' placeholder='Enter Student Fullname' style='font-size:15px !important;'>
+                        </div>
+
+                        <div class='form-group mt-2'>
+                        <label class="form-label" style='font-size:14px !important;color:black !important;'>Assignment File</label>
+                        <input type="file" name='assignmentfile' class='form-control'style='font-size:15px !important;'>
+                        </div>
+                        <button id="submitBtn" class="mt-3 btn btn-sm btn-primary fw-bold text-white shadow-0 text-capitalize" style="font-size:14px;">
+                            <span class="btn-text">Submit</span>
+                            <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        </button>
+
+                        </form>
+                        {%endif%}
+                        <!-- end of published assignment-->
+
+                        <!-- Show this message when form status is disabled-->
+                        {% if assignmentmodel.status == 'disabled'%}
+                           <p> {{ toast.dangerToast('This assignment form is currently closed and no longer accepting submissions.')|raw }}</p>
+
+                        {%endif%}
+                        <!-- end of disabled asssignment status-->
+
+                         <!-- Show this message when form status is draft-->
+                        {% if assignmentmodel.status == 'draft'%}
+                           <p> {{ toast.infoToast('This assignment form is currently under preparation, Please check back later.')|raw }}</p>
+
+                        {%endif%}
+                        <!-- end of draft asssignment status-->
+                    </div>
+                </div> 
+                <div class='text-center mt-5'>
+                    <p  class='text-capitalize small text-black'>This form is powered by <a href="{{url_for('home.index')}}" class='text-decoration-underline fw-bold'>Teachlab</a></p>   
+                </div>        
+   </div>
+
+
+{% else %}
+    <div class="col-lg-8 col-md-8 col-sm-12 mx-auto mb-5">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <p class='mt-2 bg-danger-light p-2'>Sorry, Assignment Form Not Found.</p>
+            </div>
+        </div>
+        <div class='text-center mt-5'>
+                    <p  class='text-capitalize small text-black'>This form is powered by <a href="{{url_for('home.index')}}" class='text-decoration-underline fw-bold'>Teachlab</a></p>   
+                </div>  
+    </div>
+{%endif%}
+        </div>
+    </div>
+ 
+
+
+
+
+
+
+
+
+
+<script src="/assets/js/jquery.js"></script>
+<script src="/assets/js/mdb.min.js"></script>
+
+
+
+<script>
+    let url = window.location;
+    let domain = url.origin; // gets actual domain (http://teachlabs.test)
+    let path = url.pathname
+    let pathsplit = path.split('/') // sperates every thing by /
+    let route = '/'+pathsplit[1]+'/'+pathsplit[2]+'/'+pathsplit[3];
+
+    $('#submit-assignment').submit(function(event) {
+    event.preventDefault();
+
+    $('#submitBtn .btn-text').text('Processing...');
+    $('#submitBtn .spinner-border').removeClass('d-none');
+
+    let form = document.getElementById('submit-assignment');
+    let formData = new FormData(form);
+
+    $.ajax({
+        url: route,
+        method: 'POST',
+        data: formData,
+        processData: false,   // prevents jQuery from messing with the data
+        contentType: false,
+        dataType:'json',   // needed for multipart/form-data
+        success: function(response) {
+
+           
+            if(response.error){
+                $('#msg').attr("class","bg-danger-light p-2")
+                $('#msg').html(response.error)
+
+                
+            }
+            else if(response.success){
+                $('#msg').attr("class","bg-success-light p-2")
+                $('#msg').html(response.message)
+                $('#submit-assignment')[0].reset()
+            }else{
+
+                console.log(response);
+            }
+            
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+             $('#submitBtn .btn-text').text('Submit');
+            $('#submitBtn .spinner-border').addClass('d-none');
+            // console.log(xhr.responseText);
+        },
+        complete:function(){
+             $('#submitBtn .btn-text').text('Submit');
+            $('#submitBtn .spinner-border').addClass('d-none');
+        }
+    });
+});
+
+   
+    
+</script>
+</body>
+</html>

@@ -9,26 +9,26 @@ class Assignmententries extends Model
     protected $table = 'assignmententries';
     protected $primaryKey = 'id';
     public $incrementing = true;
-    public $timestamps = false;
+    public $timestamps = true;
     protected $keyType = 'int';
 
     protected $fillable = [
         'studentid',
         'studentfullname',
         'courseid',
-        'up_filename',
+        'uploaded_filename',
         'pdf_filename',
         'assignmentformid',
-        'submission_date',
-        'up_filesize',
+        // 'submission_date',
+        'uploaded_filesize',
         'marks',
     ];
 
     // Relationships
-    public function student()
-    {
-        return $this->belongsTo(Student::class, 'studentid', 'id');
-    }
+    // public function student()
+    // {
+    //     return $this->belongsTo(Student::class, 'studentid', 'id');
+    // }
 
     public function course()
     {

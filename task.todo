@@ -3,4 +3,31 @@ Feature to add later version on teachlab
 
 1- inside the attendance add the following feature:-
     - display total attendance marks inside single student attendance
-    - 
+    - add date when showing all student attendance information
+    - add date when showing single student attendance
+2- in the teacher sidebar , change the icon of overall performance tab
+
+
+
+------------------
+Assignment Tasks
+
+[] - change the content of the assignment form page depend on form status
+[] - show the deadline date with its included with assignment form
+[] - handle assignment submission
+    [] - validate file submission (check if file is been submitting is allowed)
+    [] - handle storing file 
+    [] - turning the file into pdf
+[] - check if the deadline is reached then turn assignment form  status into disabled
+
+
+
+
+
+
+
+---------------
+Logic Explanation
+----------------------
+1- when saving student submision related to assignment , in the old design the assignmententries table that is reponsible to
+save assignment submission was connect or has relation with student table (relation ship that was like this (assingmententries) => (student) is removed)

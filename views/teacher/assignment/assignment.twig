@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeachLab | Teacher - Assignment Information</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/assets/css/mdb.min.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="stylesheet" href="/assets/css/allmin.css">
+    <link rel="stylesheet" href="/assets/css/fontawesome.css">
+    <link rel="stylesheet" href="/assets/css/toastcolors.css">
+    <link rel="stylesheet" href="/assets/toastr/build/toastr.min.css">
+    <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+    <!-- Chart.js -->
+    <script src="/assets/js/chart.js"></script>
+      <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+      </style>
+</head>
+<body>
+
+
+
+    <!-- Added sidebar overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+   {%include 'teacher/templates/sidebar.twig'%}
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Made header fixed and added mobile menu toggle -->
+        <nav class="navbar fixed-top-navbar px-4 shadow-sm">
+            <div class="container-fluid">
+                <button class="btn btn-outline-secondary mobile-menu-toggle me-3" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="d-flex align-items-center ms-auto">
+                      {%include 'teacher/templates/topbar.twig'%}
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row mb-4">
+                     <div class="col-lg-12 col-md-12 col-sm-12 mt-4">
+
+                    <div class="card metric-card  shadow-sm">
+                        <h4 class="card-header" style='font-size:14px !important;color:black !important;'>
+                            View All Assignment Information
+                        </h4>
+                        <div class="card-body table-responsive">
+                           {% if success%}
+                             {{ toast.successToast(success)|raw }}
+                            {%endif%}
+                        <div class="row">
+                        <div class="col-lg-6 mb-2">
+                            <div>
+                                <a href="{{url_for('teacher.assignmnt.create')}}" class='btn btn-secondary fw-bold text-capitalize'>Create New Assignment</a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 d-flex align-items-center gap-4 mb-1 ms-auto">
+                        <input type="text" class="form-control" id="AssignmentSearch"  placeholder="Search Assignment By Title" style='font-size:13px !important;'>
+                        </div>
+                        </div>
+
+                            <table class='table table-bordered' id='AssignmentTable'>
+                                <thead>
+                                    <tr>
+                                    <td>#</td>
+                                    <td>Assignment_Title</td>
+                                    <td>Coursename</td>
+                                    <td>Assignment_Status</td>
+                                    <td>Created_Date</td>
+                                    <td>Deadline_Date</td>
+                                    <td>Actions</td>
+                                </tr>
+                                </thead>
+                                {% if assignmentformmodel %}
+                               {%for assignmentform in assignmentformmodel%}
+
+
+                               <tbody>
+
+                               <tr>
+                                   <td>{{(assignmentformmodel.currentPage() - 1) * assignmentformmodel.perPage() + loop.index}}</td>
+                                   <td>{{assignmentform.title}}</td>
+                                   <td>{{assignmentform.course.coursename}}</td>
+                                   <td>
+                                {% if assignmentform.status == 'published' %}
+                                    <span class="bg-success text-white p-2 py-1 fw-bold">Published</span>
+                                {% elseif assignmentform.status == 'disabled' %}
+                                    <span class="bg-danger text-white p-2 py-1 fw-bold">Disabled</span>
+                                {% else %}
+                                    <span class="bg-warning text-white p-2 py-1 fw-bold rounded ">Draft</span>
+                                {% endif %}
+                                    </td>
+                                   <td>{{assignmentform.created_at |date("F j, Y")}}</td>
+                                   <td>{{assignmentform.deadline_date  == '0000-00-00 00:00:00' ? 'N/A' : assignmentform.deadline_date|date("F j, Y")}}
+
+                                   </td>
+
+                                   <td>
+                                       <div class="dropdown " style='background-color:white !important;'>
+                                       <button
+                                        class="btn btn-primary shadow-0 fw-bold text-capitalize"
+                                        id="dropdownMenuButton"
+                                        type="button"
+                                        data-mdb-toggle="dropdown"
+                                        data-mdb-container="body"
+                                        style="border:none !important; color:white !important; display:flex; align-items:center;"
+                                    >
+                                        Actions  <i class="fas fa-chevron-down" style='position:relative;left:10px;'></i>
+                                    </button>
+                                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style='overflow:hidden !important;'>
+                                           <button class="assignmentdetailsbutton dropdown-item border-bottom"   data-id="{{assignmentform.assignmentformid}}" data-mdb-toggle="modal" data-mdb-target="#assignmentdetails" style='font-size:14px !important;'>Assignment Details</button>
+                                           <a class="dropdown-item border-bottom" href="{{url_for('teacher.assignmnt.edit.index',{assignmentid:assignmentform.assignmentformid})}}" style='font-size:14px !important;'>Update Assignment</a>
+                                           <a class="dropdown-item border-bottom"  href="{{url_for('frontend.assignment.create',{assignmentid:assignmentform.assignmentformid|base64_encode})}}" style='font-size:14px !important;'>Copy Shareable Link</a>
+                                           <a class="dropdown-item" href="#" style='font-size:14px !important;'>Assignment Entries</a>
+                                           <a class="dropdown-item text-danger" href="{{url_for('teacher.assignmnt.delete',{assignmentid:assignmentform.assignmentformid})}}" style='font-size:14px !important;'>Delete Assignment</a>
+                                       </ul>
+                                       </div>
+                                   </td>
+                               </tr>
+                               </tbody>
+
+
+                           {%else%}
+                              <tr><td colspan="4">There is nothing to be shown.</td></tr>
+                               {%endfor%}
+
+                                 <tr class="no-search" style="display:none;">
+                                     <td colspan="4" class="text-center">No Assingment Form found.</td>
+                               </tr>
+
+                               {%else%}
+                               <tr><td colspan="4">There is nothing to be shown.</td></tr>
+
+                           {% endif %}
+                            </table>
+                            <!-- Pagination -->
+                            {% if assignmentformmodel.lastPage() > 1 %}
+                                 <div class="d-flex justify-content-between align-items-center mb-3">
+                                 <span>Page {{ assignmentformmodel.currentPage() }} of {{ assignmentformmodel.lastPage() }}</span>
+
+                                     <nav aria-label="Courses Pagination">
+                                         <ul class="pagination justify-content-center gap-2">
+
+                                             {% set queryParams = queryParams|default({}) %}
+
+                                             {# Previous Button #}
+                                             {% set prevParams = queryParams|merge({'page': assignmentformmodel.currentPage() - 1}) %}
+                                             <li class="page-item {% if assignmentformmodel.currentPage() == 1 %}disabled{% endif %}">
+                                                 <a class="page-link" href="?{{ prevParams|url_encode }}" aria-label="Previous">
+                                                     <span aria-hidden="true">&laquo;</span>
+                                                 </a>
+                                             </li>
+
+                                             {# Page Numbers #}
+                                             {% for page in 1..assignmentformmodel.lastPage() %}
+                                                 {% set pageParams = queryParams|merge({'page': page}) %}
+                                                 <li class="page-item {% if page == assignmentformmodel.currentPage() %}active{% endif %}">
+                                                     <a class="page-link" href="?{{ pageParams|url_encode }}">{{ page }}</a>
+                                                 </li>
+                                             {% endfor %}
+
+                                             {# Next Button #}
+                                             {% set nextParams = queryParams|merge({'page': assignmentformmodel.currentPage() + 1}) %}
+                                             <li class="page-item {% if assignmentformmodel.currentPage() == assignmentformmodel.lastPage() %}disabled{% endif %}">
+                                                 <a class="page-link" href="?{{ nextParams|url_encode }}" aria-label="Next">
+                                                     <span aria-hidden="true">&raquo;</span>
+                                                 </a>
+                                             </li>
+
+                                         </ul>
+                                     </nav>
+                                 </div>
+                             {% endif %}
+                             <!-- assignment details popup starts here-->
+                        <div class="modal fade" id="assignmentdetails" tabindex="-1" aria-labelledby="assignmentdetailsLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                        
+                        <!-- Modal header -->
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="assignmentdetailsLabel" style='font-size:14px !important;color:black !important;'>Assignment Details</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        
+                        <!-- Modal body -->
+                        <div class="modal-body table-responsive">
+                            <!--Generate Single Student Attendance Report button -->
+                             <div id='assignmentformdetails'></div>
+                             
+                              
+                        </div>
+                        
+                        <!-- Modal footer -->
+                     <div class="modal-footer ">
+                            <button type="button" class="btn btn-secondary shadow-0 fw-bold text-capitalize" data-mdb-dismiss="modal">Close</button>
+                        </div>
+
+                        </div>
+                    </div>
+                    </div>
+                             <!-- assignment details popup ends here-->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MDB Bootstrap JS -->
+    <script src="/assets/js/mdb.min.js"></script>
+    <!-- <script src="/assets/toastr/build/toastr.min.js"></script> -->
+    <!-- <script src="/assets/js/toastr.js"></script> -->
+
+    <script>
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        mobileMenuToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+        });
+
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
+    </script>
+    <script>
+           document.getElementById('AssignmentSearch').addEventListener('keyup', function() {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#AssignmentTable tbody tr:not(.no-search)');
+                let found = false;
+
+                rows.forEach(row => {
+                    const courseName = row.cells[1].textContent.toLowerCase();
+                    if (courseName.includes(filter)) {
+                        row.style.display = '';
+                        found = true;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide the "no courses found" row
+                const noSearchRow = document.querySelector('#AssignmentTable tbody .no-search');
+                noSearchRow.style.display = found ? 'none' : '';
+            });
+
+    </script>
+
+<script>
+
+        $(document).on('click','.assignmentdetailsbutton',function(){
+            let assignmentid = $(this).data('id');
+            let url = "http://teachlabs.test/teacher/";
+
+                $('#assignmentformdetails').html('Loading...')
+            $.ajax({
+                url:url+"assignment/displayassignmentdetails",
+                method:"GET",
+                dataType:'json',
+                data:{assignmentid:assignmentid},
+                success:function(response){
+             
+                    $('#assignmentformdetails').html('')
+                    if(response.length > 0){
+                      response.forEach(assignmentdetails => {
+                          const deadline = new Date(assignmentdetails.deadline_date);
+                        const formattedDate = deadline.toLocaleDateString();
+
+                        const fileType =
+                            assignmentdetails.allowed_filetype === 'word_document'
+                                ? 'Word Document'
+                                : assignmentdetails.allowed_filetype === 'pdf'
+                                    ? 'PDF'
+                                    : assignmentdetails.allowed_filetype === 'image'
+                                        ? 'Image'
+                                        : assignmentdetails.allowed_filetype;
+
+                        const statusBadge =
+                            assignmentdetails.status === 'published'
+                                ? "<span class='bg-success text-white p-1 rounded'>Published</span>"
+                                : assignmentdetails.status === 'disabled'
+                                    ? "<span class='bg-danger text-white p-1 rounded'>Disabled</span>"
+                                    : "<span class='bg-warning text-dark p-1 rounded'>Draft</span>";
+
+                        $('#assignmentformdetails').append(`
+                            <p class='mt-2 border-bottom'>Assignment Title: <strong>${assignmentdetails.title}</strong></p>
+                            <p class='mt-2 border-bottom'>Assignment Content: <strong>${assignmentdetails.content}</strong></p>
+                            <p class='mt-2 border-bottom'>Coursename: <strong>${assignmentdetails.course.coursename}</strong></p>
+                            <p class='mt-2 border-bottom'>Allowed File Type: <strong>${fileType}</strong></p>
+                            <p class='mt-2 border-bottom'>Assignment Marks: <strong>${assignmentdetails.marks}</strong></p>
+                            <p class='mt-2 border-bottom'>Assignment Status: <strong>${statusBadge}</strong></p>
+                            <p class='mt-2 border-bottom'>Assignment DeadLine Date: <strong>${assignmentdetails.deadline_date == '0000-00-00 00:00:00'? 'N/A': formattedDate}</strong></p>
+                        `);
+                    });
+
+                    }else{
+                        $('#assignmentformdetails').html('<p>No Assignment Found.</p>')
+                    }
+                    // console.log(response);
+
+                },
+                error:function(xhr,status,error){
+                    console.log(error);
+                    
+                }
+            })
+            //        
+
+        })
+</script>
+
+</body>
+</html>

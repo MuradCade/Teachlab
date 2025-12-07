@@ -7,11 +7,11 @@ Capsule::schema()->create('assignmententries', function ($table) {
     $table->integer('studentid');
     $table->string('studentfullname', 255);
     $table->integer('courseid');
-    $table->string('up_filename', 255);
+    $table->string('uploaded_filename', 255);
     $table->string('pdf_filename', 255);
     $table->integer('assignmentformid');
     $table->timestamp('submission_date');
-    $table->string('up_filesize', 255);
+    $table->string('uploaded_filesize', 255);
     $table->integer('marks');
     $table->timestamps();
 

@@ -21,4 +21,4 @@ Many teams follow the Conventional Commits specification:
 
 - added maintainance mode feature inside teachlab
     - add configuration related information in the env file that used on checking maintainance mode
-- 
+-
