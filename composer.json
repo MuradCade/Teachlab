@@ -24,7 +24,9 @@
         "illuminate/pagination": "^12.24",
         "symfony/mailer": "^7.3",
         "symfony/mime": "^7.3",
-        "phpoffice/phpspreadsheet": "^5.1"
+        "phpoffice/phpspreadsheet": "^5.1",
+        "phpoffice/phpword": "^1.4",
+        "dompdf/dompdf": "^3.1"
     },
     "require-dev": {
         "pestphp/pest": "^3.8",

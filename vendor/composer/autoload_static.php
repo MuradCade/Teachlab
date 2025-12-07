@@ -91,9 +91,11 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
             'Symfony\\Component\\EventDispatcher\\' => 34,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\Clock\\' => 24,
+            'Svg\\' => 4,
             'Slim\\Views\\' => 11,
             'Slim\\Psr7\\' => 10,
             'Slim\\' => 5,
+            'Sabberworm\\CSS\\' => 15,
         ),
         'P' => 
         array (
@@ -106,7 +108,9 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
             'Psr\\Container\\' => 14,
             'Psr\\Clock\\' => 10,
             'PhpParser\\' => 10,
+            'PhpOffice\\PhpWord\\' => 18,
             'PhpOffice\\PhpSpreadsheet\\' => 25,
+            'PhpOffice\\Math\\' => 15,
             'Pest\\Plugin\\' => 12,
             'Pest\\Mutate\\' => 12,
             'Pest\\Arch\\' => 10,
@@ -123,6 +127,7 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         'M' => 
         array (
             'Matrix\\' => 7,
+            'Masterminds\\' => 12,
         ),
         'L' => 
         array (
@@ -143,6 +148,7 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         ),
         'F' => 
         array (
+            'FontLib\\' => 8,
             'Fig\\Http\\Message\\' => 17,
             'Fidry\\CpuCoreCounter\\' => 21,
             'FastRoute\\' => 10,
@@ -153,6 +159,7 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         ),
         'D' => 
         array (
+            'Dompdf\\' => 7,
             'Doctrine\\Inflector\\' => 19,
             'Doctrine\\Deprecations\\' => 22,
             'Doctrine\\Common\\Lexer\\' => 22,
@@ -306,6 +313,10 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         array (
             0 => __DIR__ . '/..' . '/symfony/clock',
         ),
+        'Svg\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-svg-lib/src/Svg',
+        ),
         'Slim\\Views\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/twig-view/src',
@@ -317,6 +328,10 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         'Slim\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/slim/Slim',
+        ),
+        'Sabberworm\\CSS\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sabberworm/php-css-parser/src',
         ),
         'Psr\\SimpleCache\\' => 
         array (
@@ -356,9 +371,17 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         array (
             0 => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser',
         ),
+        'PhpOffice\\PhpWord\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/phpword/src/PhpWord',
+        ),
         'PhpOffice\\PhpSpreadsheet\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet',
+        ),
+        'PhpOffice\\Math\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpoffice/math/src/Math',
         ),
         'Pest\\Plugin\\' => 
         array (
@@ -400,6 +423,10 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         array (
             0 => __DIR__ . '/..' . '/markbaker/matrix/classes/src',
         ),
+        'Masterminds\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/masterminds/html5/src',
+        ),
         'Laravel\\SerializableClosure\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/serializable-closure/src',
@@ -435,6 +462,10 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         array (
             0 => __DIR__ . '/..' . '/illuminate/container',
         ),
+        'FontLib\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/php-font-lib/src/FontLib',
+        ),
         'Fig\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/fig/http-message-util/src',
@@ -450,6 +481,10 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         'Egulias\\EmailValidator\\' => 
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/src',
+        ),
+        'Dompdf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
         ),
         'Doctrine\\Inflector\\' => 
         array (
@@ -527,6 +562,7 @@ class ComposerStaticInit63661d32234c94a7c47675fbaa16f77c
         'DateObjectError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateObjectError.php',
         'DateRangeError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateRangeError.php',
         'Deprecated' => __DIR__ . '/..' . '/symfony/polyfill-php84/Resources/stubs/Deprecated.php',
+        'Dompdf\\Cpdf' => __DIR__ . '/..' . '/dompdf/dompdf/lib/Cpdf.php',
         'NoDiscard' => __DIR__ . '/..' . '/symfony/polyfill-php85/Resources/stubs/NoDiscard.php',
         'Normalizer' => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php',
         'Override' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/Override.php',
