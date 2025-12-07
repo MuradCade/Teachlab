@@ -19,9 +19,6 @@ use Symfony\Component\Mailer\Transport;
 use App\Controllers\Services\MailerService;
 use Symfony\Component\Mailer\MailerInterface;
 
-//laravel debugger
-use function Symfony\Component\VarDumper\dump;
-
 require __DIR__ . "/../vendor/autoload.php";
 $config = require __DIR__ . "/../env.php";
 
@@ -218,7 +215,11 @@ $customErrorHandler = function (
 // Register the custom error handler
 $errorMiddleware->setDefaultErrorHandler($customErrorHandler);
 
-$routes = require __DIR__ . "/../routes/web.php";
-$routes($app);
+$webroutes = require __DIR__ . "/../routes/web.php";
+$teacher_route = require __DIR__ . "/../routes/teacher.php";
+$frontend_assignmentroute = require __DIR__ . "/../routes/assignmentroute.php";
+$webroutes($app);
+$teacher_route($app);
+$frontend_assignmentroute($app);
 
 return $app;
